@@ -1,0 +1,16 @@
+\begin{tikzpicture}[auto, >=latex'] 
+
+	\draw[->] (0,0) -- (5,0) node[right] {$x$};
+	\draw[->] (0,-0.02) -- (0,4) node[above] {$f(x)$};
+	
+	\draw[dotted] (4.1,0) -- node[anchor=west] {$f(x_1+(1-\lambda)x_2)$} (4.1,4); 
+	\draw (0, 0.5) node[anchor=east] {$f(x_2)$};
+	\draw (4.1, 4) node[anchor=west] {$f(x_1)\forall\lambda\in(0,1)$};
+	
+	\draw[black] plot[samples=200, domain=0:4] (\x,{0.5*exp(0.5*\x)});
+		
+	\draw (4.1, 0.02) -- (4.1, -0.02);
+	\draw (0, -0.02) node[anchor=north] {$0$};
+	\draw (4.1, -0.02) node[anchor=north] {$1$};
+
+\end{tikzpicture}

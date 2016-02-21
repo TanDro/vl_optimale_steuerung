@@ -1,0 +1,683 @@
+\chapter{\NoCaseChange{\acl{MPR}}}
+\section{Einleitung}
+Die im \secref{sec:3_3_zeitkont_opt_endl} beschriebene Vorgehensweise zur Lösung eines Optimalsteuerproblems auf Basis der Dynamsichen Programmierung ist selbst für lineare
+Prozesse mit quadratischem Kostenfunktional mit einem hohen Aufwand verbunden, wenn Beschränkungen im Steuer- und Zustandsraum auftreten (was die Anwendung des \ac{LQR}-Entwurfs
+verhindert) und dabei der Zustands- und Steuerraum keine geringe Dimension aufweisen oder der Optimeirungshorizont nicht klein ist. Bei der numerischen Lösung stellt die
+Vorwärtsrechnung dann durch die Fallunterscheidungen hohe Anforderungen an die Rechenleistung und die erforderliche Speicherung der berechneten Zustandsrückführungen
+$u_{\kappa}^{\ast}$ wird bei einer ausreichend feinen Diskretisierung des Zustandsraumes im Allgemeinen einen hohen Speicherplatzbedarf verursachen. 
+
+Eine Alternative zu dieser Vorgehensweise ist die Berechnung der optimales Steuergrößen $u^{\ast}[0]$, $u^{\ast}[1]$, $\ldots$, $u^{\ast}[k-1]$ durch eine Lösung des
+Optimierungsproblems ? für den gegebenen Anfangszustand $x[0]$ durch numerische Optimierung in Echtzeit. Da hierbei zum Zeitpunkt $\kappa=0$ eine Steuerfolge $u[\kappa]$ für den
+gesamten Horizont $\kappa=0,1,\ldots,k-1$ berechnet wird, tritt anders als bei den Zustandsrückführungen $u_{\kappa}^{\ast}$ keine Rückkopplung des tatsächlich erreichten
+Prozesszustandes mehr auf. Praktisch wird dann, z.B. aufgrund von Modellunbestimmtheiten oder einwirkenden Störgrößen, eine Abweichung der erreichten Zustände von der bei der
+Optimeierung berechneten optimalen Zustandstrajektorie auftreten. Man wird deshalb die Lösung des Optimierungsproblems ? in jedem Zeitschritt mit dem aktiellen Prozesszustand als
+Anfangszustand wiederholen und somit eine Rückführung, also Regelung, erreichen. Dieser Lösungszugang ist unter der Bezeichnung \ac{MPR} bekannt und soll im Weiteren einführend für
+lineare Mehrgrößenprozesse mit Beschränkungen im Steuer- und Zustandsraum dargestellt werden.
+
+\section{Formulierung der Regelungsaufgabe}
+\subsection{Grundprinzip der prädiktiven Regelung und Begriffe}
+\label{subsec:grundprinzip_mpr}
+Gegeben sei der lineare zeitinvariante Prozess
+\begin{align}
+	\begin{split}\label{eqn:kap_4_zustandsraummodell}
+	x[\kappa+1] & = A x[\kappa] + B u[\kappa] \\
+	y[\kappa] & = Cx[\kappa]
+	\end{split}
+\end{align}
+in diskreter Zeit. Mit $\kappa=0,1,2,\ldots$ werden die diskreten Zeitpunkte bezeichnet und $k$ bezeichnet den \textit{aktuellen Zeitpunkt}. Die Steuergrößen $u[\kappa]$ seien für
+$\kappa < k$ und die Prozessausgänge $y[\kappa]$ für $\kappa \le k$ bekannt. Die Aufgabe besteht in der Bestimmung der aktuellen Steuergröße $u[\kappa]$. Dazu bezeichne
+\begin{align}
+	y_f[\kappa +i|k] & := CAîx[k]\qquad (i\ge 0)
+\end{align}
+die freie Bewegung des Prozessausganges ab dem Zeitpunkt $k$ und 
+\begin{align}
+	\hat{y}[k+1|k] & := CAîx[k]+C\sum\limits_{j=0}^{i-1}A^{i-j-1}B\hat{u}[k+j|k]\qquad (i=1,2,\ldots,H_p) \label{eqn:kap_4_praediktion}
+\end{align}
+die \textit{Prädiktion des Prozessausganges} über dem \textit{Prädiktionshorizont} der Länge $H_p$.
+\begin{exmp}[Prädiktionshorizont $H_p=2$]
+\begin{align*}
+	x[k+2] & = Ax[k+1]+Bu[k+1]\\
+	& = A^2x[k]+ABu[k]+Bu[k+1]\\
+	y[k+2] & = CA^2x[k]+\underbrace{C\left( ABu[k]+Bu[k+1] \right)}_{C\sum\limits_{j=0}^1A^{1-j}Bu[k+j]}
+\end{align*}
+\end{exmp}
+Weiter wird der \textit{Steuerhorizont} der Länge $H_u$ definiert, es gelte $H_p\ge H_u \ge 1$ und die Steuergröße verändere sich ab dem Zeitpunkt $k+H_u$ nicht mehr\footnote{Die
+Bedingung $H_p\ge H_u$ sichert, dass die Auswirkungen eines Steuereingriffs aud den Prozessausgang über einen ausreichend großen Horizont $H_o-H_u$ berücksichtigt werden. Praktisch
+gilt aus diesem Grund sogar oft $H_p \gg H_u$.}, d.h. es sei
+\begin{align}
+	\hat{u}[k+j|k] & = \hat{u}[k+H_u-1|k]\qquad (H_u\le j\le H_p-1).\label{eqn:kap_4_steuerhorizont}
+\end{align}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Grundprinzip der prädiktiven Regelung}
+	\label{fig:kap_4_grundprinzip_mpr}
+\end{figure}
+In \figref{fig:kap_4_grundprinzip_mpr} sind die bekannten Verläufe des Prozessausganges und der Steuergröße bis zum Zeitpunkt $k$ zu sehen. Wenn ab dem Zeitpunkt $k$ die Steuergrößen
+$\hat{u}[k+i-1|k]$ ($i=1,2,\ldots,H_p$) auf den Prozess gegeben würden, so würde sich unter der Annahme eines Haltegliedes 0. Ordnung für die Steuergrößen gemäß
+\eqnref{eqn:kap_4_praediktion} in den Abtastzeitpunkten der Prozessausgang $\hat{y}[k+i|k]$ ergeben. Durch ein numerisches Optimeirungsverfahren wird eine Steuerfolge so bestimmt, dass
+vorgegebene Forderungen erfüllt werden. Beispielhaft für solche Forderungen sind in \figref{fig:kap_4_grundprinzip_mpr} konstante Schranken $\underline{u}$ und $\overline{u}$ für die
+Steuergröße
+\begin{align}
+	\underline{u}&\le \hat{u}[k+i-1|k]\le \overline{u} \label{eqn:kap_4_ugnb_u}
+\end{align}
+und eine konstante obere Schranke $\overline{y}[k+i|k]$ und eine zeitabhängige untere Schranke $\underline{y}[k+i|k]$ für den Prozessausgang
+\begin{align}
+	\underline{y}[k+i|k]&\le \hat{y}[k+i|k]\le\overline{y}[k+i|k] \label{eqn:kap_4_ugnb_y}
+\end{align}
+darstellt. Darüber hinaus ist eine \textit{Solltrajektorie} $s[\kappa]$ für den Prozessausgang eingezeichnet. Aus dieser Solltrajektorie und dem Wert des Prozessausganges zum Zeitpunkt
+$k$ wird die \textit{Referenztrajektorie} $r[k+i|k]$ abgeleitet, z.B. mit einer gegeben Zeitkonstante $T_c>0$ in der Form
+\begin{align}
+	r[k+i|k] & := s[k+i]-(s[k]-y[k])e^{-iT_c},
+\end{align}
+und die Zielstellung verfolgt, den Abstand (mit einem noch zu definierendem Abstandsmaß) des Prozessausganges von der Referenztrajektorie zu minimieren\footnote{Der Prozessausgang wird
+nicht (direkt) der Sollwerttrajektorie, sondern der Referenztrajektorie nachgeführt. Die Referenztrajektorie gibt an, wie ein von der Sollwerttrajektorie abweichender Prozessausgang
+wieder zur Sollwerttrajektorie zurückkehren soll. Die Verwendung der Referenztrajektorie anstelle der Sollwerttrajektorie zur Vorgabe des Verlaufes des Prozessausganges hat im
+Wesentlichen eine praktische Motivation: Da die Regelabweichung $r[k+i|k]-\hat{y}[k+i|k]$ hinsichtlich des Betrages im Allgemeinen kleiner ist als $s[k+i]-\hat{y}[k+i|k]$ kann man
+erwarten, dass bei den in der Praxis stets vorliegenden nichtlinearen Prozessen ein um die Referenztrajektorie linearisiertes Prozessmodell eine genauere Prozessbeschreibung darstellt,
+als ein Modell, dass durch eine Linearisierung um die Sollwerttrajektorie gewonnen wird.}. Wenn eine optimale Steuerfolge $u^{\ast}[k+i-1|k]$ ($i=0,1,\ldots,H_u-1$) berechnet ist, so
+wird das erste Glied der optimalen Steuerfolge als Steuergröße im Schritt $k$ ausgegeben. Im Schritt $k+1$ wird dann die gesamte Prozedur wiederholt. Der Prädiktionshorizont, der wie
+aud der Steuerhorizont in seiner Länge unverändert bleibt, wird dabei mit dem aktuellen Zeitpunkt weiterverschoben. Man spricht von einem gleitenden Horizont. Insgesamt ergibt sich die
+folgende Vorgehensweise.\\
+\textbf{Prinzipieller Algorithmus der Modellprädiktiven Regelung}:
+\begin{enumerate}[label=(S\arabic*)]
+  \item Minimiere über alle Steuerfolgen $u[k+i|k]$ ($i=0,1,\ldots,H_u-1$) ein Maß für den Abstand zwischen $r[k+i|k]$ und $\hat{y}[k+i|k]$ ($i=1,2,\ldots,H_p$) unter den
+  Nebenbedingungen \eqnref{eqn:kap_4_ugnb_u} und \eqnref{eqn:kap_4_ugnb_y}.
+  \item Setze für die Steuergröße $u[k]:=u^{\ast}[k|k]$.
+  \item Warte einen Zeitschritt, setzte $k:=k+1$ und gehe zu (S1).
+\end{enumerate}
+Folgende Merkmale einer modellprädiktiven Regelung können hervorgehoben werden.
+\begin{itemize}
+  \item Vorhandensein eines expliziten Prozessmodells\\
+  		Das Prozessmodell dient im Rahmen der Lösung des Optimierungsproblems im Schritt (S1) zur Bestimmung des für eine vorgegebene Steuerfolge $u[k+i|k]$ ($i=0,1,\ldots,H_u-1$)
+  		resultierendes Prozessausganges. Das Prozessmodell muss nicht notwendig ein parametrisches Modell sein, sondern kann z.B. auch durch eine Sprungantwort beschrieben sein.
+  \item Optimierung in Echtzeit\\
+  		Die optimale Steuerfolge, von der jeweils nur das erste Glied als Steuergröße an den Prozess auch tatsächlich ausgegeben wird, wird in jedem diskreten Zeitschritt durch ein
+  		numerisches Optimeirungsverfahren in Echtzeit berechnet.
+  \item Gleitender Optimierungshorizont\\
+  		Im Gegensatz zur Vorgehensweise im Abschnitt ?, bei dem der aktuelle Zeitpunkt in jedem Schritt näher an den Endzeitpunkt heranrückt, gleiten hier der Steuer- und
+  		Prädiktionshorizont mit dem aktuellen Zeitpunkt weiter. 
+\end{itemize}
+
+\subsection{Prozessbeschreibung}
+Für die weiteren Darstellungen wird von den Steuergrößen $u[\kappa]$ zu den Steuergrößendifferenzen
+\begin{align}
+	\Delta u[\kappa] & := u[\kappa]-u[\kappa -1]
+\end{align}
+übergegangen, womit sich eine Regelkreisstruktur wie in \figref{fig:kap_4_steuergroessen_differenzen} ergibt\footnote{Dies hat in erster Linie prakische Gründe, denn da der
+\ac{MPR}-Regler nur Steuergrößendifferenzen ("`Steuergrößenkorrekturen"') erarbeitet, kann z.B. ein stoßfreies Umschalten zwischen verschiedenen Reglern problemlos realisiert werden und auch eine Regelung um einen Arbeitspunkt
+(wie z.B. bei der Regelung nichtlinearer Prozesse) ist einfacher realisierbar.}. Eine mögliche Zustandsraumdarstellung des \ac{MPR}-Prozesses kann aus \eqnref{eqn:kap_4_zustandsraummodell} mit
+\begin{align}
+	\xi[\kappa] & := \begin{bmatrix}
+	x[\kappa]\\ u[\kappa -1]
+	\end{bmatrix}
+\end{align}
+in der Form ("`erweitertes Modell"')
+\begin{align}
+\begin{split}\label{eqn:kap_4_erweitertes_modell}
+	\xi[\kappa+1] & = \begin{bmatrix}
+	A & B\\ 0 & I
+	\end{bmatrix}\xi[\kappa]+\begin{bmatrix}
+	B\\ I
+	\end{bmatrix}\\
+	y[\kappa] & = \begin{bmatrix}
+	C & 0
+	\end{bmatrix}\xi[\kappa]
+\end{split}
+\end{align}
+gewonnen werden.
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Übergang von den Steuergrößen zu den Steuergrößendifferenzen}
+	\label{fig:kap_4_steuergroessen_differenzen}
+\end{figure}
+Stellt man nun die Gleichung für die Prädiktion des Zustandsvektors auf
+\begin{align}
+	\hat{x}[k+i|i] & = Aîx[k]+\sum\limits_{j=0}^{i-1}A^{i-j-1}B\hat{u}[k+j|k]
+\end{align}
+und ersetzt die Steuergröße $\hat{u}[k+j|k]$ durch die Steuergrößendifferenz
+\begin{align}
+\begin{split}\label{eqn:kap_4_steuergroessendiff}
+	\Delta\hat{u}[k|k] & = \hat{u}[k|k]-u[k-1]\\
+	\Delta\hat{u}[k+i|k] & = \hat{u}[k+i|k]-\hat{u}[k+i-1|k]\quad\text{für }i=1,2,\ldots,H_u-1\\
+	\Delta\hat{u}[k+i|k] & = 0\quad\text{für }i=H_u-1,\ldots,H_p-1
+\end{split}
+\end{align}
+so erhält man aus \eqnref{eqn:kap_4_zustandsraummodell} die Darstellung des \ac{MPR}-Prozesses
+\begin{align*}
+\begin{bmatrix}
+\hat{x}[k+1|k]\\
+\vdots\\
+\hat{x}[k+H_u|k]\\
+\hat{x}[k+H_u+1|k]\\
+\vdots\\
+\hat{x}[k+H_p|k]
+\end{bmatrix} & = \underbrace{\begin{bmatrix}
+A\\ \vdots\\ A^{H_u}\\ A^{H_u+1}\\ \vdots\\ A^{H_p}
+\end{bmatrix}}_{\Psi}x[k]+\underbrace{\begin{bmatrix}
+B\\ \vdots \\ \sum_{i=0}^{H_u-1}A^iB\\ \sum_{i=0}^{H_u}A^iB\\ \vdots \\ \sum_{i=0}^{H_p-1}A^iB
+\end{bmatrix}}_{\Upsilon}u[k-1]\\
+&\quad +\underbrace{\begin{bmatrix}
+B 						&	\ldots 	& 	0\\
+\vdots					&	\ddots	& 	\vdots\\
+\sum_{i=0}^{H_u-1}A^iB	& \ldots	& 	B\\
+\sum_{i=0}^{H_u}A^iB	& \ldots	& 	AB+B\\
+\vdots					&			& 	\vdots\\
+\sum_{i=0}^{H_p-1}A^iB	& \ldots	& 	\sum_{i=0}^{H_p-H_u}A^iB
+\end{bmatrix}}_{\Theta} \underbrace{\begin{bmatrix}
+\Delta\hat{u}[k|k]\\
+\vdots\\
+\Delta\hat{u}[k+H_u-1|k]
+\end{bmatrix}}_{\Delta\mathcal{U}[k]},\\
+\begin{bmatrix}
+\hat{y}[k+1|k]\\ \vdots\\ \hat{y}[k+H_p|k]
+\end{bmatrix}[k]& = \begin{bmatrix}
+C	&			&	\\
+	& \ddots	&	\\
+	&			& C
+\end{bmatrix}\begin{bmatrix}
+\hat{x}[k+1|k]\\ \vdots\\ \hat{x}{k+H_p|k}
+\end{bmatrix},
+\end{align*}
+die man mit 
+\begin{align*}
+	\mathcal{Y}[k] & := \begin{bmatrix}
+	\hat{y}[k+1|k]\\
+	\vdots\\
+	\hat{y}[k+H_p|k]
+	\end{bmatrix},\ \Delta\mathcal{U}[k]:=\begin{bmatrix}
+	\Delta \hat{u}[k|k]\\
+	\vdots\\
+	\Delta\hat{u}[k+H_u-1|k]
+	\end{bmatrix}
+\end{align*}
+und entsprechender Defintion der Matrizen $\Upsilon$, $\Psi$ und $\Theta$ kürzer in der Form
+\begin{align}
+\mathcal{Y}[k] & = \underbrace{\Psi x[k]+\Upsilon u[k-1]}_{\text{freie Bewegung}}+\Theta\Delta\mathcal{U}[k] \label{eqn:kap_4_zustandsraummodell_steuerdiff}
+\end{align}
+schreiben kann.
+
+Mit der \eqnref{eqn:kap_4_zustandsraummodell_steuerdiff} ist bei gegebenen Werten $x[k]$ und $u[k-1]$ die Prädiktion des Prozessausganges als lineare Funktion der
+Steuergrößendifferenzen $\mathcal{U}[k]$ dargestellt. Im aktuellen Schritt $k$ ist die im vorhergehenden Schritt $k-1$ an den Prozess ausgegebene Steuergröße $u[k-1]$ bekannt. Der
+Zustand $x[k]$ wird im Weiteren ebendalls als bekannt vorausgesetzt. Sollte $x[k]$ nicht direkt messbar sein, so wird $x[k]$ in \eqnref{eqn:kap_4_zustandsraummodell_steuerdiff} durch
+einen Schätzwert $\hat{x}[k|k]$ eines Zustandsbeobachters ersetzt. Sollte im \ac{MPR}-Prozess \eqnref{eqn:kap_4_zustandsraummodell} darüber hinaus eine direkt gemessene Störgröße
+$d_m[k]$ oder eine durch einen erweiterten Beobachter ermittelte Störgröße mit dem Wert $\hat{d}[k|k]$ auftreten, so kommt auf der rechten Seite von
+\eqnref{eqn:kap_4_zustandsraummodell_steuerdiff} zusätzlich ein Summand
+\begin{align*}
+	\mathcal{D}_m\begin{bmatrix}
+	d_m[k]\\ \hat{d}_m[k+1|k]\\ \vdots \\ \hat{d}_m[k+H_p-1|k]
+	\end{bmatrix}\quad\text{bzw.}\quad \mathcal{D}\begin{bmatrix}
+	\hat{d}[k|k]\\ \hat{d}[k+1|k]\\ \vdots\\ \hat{d}[k+H_p-1|k]
+	\end{bmatrix}
+\end{align*}
+mit den Matrizen $\mathcal{D}$ und $\mathcal{D}_m$ hinzu. Dabei bezeichnen $\hat{d}_m[k+i|k]$ und $\hat{d}[k+i|k]$ die Prädiktion der direkt gemessen bzw. beobachteten Störgröße, die
+z.B. unter der Annahme konstanter Störgrößen gemäß $\hat{d}_m[k+i|k]:=d_m[k]$ bzw. $\hat{d}[k+i|k]:=\hat{d}[k|k]$ bestimmt werden ($i=1,\ldots,H_p-1$). Die Modellgleichung
+\eqnref{eqn:kap_4_zustandsraummodell_steuerdiff} bleibt in diesem Fall linear in den Steuergrößendifferenzen $\Delta\mathcal{U}[k]$, so dass auch bei auftretenden Störgrößen die im
+Weiteren beschriebene Vorgehensweise anwendbar ist.
+
+\subsection{Darstellung des Gütefunktionals und der Beschränkungen für die Steuer- und Regelgrößen}
+Die BEstimmung der Steuergrößen $\Delta\hat{u}[k+i|k]$ für den \ac{MPR}-Prozess ($i=0,1,\ldots,H_u-1$) erfolgt so, dass ein vorgegebenes Gütefunktional minimiert wird und dabei
+vorgegebene Schranken für die Steuergrößen und für die Regelgrößen eingehalten werden.
+
+Im Folgenden werden drei Klassen von Gütefunktionalen betrachtet, das quadratische Gütefunktional ($\|\cdot\|_2$-Funktional)
+\begin{align}
+V[k] & = \sum\limits_{i=1}^{H_p}\left\|Q_y[i]\left(\hat{y}[k+i|k]-r[k+i|k]\right)\right\|_2^2+\sum\limits_{i=0}^{H_u-1}\left\|Q_{\Delta u}[i]\Delta\hat{u}[k+i|k]\right\|_2^2
+\label{eqn:kap_4_quad_guetefunktional},
+\end{align}
+das 1-Norm-Gütefunktional ($\|\cdot\|$)
+\begin{align}
+V[k] & = \sum\limits_{i=1}^{H_p}\left\|Q_y[i]\left(\hat{y}[k+i|k]-r[k+i|k]\right)\right\|_1+\sum\limits_{i=0}^{H_u-1}\left\|Q_{\Delta
+u}[i]\Delta\hat{u}[k+i|k]\right\|_1,\label{eqn:kap_4_eins_norm_guetefunktional}
+\end{align}
+und das Maximum-Norm-Gütefunktional ($\|\cdot\|_{\infty}$-Funktional)
+\begin{align}
+	V[k] & = \max\limits_{i=1,\ldots,H_p}\left\|Q_{y}[i]\left(\hat{y}[k+i|k]-r[k+i|k] \right)\right\|_{\infty}\label{eqn:kap_4_max_norm_guetefunktional_1}
+\end{align}
+bzw.
+\begin{align}
+	V[k] & = \max\limits_{i=0,\ldots,H_u-1}\left\|Q_{\Delta u}[i]\Delta\hat{u}[k+i|k] \right\|_{\infty}.\label{eqn:kap_4_max_norm_guetefunktional_2}
+\end{align}
+Hierbei sind die Gewichtsmatrizen $Q_{y}[i]$ positiv semidefinit und $Q_{\Delta u}[i]$ positiv definit, oft werden sie sogar als Diagonalmatrizen gewählt. Quadratische Gütefunktionale
+sind bereits aus dem Abschnitt ? bekannt und haben wichtige Anwendungen bei statistische Aufgabenstellungen. Das 1-Norm-Gütefunktional tritt z.B. bei der Verbrauchsoptimierung auf,
+während Probleme, bei denen der ungünstigste Fall (Worst-Case) betrachtet wird, oft auf Maximum-Norm-Gütefunktional führen.
+\begin{exmp}\label{exmp:kap_4_bsp_siso_nb}
+Falls für den Prozess \eqnref{eqn:kap_4_zustandsraummodell} bzw. das quadratische Funktional \eqnref{eqn:kap_4_quad_guetefunktional} speziell die Bedingungen 
+\begin{align*}
+H_u & = H_p,\quad C=I,\quad r[k+i|k]=0,\quad Q_y[i]=Q_y,\quad Q_{\Delta u}[i]=Q_{\Delta u}\ \forall i
+\end{align*}
+erfüllt sind, so kann \eqnref{eqn:kap_4_quad_guetefunktional} mit $\bar{Q}_x:=Q_y^TQ_y$ und $\bar{Q}_{\Delta u}:=Q^T_{\Delta u}Q_{\Delta u}$ in der Form
+\begin{align}
+\begin{split}\label{eqn:kap_4_bsp_1_kostenfunktionial}
+V[k] & = \sum\limits_{i=1}^{H_p-1}\hat{x}[k+i|k]^T\bar{Q}_{x}\hat{x}[k+i|k]+\sum\limits_{i=0}^{H_p-1}\Delta\hat{u}[k+i|k]^T\bar{Q}_{\Delta u}\Delta\hat{u}[k+i|k]\\
+& \quad +\hat{x}[k+H_p|k]^T\bar{Q}_{x}\hat{x}[k+H_p|k]
+\end{split}
+\end{align}
+geschrieben werden. Abgesehen von dem Term $\hat{x}[k|k]^T\bar{Q}_{x}\hat{x}[k|k]$, der aber durch die Wahl der $\Delta\hat{u}[k+i|k]$ ($i=0,\ldots,H_p-1$) nicht beeinflusst wird, ist
+das Gütefunktional \eqnref{eqn:kap_4_bsp_1_kostenfunktionial} gleich dem aus dem Abschnitt ? bekannten \ac{LQR}-Funktional (angewendet auf den \ac{MPR}-Prozess).
+\end{exmp}
+Die Beschränkungen der Regelgröße, der Steuergrößendifferenzen und der Steuergrößen werden nachfolgend durch lineare Nebenbedingungen in der Form
+\begin{align}
+M[k]\begin{bmatrix}
+\mathcal{Z}[k]\\ \Delta\mathcal{U}[k]\\ \mathcal{U}[k]\\ 1
+\end{bmatrix} & \le 0\label{eqn:kap_4_lin_nebenbedingungen}
+\end{align}
+dargestellt.
+\begin{exmp}
+Gegeben seien ein \ac{SISO}-Prozess, das Gütefunktional
+\begin{align*}
+	V[k] & = \max\limits_{i=0,\ldots,H_u-1}\left|\Delta\hat{u}[k+i|k] \right|
+\end{align*}
+und die Nebenbedingungen
+\begin{align}
+\begin{split}\label{ref:eqn:kap_4_bsp_1_nebenbedingungen}
+	\left|\hat{y}[k+i|k]-r[k+H_p|k] \right| & \le \frac{1}{i+1}\left| y[k] - r[k+H_p|k] \right|\quad (i=1,\ldots,H_p)\\
+	\hat{y}[k+H_p|k] & = r[k+H_p|k].
+\end{split}
+\end{align}
+Durch das Gütefunktional wird das Maximum der Steuergrößenänderung minimiert. Diese Aufgabenstellung kann für ein mechanisches System dessen Steuergrößen Kräfte oder Momente sind, als
+eine Minimierung der sogenannten maximalen Rucks (das ist die Ableitung der Kraft bzw. des Momentes) interpretiert werden.
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Veranschaulichung der Nebenbedingungen zum \exmpref{exmp:kap_4_bsp_siso_nb}}
+	\label{fig:kap_4_bsp_nebenbedingungen}
+\end{figure}
+Die Nebenbedingungen der Aufgabe sind Forderungen an den Verlauf der Regelgröße. Wie in der \figref{fig:kap_4_bsp_nebenbedingungen} veranschaulicht, wird eine fortschreitende Annäherung
+an den Wert $r[k+H_p|k]$ der Referenztrajektorie am Ende des Prädiktionshorizontes erzwungen sowie für den Zeitpunkt $k+H_p$ ein exaktes Erreichen dieses Wertes verlangt. Die
+eingezeichnete Trajektorie $z^{(1)}[k+i|k]$ ist ein Beispiel für einen diesbezüglich zulässigen Verlauf. Stellt man zusätzlich die Monotonieforderung
+\begin{align}
+	\hat{y}[k+i+1|k] & \ge \hat{y}[k+i|k],
+\end{align}
+so darf die Regelgröße den Wert $r[k+H_p|k]$ nicht überschreiten. Der Verlauf $z^{(2)}[k+i|k]$ ist dann in diesem Sinne zulässig.
+\end{exmp}
+Es ist eine Übung unter \picref{cha:anhang_uebungen}{Übungen} zu finden.
+
+\section{Darstellung der Steuerungsaufgabe als Optimierungsproblem und numerische Lösung}
+\subsection{Aufgabe mit $\|\cdot\|_2$-Funktionial ohne Beschränukung der Steuer- und Regelgröße}
+\label{subsec:aufgabe_quad_ohne_beschr}
+Betrachtet werden Aufgaben, bei denen das Funktional \eqnref{eqn:kap_4_quad_guetefunktional} zu minimieren ist und als Nebenbedingung allein die Prozessgleichung
+\eqnref{eqn:kap_4_zustandsraummodell_steuerdiff} auftritt.
+Mit den Abkürzungen
+\begin{align*}
+	\mathcal{Q}_{y}[k] & :=\begin{bmatrix}
+	Q_{y}[1]	& 			& 	\\
+				& \ddots	&	\\
+				&			& Q_{y}[H_p]
+	\end{bmatrix},\ \mathcal{Q}_{\Delta\mathcal{U}}[k]:= \begin{bmatrix}
+	Q_{\Delta\mathcal{U}}[0]	&			&	\\
+								& \ddots	& 	\\
+								&			& Q_{\Delta\mathcal{U}}[H_u-1]
+	\end{bmatrix}
+\end{align*}
+und
+\begin{align*}
+	\mathcal{T}[k] & := \begin{bmatrix}
+	r[k+1|k]\\
+	\vdots\\
+	r[k+H_p|k]
+	\end{bmatrix}
+\end{align*}
+gilt
+\begin{align}
+	V(k) & = \left\| \mathcal{Q}_{y}\left(\mathcal{Z}[k]-\mathcal{T}[k]\right) \right\|_2^2 + \left\| \mathcal{Q}_{\Delta\mathcal{U}}\Delta\mathcal{U}[k] \right\|_2^2
+\end{align}
+Mit $\mathcal{E}[k]:=\mathcal{T}[k]-\Psi x[k]-\Upsilon u[k-1]$ wird die Differenz zwischen der Referenztrajektorie $\mathcal{T}[k]$ und der freien Bewegung $\Psi x[k]+\Upsilon u[k-1]$
+des \ac{MPR}-Prozesses (nicht des Prozesses!) bezeichnet. Somit gilt
+\begin{align}
+\begin{split}\label{eqn:kap_4_quad_kostenfunktional_ohne_beschr}
+	V[k] & = \left\| \mathcal{Q}_{y}\left(\Theta\Delta\mathcal{U}[k]-\mathcal{E}[k]\right) \right\|_2^2 + \left\| \mathcal{Q}_{\Delta\mathcal{U}}\Delta\mathcal{U}[k] \right\|_2^2\\
+	& = \left\| \begin{bmatrix} \mathcal{Q}_y\left(\Theta\Delta\mathcal{U}[k] - \mathcal{E}[k]\right)\\ \mathcal{Q}_{\Delta\mathcal{U}\Delta\mathcal{U}[k]} \end{bmatrix}
+	\right\|_2^2
+\end{split}
+\end{align}
+und man erhält die Lösung $\Delta\mathcal{U}^{\ast}[k]$ der unbeschränkten Optimierungsaufgabe
+\begin{align}
+	\min\limits_{\Delta\mathcal{U}[k]}V[k]
+\end{align}
+als Quadratmittellösung eines überbestimmten linearen Gleichungssystems
+\begin{align}
+	\begin{bmatrix}
+	\mathcal{Q}_y\Theta\\ \mathcal{Q}_{\Delta\mathcal{U}}
+	\end{bmatrix}\Delta\mathcal{U}[k] & \cong \begin{bmatrix}
+	\mathcal{Q}_y\mathcal{E}[k]\\ 0
+	\end{bmatrix}. \label{eqn:kap_4_quadratmittelproblem}
+\end{align}
+Da $\mathcal{Q}_{\Delta\mathcal{U}}$ positiv definit ist, ist die Lösung eindeutig.
+\begin{remark}
+Die Matrix $A\in\mathbb{R}^{m\times n}$ ($m\ge n$) habe vollen Spaltenrang und es sei $b\in\mathbb{R}^m$. Dann ist im generischen Dall die Lösungsmenge des Gleichungssystems $A x= b$
+leer. Die Aufgabe der Bestimmung der Quadratmittellösung, i.Z.
+\begin{align}
+	A x & \cong b\quad \text{bzw.}\quad \left\| A x -b \right\|_2\rightarrow \min,
+\end{align}
+hat dann die eindeutige Lösung $x^{\ast}=A^+b$. Die Matrix $A^+:=\left(A^TA\right)^{-1}A^T$ heisst \textit{Pseudoinverse} zu $A$ und die Matrix $P:=A A^+$ heißt Projektor auf das Bild
+$\im A:=\left\{ A x : x\in\mathbb{R}^n \right\}$ von $A$. Die Berechnung von $x^{\ast}$ kann z.B. mit der Singulärwertzerlegung oder der QR-Zerlegung von $A$ erfolgen. In \textsc{Matlab}
+verwendet man zur Bestimmung der Quadratmittellösung $x^{\ast}$ den Backslash-Operator: $x^{\ast}=A\backslash b$.
+\end{remark} 
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Interpretation der Quadratmittellösung $A x\cong b$}
+	\label{fig:kap_4_interp_quadratmittelloesung}
+\end{figure}
+\begin{remark}[Struktur des \ac{MPR}-Reglers]
+Seien $A\in\mathbb{R}^{m\times n}, B=\begin{bmatrix} b_1 & \ldots & b_p \end{bmatrix}\in\mathbb{R}^{m\times p},\alpha_i\in\mathbb{R} (i=1,\ldots,p)$. Weiter sei $x$ Lösung von
+\begin{align*}
+	A x & \cong B\begin{bmatrix}
+	\alpha_1\\ \vdots\\ \alpha_p
+	\end{bmatrix}.
+\end{align*}
+Dann gilt
+\begin{align}
+	x & = A\backslash(B\begin{bmatrix}
+	\alpha_1 \\ \vdots\\ \alpha_p
+	\end{bmatrix})= \begin{bmatrix}
+	A\backslash b_1 & \ldots & A\backslash b_p
+	\end{bmatrix}\begin{bmatrix}
+	\alpha_1 \\ \vdots\\ \alpha_p
+	\end{bmatrix}.\label{eqn:kap_4_berechnung_x}
+\end{align}
+Aus \eqnref{eqn:kap_4_quadratmittelproblem} folgt damit
+\begin{align*}
+	\Delta\mathcal{U}^{\ast}[k] & = \begin{bmatrix}
+	\Delta u^{\ast}[k|k]\\ \vdots\\ \Delta u^{\ast}[k+H_u-1|k]
+	\end{bmatrix}=\bar{K}\mathcal{E}[k]\quad\text{mit }\bar{K}:=\begin{bmatrix}
+	\mathcal{Q}_y\Theta\\ \mathcal{Q}_{\Delta\mathcal{U}}
+	\end{bmatrix}\backslash\begin{bmatrix}
+	\mathcal{Q}_y\\ 0
+	\end{bmatrix}.
+\end{align*}
+Sei $K:=\bar{K}(1:n_{\mathcal{U}},:)$, wobei $n_{\mathcal{U}}$ die Länge des Vektors $u[k]$ ist. Gemäß dem Schritt (S2) des Algorithmus der modellprädiktiven Regelung aus
+\secref{subsec:grundprinzip_mpr} ist die im Schritt $k$ ausgegebene Steuergröße gleich
+\begin{align*}
+	\Delta u[k] & = \Delta u^{\ast}[k|k] = K\mathcal{E}[k]=K\left(\mathcal{T}[k]-\Psi x[k]-\Upsilon u[k-1]\right).
+\end{align*}
+Die Multiplikation der Signale $\mathcal{T}[k]$, $x[k]$ und $u[k-1]$ mit zeitunabhängigen Matrizen zur Ermittlung der optimalen Steuergröße $u^{\ast}[k]$ stellt ein lineares und
+zeitinvariantes Regelgesetz dar. Die Struktur des realisierten Reglers ist in der \figref{fig:kap_4_interp_quadratmittelloesung} dargestellt. Man stellt fest, dass durch die geschickte
+Nutzung der Gleichung \eqnref{eqn:kap_4_berechnung_x} zur Berechnung der optimalen Steuergröße im jeweils aktuellen Schritt keine Online-Optimierung mehr erforderlich ist.
+\end{remark}
+
+\subsection{Aufgabe mit $\|\cdot\|_2$-Funktionial und Beschränkung}
+\label{subsec:aufgabe_quad_mit_beschr}
+Die in \secref{subsec:aufgabe_quad_ohne_beschr} betrachtete Aufgabe wird nun auf den Fall beschränkter Steuer- und Regelgrößen erweitert. Die Aufgabe besteht nun in der
+Minimierung von 
+\begin{align}
+V[k] & = \left\| \begin{bmatrix}
+	\mathcal{Q}_y \left(\Theta\Delta\mathcal{U}[k]-\mathcal{E}[k] \right)\\
+	\mathcal{U}_{\Delta\mathcal{Q}}\Delta\mathcal{U}[k]
+\end{bmatrix} \right\|_2^2
+\end{align}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Struktur den \ac{MPR}-Reglers zur Minimierung von \eqnref{eqn:kap_4_quad_guetefunktional} bei unbeschränkten Steuer- und Regelgrößen}
+	\label{fig:kap_4_grundprinzip_mpr}
+\end{figure}
+unter der Nebenbedingung \eqnref{eqn:kap_4_lin_nebenbedingungen}, d.h.
+\begin{align}
+	M[k]\begin{bmatrix}
+	\mathcal{Z}\\ \Delta\mathcal{U}[k]\\ \mathcal{U}[k]\\ 1
+	\end{bmatrix}\le 0. \label{eqn:kap_4_nebenbedinungen_beschr}
+\end{align}
+Mit $\mathcal{Z}[k]=\Psi x[k]+\Upsilon u[k-1]+\Theta\Delta\mathcal{U}[k]$ und
+\begin{align*}
+\mathcal{U}[k] & = \begin{bmatrix}
+I & \ldots & 0\\
+\vdots & \ddots & \cdots\\
+I & \ldots & I
+\end{bmatrix}\Delta\mathcal{U}[k]+\begin{bmatrix}
+u[k-1]\\ \vdots\\ u[k-1]
+\end{bmatrix}
+\end{align*}
+kann man \eqnref{eqn:kap_4_nebenbedinungen_beschr} in die Form
+\begin{align}
+	\Xi\Delta\mathcal{U}[k] & \le \xi\label{eqn:kap_4_lin_nebenbedinung_form}
+\end{align}
+mit einer Matrix $\Xi=\Xi[k]$ und einem Vektor $\xi = \xi[k]$ überführen. Weiter gilt füt die Zielfunktion
+\begin{align*}
+	V[k] & = \left( \Theta\Delta\mathcal{U}[k]-\mathcal{E}[k] \right)^T\mathcal{Q}_y^T\mathcal{Q}_y\left( \Theta\Delta\mathcal{U}[k]-\mathcal{E}[k]
+	\right)+\Delta\mathcal{U}[k]^T\mathcal{Q}^T_{\Delta\mathcal{U}}\mathcal{Q}_{\Delta\mathcal{U}}\Delta\mathcal{U}[k]\\
+	& = \Delta\mathcal{U}[k]^T H \Delta\mathcal{U}[k]-\Delta\mathcal{U}[k]^TG+F
+\end{align*}
+mit $H:=\Theta^T\mathcal{Q}_y^T\mathcal{Q}_y\Theta+\mathcal{Q}^T_{\Delta\mathcal{U}}\mathcal{Q}_{\Delta\mathcal{U}}$, $G:=2\Theta^T\mathcal{Q}_y^T\mathcal{Q}_y\mathcal{E}[k]$ und
+$F:=\mathcal{E}[k]^T\mathcal{Q}_y^T\mathcal{Q}_y\mathcal{E}[k]$. Also ist $V[k]$ eine quadratische Zielfunktion und mit der linearen Nebenbedingung
+\eqnref{eqn:kap_4_lin_nebenbedinung_form} ist
+\begin{align}
+	\min\limits_{\Delta\mathcal{U}[k]}V[k] & \text{ bei } \Xi\Delta\mathcal{U}[k]\le \xi\label{eqn:kap_4_quad_opt_aufgabe_lin_nebenbedingungen}
+\end{align}
+eine Aufgabe der Quadratischen Optimierung. Die Lösung kann im Allgemeinen nur durch numeirsche Verfahren bestimmt werden. Der zulässige Bereich der Aufgabe ist aufgrund der
+ausschließlich linearen Nebenbedingungen konvex und es gibt weiter
+\begin{align*}
+\frac{\d^2 V[k]}{\d\Delta\mathcal{U}[k]^2} & = 2 H \ge 0.
+\end{align*}
+Damit ist \eqnref{eqn:kap_4_quad_opt_aufgabe_lin_nebenbedingungen} ein konvexes Optimeirungsproblem, d.h. falls eine Lösung dieser Aufgabe exisitert, ist jede lokale Minimalstelle auch
+stets eine globale Minimalstelle. Darüber hinaus ist aufgrund von $\mathcal{Q}_{\Delta\mathcal{U}}>0$ sogar $H>0$ erfüllt und daher ist die Zielfunktion $V[k]$ streng konvex, d.h. im
+Falle der Existenz ist die Lösung von \eqnref{eqn:kap_4_quad_opt_aufgabe_lin_nebenbedingungen} dann sogar eindeutig. Unter diesen Umständen kann die Lösung $\Delta\mathcal{U}^{\ast}[k]$
+der Aufgabe \eqnref{eqn:kap_4_quad_opt_aufgabe_lin_nebenbedingungen} numerisch effizient mit Algorithmen der Quadratischen Optimierung bestimmt werden\footnote{In \textsc{Matlab} ist zur Lösung
+der Aufgabe der Quadratischen Programmierung die Routine \lstinline[columns=fixed]{quadprog} implementiert, die speziell für den durch Ungleichungsbeschränkungen gekennzeichneten
+Problemtyp \eqnref{eqn:kap_4_quad_opt_aufgabe_lin_nebenbedingungen} einer Aktiven-Mengen-Strategie nach \cite{Gill1981} verwendet. Der Aufruf erfolgt mit
+$\Delta\mathcal{U}[k]=\text{\lstinline[columns=fixed]{quadprog}}(2H,G,\Xi,\xi)$}.
+
+\subsection{Aufgabe mit $\|\cdot\|_1$- und $\|\cdot\|_{\infty}$-Funktionial}
+Bei Aufgaben mit dem Funktional \eqnref{eqn:kap_4_eins_norm_guetefunktional} oder \eqnref{eqn:kap_4_max_norm_guetefunktional_1} bzw. \eqnref{eqn:kap_4_max_norm_guetefunktional_2} muss
+man nicht zwischen dem Fall unbeschränkter Steuer- und Regelgrößen und dem Fall beschränkter Steuer- und Regelgrößen unterscheiden, da sich in jedem Fall ein Optimierungsproblem mit
+Beschränkungen ergibt. Formt man die Zielfunktion $V[k]$ analog dem \secref{subsec:aufgabe_quad_mit_beschr} um, so erhält man für das Gütefunktional
+\eqnref{eqn:kap_4_eins_norm_guetefunktional}
+\begin{align}
+V[k] & = \left\| \begin{bmatrix}
+\mathcal{Q}_y\left( \Theta\Delta\mathcal{U}[k]-\mathcal{E}[k] \right)\\ \mathcal{Q}_{\Delta\mathcal{U}}\Delta\mathcal{U}[k]
+\end{bmatrix} \right\|_1 = \left\| \begin{bmatrix}
+\mathcal{Q}_y\Theta\\ \mathcal{Q}_{\Delta\mathcal{U}}
+\end{bmatrix}\Delta\mathcal{U}[k]-\begin{bmatrix}
+\mathcal{Q}_y\mathcal{E}[k]\\ 0
+\end{bmatrix} \right\|_1
+\end{align}
+und für die Gütefunktionale \eqnref{eqn:kap_4_max_norm_guetefunktional_1} und \eqnref{eqn:kap_4_max_norm_guetefunktional_2} erhält man
+\begin{align}
+	V[k] & = \left\| \mathcal{Q}_y\Theta\Delta\mathcal{U}[k]-\mathcal{Q}_y\mathcal{E}[k] \right\|_{\infty}
+\end{align}
+bzw.
+\begin{align}
+	V[k] & = \left\| \mathcal{Q}_{\Delta\mathcal{U}}\Delta\mathcal{U}[k] \right\|_{\infty}
+\end{align}
+Die Minimierung von $V[k]$ unter der Nebenbedingung \eqnref{eqn:kap_4_lin_nebenbedinung_form} kann dann als Aufgabe der Linearen Optimierung dargestellt werden\footnote{Die numerische
+Lösung von Aufgaben der Linearen Optimierung kann wie für Aufgaben der Quadratischen Optimierung durch eine Aktive-Mengen-Strategie erfolgen. In \textsc{Matlab} erfolgt die Lösung
+von $\min\limits_{x\in\mathbb{R}^n}c^Tx$ bei $Ax\le b$ durch $x=\text{\lstinline[columns=fixed]{linprog}}(c,A,b)$}, denn mit Matrizen $F$ und $C$ sowie Vektoren $f$ und $d$ passender
+Dimension kann die Aufgabe
+\begin{align*}
+	\min\limits_{x\in\mathbb{R}^n}\left\| F x-f \right\|_1
+\end{align*}
+durch
+\begin{align*}
+	\min\limits_{\substack{\mu\in\mathbb{R}^1\\\eta\in\mathbb{R}^m\\x\in\mathbb{R}^n }}\mu & \text{ bei } \mu\ge 0,\ \unity^T\eta\le \mu,\ -\eta\le Fx-f\le\eta,\ Cx\le d
+\end{align*}
+und die Aufgabe 
+\begin{align*}
+	\min\limits_{x\in\mathbb{R}^n}\left\| F x-f \right\|_{\infty}
+\end{align*}
+durch
+\begin{align*}
+	\min\limits_{\substack{\delta\in\mathbb{R}^1\\x\in\mathbb{R}^n }}\delta & \text{ bei } \delta\ge 0,\ -\unity^T\delta\le Fx-f\le\unity\delta,\ Cx\le d
+\end{align*}
+gelöst werden (Beweis Übungsaufgabe!). Hierbei ist $\unity:=\begin{bmatrix}1 & \ldots & 1 \end{bmatrix}^T$.
+
+\section{Stabilität prädiktiver Regelungen}
+\subsection{Problembeschreibung}
+\label{subsec:kap_4_problembeschreibung}
+Der in \secref{subsec:grundprinzip_mpr} beschriebene prinzipielle Algorithmus der modellprädiktiven Regelung stellt eine rückführung dar, womit potenziell die Gefahr der Instabilität
+des entstehenden Regelkreises besteht. Zur Erläuterung wird als eine einfache Form des quadratischen Gütefunktionals das Funktional
+\begin{align}
+	V[k] & = \sum\limits_{i=1}^{H_p}\left\| \hat{x}[k+i|k] \right\|_2^2
+\end{align}
+betrachtet, wobei für die Länge des Steuer- und des Prädiktionshorizonts $H_u=H_p$ gelten soll. Beschränkungen hinsichtlich der Steuer- und Zustandsgröße sollen nicht vorliegen. Im
+Zeitpunkt $k$ wird die optimale Steuerfolge $(\Delta u^{\ast}[k+i|k])_{i=0,\ldots,H_p-1}$ berechnet, die dann die optimale Zustandstrajektorie $(x^{\ast}[k+i|k])_{i=1,\ldots,H_p}$
+liefert. Gemäß dem Algorithmus der modellprädiktiven Regelung wird dann $\Delta u[k]:=\Delta u^{\ast}[k|k]$ gesetzt und mit dieser Steuergröße ergibt sich (unter der Annahme das keine
+Störgrößen oder Modellunbestimmtheiten auftreten) der Folgezustand $x[k+1]=x^{\ast}[k+1|k]$. Würde man dann im Zeitpunkt $k+1$ das Gütefunktional
+\begin{align}
+	\tilde{V}[k] & = \sum\limits_{i=1}^{H_p-1}\left\| \hat{x}[k+1+i|k+1] \right\|_2^2
+\end{align}
+minimieren, so würde nach dem \textsc{Bellman}schen Optimalitätsprinzip für die optimale Zustandstrajektorie $\tilde{x}^{\ast}[k+1+i|k+1]=x^{\ast}[k+1+i|k]$ ($i=1,\ldots,H_p-1$) gelten.
+Jedoch löst man im Zeitpunkt $k+1$ die Aufgabe mit dem Gütefunktional
+\begin{align}
+	V[k+1] & = \sum\limits_{i=1}^{H_p}\left\| \hat{x}[k+1+i|k+1] \right\|_2^2
+\end{align}
+und bestimmt damit den im Allgemeinen von $\tilde{x}^{\ast}[k+1+i|k+1]$ abweichenden Verlauf $x^{\ast}[k+1+i|k+1]$. Weiter gilt dann $x[k+2]=x^{\ast}[k+2|k+1]$. Setzt man diese
+Überlegung fort, so erhält man eine Trajektorie $x[k+i]$ ($i=1,\ldots,H_p$) des Zustandes im \ac{MPR}-Regelkreis, die im Normalfall von der zum Zeitpunkt $k$ bestimmten optimalen
+Prädiktion $x^{\ast}[k+i|k]$ abweichen wird (siehe \figref{fig:kap_4_abweichung_opt_tatsaechlich_verlauf}).
+
+Hätte der Prädiktionshorizont eine unendliche Länge, so würde der tatsächliche Verlauf der Zustandstrajektorie $x[k+i]$ mit dem Verlauf der optimalen Prädiktion $x^{\ast}[k+i|k]$
+übereinstimmen (falls keine Störgrößen wirken und keine Modellunbestimmtheiten auftreten). Bei einer endlichen Länge werden $x[k+i]$ und $x^{\ast}[k+i|k]$ jedoch im Allgemeinen
+voneinander verschieden sein, so dass sich dann nicht nur die Güte des Regelkreises (gegenüber der aufgrund der Vorhersage $x^{\ast}[k+i|k]$ über dem Prädiktionshorizont erwarteten
+Güte) verschlechtern wird, sondern sogar ein instabiler Regelkreis resultieren kann.
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Zur Abweichung zwischen der optimalen Trajektorie $x^{\ast}[k+i|k]$ und dem tatsächlichen Verlauf $x[k+i]$ ($i=1,\ldots,H_p$)}
+	\label{fig:kap_4_abweichung_opt_tatsaechlich_verlauf}
+\end{figure}
+\begin{exmp}
+Gegeben seien ein stabiler Prozess
+\begin{align*}
+	x[k+1] & = \begin{bmatrix}
+	0 & 0\\ 1 & 0
+	\end{bmatrix}x[k]+\begin{bmatrix}
+	1\\ 0
+	\end{bmatrix}u[k]
+\end{align*}
+und das quadratische Gütefunktional
+\begin{align*}
+	V[k] & = \hat{x}[k+1|k]^T\begin{bmatrix}
+	1 & 2\\ 2& 6
+	\end{bmatrix}\hat{x}[k+1|k].
+\end{align*}
+Beschränkungen seien nicht vorhanden. Mit den Prozessgleichungen $\hat{x}_1[k+1|k]=\hat{u}[k|k]$ und $\hat{x}_2[k+1|k]=x_1[k|k]=x_1[k]$ erhält man
+\begin{align*}
+	V[k] & = \hat{x}_1[k+1|k]^2+6\hat{x}_2[k+1|k]^2+4\hat{x}_1[k+1|k]\hat{x}_2[k+1|k]\\
+		 & = \hat{u}[k|k]^2+6x_1[k]^2+4\hat{u}[k|k]x_1[k]
+\end{align*}
+und weiter
+\begin{align*}
+\frac{\d V[k]}{\d\hat{u}[k|k]} & = 2\hat{u}[k|k]+4 x_1[k]=0\quad \Leftrightarrow\quad \underbrace{\hat{u}[k|k]}_{=:u^{\ast}[k]}=-2x_1[k].
+\end{align*}
+Der mit diesem (optimalen) Regelgesetz geschlossene Regelkreis wird durch die Differenzengleichung $x[k+1]=\begin{bmatrix}-2 & 0\\ 1 & 0 \end{bmatrix}x[k]$ beschrieben und ist
+offensichtlich instabil.
+\end{exmp}
+
+\subsection{Stabilität des geschlossenen Kreises bei endlichem Optimierungshorizont durch eine Endbedingung für den Prozesszustand}
+\label{subsec:kap_4_stab_geschl_rk}
+Der folgende Satz liefert eine erste Aussage über die Stabilität einer modellprädiktiven Regelung.
+\begin{satz}\label{satz:kap_4_stabilitaet}
+Gegeben seien der Prozess $x[\kappa +1]=f(x[\kappa],u[\kappa])$ mit stetigem $f$ und einem stationären Punkt für $(x[\kappa],u[\kappa])=(0,0)$. Das Gütefunktional sei
+\begin{align*}
+	V[k] & = \sum\limits_{i=1}^{H_p}l\left( \hat{x}[k+i|k],\hat{u}[k+i-1|k] \right)
+\end{align*}
+mit stetigem $l,l(x,u)\ge 0$ und $l(x,u)=0$ genau dann, wenn $(x,u)=(0,0)$. Als Endbedingung sei $\hat{x}[k+H_p|k]=0$ gegeben und die Beschränkungen seien $\hat{u}[k+i|k]\in U$ und
+$\hat{x}[k+i|k]\in X$ für gegebene Mengen $U$ und $X$. Für jedes $k$ existiert eine optimale Stellfolge $\left(u^{\ast}[k+1|k]\right)_{i=0,1,\ldots,H_p-1}$ und es sei $u^{\ast}[k|k]$
+die im Schritt $k$ auf den Prozess aufgeschaltete Steuergröße.
+
+Dann ist $(x,u)=(0,0)$ eine asymptotische stabile Gleichgewichtslage des geschlossenen Kreises.
+\end{satz}
+\begin{proof}
+O.B.d.A. sei $f(x[k],0)\neq 0$ für $x[k]\neq 0$. Die Funktion
+\begin{align*}
+	\left( x[k],\hat{u}[k|k],\ldots,\hat{u}[k+H_p-1|k] \right) \mapsto V[k]
+\end{align*}
+ist stetig und damit ist der Minimalwert
+\begin{align*}
+	\mathcal{V}(x[k]) & := \min\limits_{\hat{u}[k|k],\ldots,\hat{u}[k+H_p-1|k]}V[k]
+\end{align*}
+stetig in $x[k]$. Wir zeigen jetzt, das $\mathcal{V}$ eine strikte Ljapunov-Funktion für $x[k+1]=f(x[k],u^{\ast}[k|k])$ ist.
+\begin{enumerate}
+  \item "`$\mathcal{V}$ ist positiv definit"':
+  \begin{itemize}
+    \item Aus $l\ge 0$ folgt die Ungleichung $\mathcal{V}(x)\ge 0$.
+    \item Sei $x[k]=0$. Setze $u^{\ast}[k|k]:=0$, dann folgt $x^{\ast}[k+1|k]=0$, setze $u^{\ast}[k+1|k]:=0$, dann ist $x^{\ast}[k+2|k]=0$ usw. Somit gilt $\mathcal{V}(x[k])=0$.\\
+    Umgekehrt sei $\mathcal{V}(x[k])=0$. Wegen $f(x[k],0)\neq 0$, $l\ge 0$ und $l=0 \Leftrightarrow (x,u)=(0,0)$ ist dann $x[k]=0$.\\
+    Also gilt $\mathcal{V}(x)\Leftrightarrow x=0$.
+  \end{itemize}
+  \item "`$\mathcal{V}(x[k+1])<\mathcal{V}(x[k])$ für $x[k]\neq 0$"':
+  \begin{align*}
+  	\mathcal{V}(x[k+1]) & = \min\limits_{\hat{u}[k+1|k],\ldots,\hat{u}[k+H_p|k]}\sum\limits_{i=1}^{H_p}l\left( \hat{x}[k+i+1|k],\hat{u}[k+i|k] \right)\\
+  	& = \min\limits_{\ldots}\left\{ \sum\limits_{i=1}^{H_p}l\left( \hat{x}[k+i|k],\hat{u}[k+i-1|k] \right) - l\left( \hat{x}[k+1|k],\hat{u}[k|k] \right) + \right. \\
+  	& \qquad \qquad \qquad \left.\vphantom{\sum\limits_{i=1}^{H_p}} l\left( \hat{x}[k+H_p+1|k],\hat{u}[k+H_p|k] \right) \right\}\\
+  	& \le \min\limits_{\hat{u}[k+1|k],\ldots,\hat{u}[k+H_p-1|k]}\left\{ \sum\limits_{i=1}^{H_p}l\left( \hat{x}[k+i|k],\hat{u}[k+i-1|k] \right) - \right.\\
+  	& \qquad \qquad \qquad\qquad \qquad\qquad\quad \left.\vphantom{\sum\limits_{i=1}^{H_p}} l\left( \hat{x}[k+1|k],\hat{u}[k|k] \right) \right\}+\\
+  	& \qquad \qquad \min\limits_{\hat{u}[k+H_p|k]}\sum\limits_{i=1}^{H_p}l\left( \hat{x}[k+H_p+1|k],\hat{u}[k+H_p|k] \right)\\
+  	& = \underbrace{ \min\limits_{\hat{u}[k|k],\hat{u}[k+1|k],\ldots,\hat{u}[k+H_p-1|k]}V[k] }_{=\mathcal{V}(x[k])}-\underbrace{ l\left( \hat{x}[k+1|k],u^{\ast}[k|k] \right) }_{>0\text{
+  	wegen }f(x[k],0)\neq 0}+\\
+  	& \qquad\qquad \underbrace{ \min\limits_{\hat{u}[k+H_p|k]}\sum\limits_{i=1}^{H_p}l\left( \hat{x}[k+H_p+1|k],\hat{u}[k+H_p|k] \right) }_{=0}\\
+  	& < \mathcal{V}(x[k]).
+  \end{align*}
+\end{enumerate}
+\end{proof}
+\begin{remark}
+Für den \satzref{satz:kap_4_stabilitaet} gibt es allgemeinere Formulierungen. So kann dieser Satz z.B. auf die Endbedingung $\hat{x}[k+H_p|k]=r[k+H_p|k]\neq 0$, d.h. auf den Dall
+beliebiger Referenztrajektorien, und auf die Bewertung der Steuergrößendifferenz $\Delta u$ (anstelle bzw. zusätzlich zur Steuergröße $u$) erweitert werden.
+\end{remark}
+Die Voraussetzung der Existenz einer optimalen Steuerfolge mit der in $H_p$ Schritten der Zustand $x=0$ erreicht wird, ist eine sehr starke Voraussetzung, die z.B. bei einem kurzen
+Horizont $H_p$ und bei Steuergrößenbeschränkungen häufig nicht erfüllt ist. Wie im nächsten Abschnitt gezeigt wird, kann diese Voraussetzung insbesondere für lineare Prozesse
+abgeschwächt werden, indem der Endzustand lediglich geeignet gewichtet wird.
+
+\subsection{Stabilität des geschlossenen Kreises bei endlichem Steuerhorizont durch eine Gewichtung des Endzustandes}
+Wie betrachten zunächst die Aufgabe mit quadratischem Gütefunktional bei unendlichem Optimierungshorizont (d.h. einem unendlichen Steuer- und Prädiktionshorizont)
+\begin{align}
+	V[k] & = \sum\limits_{i=1}^{\infty}\left\| Q_x\hat{x}[k+i|u] \right\|_2^2 + \sum\limits_{i=0}^{\infty}\left\|Q_{\Delta u}[k+i|k] \right\|_2^2\rightarrow \min .
+\end{align}
+Nach den Überlegungen in \secref{subsec:kap_4_problembeschreibung} gilt aufgrund des unendlichen Horizonts
+\begin{align}
+	x[k+i] & = x^{\ast}[k+i|k]\qquad (i=1,2,\ldots),\label{eqn:kap_4_x_normal_geschaetzt}
+\end{align}
+d.h. es kann aus dem Verlauf der optimalen Prädiktion auf das Verhalten (speziell auf die Stabilität) des \ac{MPR}-Regelkreises geschlossen werden, denn falls $V[k]$ einen endlichen
+Wert aufweist, so impliziert dies $x[k+i]\rightarrow 0$ für $i\rightarrow\infty$.
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Optimale Trajektorie $x^{\ast}[k+i|k]$ und dem tatsächlicher Verlauf $x[k+i]$ bei unendlichem Horizont}
+	\label{fig:kap_4_abweichung_opt_tatsaechlich_verlauf_unendl}
+\end{figure}
+Betrachtet man hingegen einen endlichen Steuerhorizont und einen unendlichen Prädiktionshorizont
+\begin{align}
+	V[k] & = \sum\limits_{i=1}^{\infty}\left\| Q_y\hat{y}[k+i|k] \right\|_2^2 + \sum\limits_{i=0}^{H_u-1}\left\| Q_{\Delta u}[i]\Delta \hat{u}[k+i|k]\right\|_2^2\rightarrow\min .
+\end{align}
+so gilt aufgrund von $H_u<\infty$ die Gleichung \eqnref{eqn:kap_4_x_normal_geschaetzt} im Allgemeinen nicht mehr. Im Weiteren wird vorausgesetzt, dass der Prozess stabil sei, das Paar
+$(A,Q_yC_y)$ beobachtbar ist und für die Steuergröße am Ende des Steuerhorizontes $\hat{u}[k+H_u|k]=0$ gilt, was dann wegen \eqnref{eqn:kap_4_steuerhorizont} auch
+$\hat{u}[k+H_u+i|k]=0\forall i\ge 0$ impliziert. Somit gelten
+\begin{align*}
+	\hat{y}[k+H_u+i|k] & =  C_yA^i\hat{x}[k+H_u|k]\qquad (i=1,2,\ldots)
+\end{align*}
+und
+\begin{align*}
+	\sum\limits_{i=H_u}^{\infty}\left\| Q_y\hat{y}[k+i|k]\right\|_2^2 & = \hat{x}[k+H_u|k]^T\underbrace{ \left(\sum\limits_{i=0}^{\infty}\left(A^T\right)^iC_y^TQ_y^TQ_yC_yA^i\right)
+	}_{=:\bar{Q}}\hat{x}[k+H_u|k].
+\end{align*}
+Da die Matrix $A$ stabil ist, existiert die Matrix $\bar{Q}$ und kann als eindeutige Lösung der Ljapunov-Gleichung
+\begin{align}
+	A^T\bar{Q}A & = \bar{Q}-C_y^tQ_y^TQ_yC_y \label{eqn:kap_4_ljapunov_glg}
+\end{align}
+bestimmt werden. Da $(A,Q_yC_y)$ beobachtbar ist, ist $\bar{Q}$ positiv definit. Damit gilt
+\begin{align}
+\begin{split}\label{eqn:kap_4_guetefunktional_bedingung}
+	V[k] & = \hat{x}[k+H_u|k]^T\bar{Q}\hat{x}[k+H_u|k]\\
+	& \quad + \sum\limits_{i=1}^{H_u-1}\left\| Q_y\hat{y}[k+i|k]\right\|_2^2+\sum\limits_{i=0}^{H_u-1}\left\| Q_{\Delta u}[i]\Delta \hat{u}[k+i|k]\right\|_2^2 < +\infty  
+\end{split}
+\end{align}
+also ist insbesondere auch
+\begin{align}
+	\mathcal{V}(x[k]) & := \min\limits_{\Delta\hat{u}[k|k],\ldots,\Delta\hat{u}[k+H_u-1|k]}V[k] < +\infty.
+\end{align}
+Man findet 
+\begin{align*}
+	\mathcal{V}(x[k+1]) & \le \mathcal{V}(x[k])-\left\| Q_y z^{\ast}[k+1|k]\right\|_2^2-\left\| Q_{\Delta u}\Delta u^{\ast}[k|k]\right\|_2^2.
+\end{align*}
+also gilt $\mathcal{V}(x[k+1])\le \mathcal{V}(x[k])$. Weiter wird in ? gezeigt, dass es im Fall $x[k]\neq 0$ ein $i_0\in\left\{ 1,\ldots,n_x \right\}$ gibt, wobei $n_x$ die Länge des
+Vektors $x[k]$ bezeichnet, so dass sogar $\mathcal{V}(x[k+i_0])<\mathcal{V}(x[k])$ erfüllt ist. Wegen $\mathcal{V}\ge 0$ und $\mathcal{V}$ stetig, ist $\mathcal{V}$ eine
+Ljapunov-Funktion zur Gleichgewichtslage $x=0$. Und bei geeigneter Indizierung ist $\mathcal{V}$ sogar eine strikte Ljapunov-Funktion. Weiter folgt aus $\left\| x[k]
+\right\|_2\rightarrow+\infty$ dann $\mathcal{V}(x[k])\rightarrow +\infty$. Also ist der geschlossene Regelkreis asymptotisch stabil!
+\begin{remark}
+Wegen \eqnref{eqn:kap_4_guetefunktional_bedingung} ergibt sich eine Aufgabe mit endlichem Prädiktionshorizont bzw. Steuerhorizont und einer Gewichtung des Endzustandes durch die
+positiv definite Matrix $\bar{Q}$. Diese Gewichtungsmatrix kann gemäß \eqnref{eqn:kap_4_ljapunov_glg} durch das \textsc{Matlab}-Kommando
+$\bar{Q}=\text{\lstinline[columns=fixed]{dlyap}}\left(A^T,C_y^TQ_y^TQ_yC_y\right)$ bestimmt werden. Die Gewichtung des Endzustandes ist praktisch eine wesentlich schwächere
+Voraussetzung als das Einführen einer Endbedingung der Form $\hat{x}[k+H_u|k]=0$ wie in \secref{subsec:kap_4_stab_geschl_rk}.\\
+Die beschriebene Vorgehensweise kann auf instabile Prozesse, auf von Null verschiedene Referenztrajektorien, auf beschränkte Steuer- und Regelgrößen sowie auf $\|.\|_1$- und
+$\|\cdot\|_{\infty}$-Gütefunktionale erweitert werden.
+\end{remark}

@@ -1,0 +1,12 @@
+\begin{tikzpicture}[auto, >=latex'] 
+	\draw plot[smooth cycle] coordinates{(0,0) (1,0) (2.5,1) (1,2.5) (0,1)};
+	
+	\draw (0.8,2) node[anchor=north] {$M$};
+	\draw (0.5,0.5) node[anchor=north] {$x_1$};
+	\draw (1.5,1.5) node[anchor=south] {$x_2$};
+	\draw (0.5,0.5) node[branch] (x1) {};
+	\draw (1.5,1.5) node[branch] (x2) {};
+	
+	\draw [->] (x2) -- node {$\lambda$} (x1);
+	
+\end{tikzpicture}

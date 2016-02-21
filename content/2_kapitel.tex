@@ -1,0 +1,82 @@
+\chapter{Klassische Verfahren zur optimalen Steuerung}
+\section{Grundproblem der Variationsrechnung}
+Aufgabe:
+\begin{itemize}
+  \item[] Finden einer stetig differenzierbaren Funktion $x:[t_0,t_e]\rightarrow\mathbb{R}$ mit den Randbedingungen $x(t_0)=x_0$, $x(t_e)=x_e$, so dass ein Gütefunktional
+  $J=\int\limits_{t_0}^{t_e}f(t,x,\dot{x}) dt$ minimal wird.
+\end{itemize}
+Vorgehensweise von Euler:
+\begin{itemize}
+  \item[] Angenommen man hätte eine optimale Lösung $x^{\ast}$ gefunden. Konstruiere eine einparametrige Schar von Vergleichskurven $x(t)=x^{\ast}+\epsilon\tilde{x}(t)$, wobei
+  $\epsilon\in(-\epsilon_0,+\epsilon_0)$ ein Parameter ($\epsilon>0$ gegeben) und $\tilde{x}$ eine gegebene, stetig differenzierbare Funktion mit $\tilde{x}(t_0)=0$, $\tilde{x}(t_e)=0$
+  ist.
+\end{itemize}
+TODO BILD\\
+Die Funktion $\delta x^{\ast}:= \epsilon\tilde{x}$ heisst Variation von $x^{\ast}$.\\
+Einsetzen in $J$ liefert 
+\begin{align*}
+	F(\epsilon) & := \int\limits_{t_0}^{t_e}f(t,x^{\ast}(t)+\epsilon\tilde{x}(t),\dot{x}^{\ast}(t)+\epsilon\dot{\tilde{x}}(t))dt.
+\end{align*}
+Sei $f$ zweifach stetig differenzierbar. Die Funktion $F:(-\epsilon_0,+\epsilon_0)\rightarrow\mathbb{R}$ hat für $\epsilon=0$ ein Minimum, also muss gelten
+\begin{align*}
+	\left.\frac{\td F}{\td \epsilon}\right|_{\epsilon_0} & = \int\limits_{t_0}^{t_e}\left[\frac{\d f}{\d x}\tilde{x}(t)+\frac{\d f}{\d\dot{x}}\dot{\tilde{x}}(t)
+	\right]dt = 0.
+\end{align*}
+Mit partieller Integration 
+\begin{align*}
+	\int\limits_{t_0}^{t_e}\underbrace{\frac{\d F}{\d \dot{x}}\dot{\tilde{x}}(t)}_{u\cdot v'}dt & = \bigg[\underbrace{\frac{\d
+	F}{\d\dot{x}}\tilde{x}}_{u\cdot v}\bigg]_{t=t_0}^{t=t_e}-\int\limits_{t_0}^{t_e} \underbrace{\frac{\td}{\td t}\frac{\d F}{\partial\dot{x}}\tilde{x}(t)}_{u'\cdot v}dt
+\end{align*}
+ergibt sich
+\begin{align*}
+	\int\limits_{t_0}^{t_e}\left[\frac{\d F}{\d x}-\frac{\td}{\td t}\frac{\d F}{\d\dot{x}} \right]\tilde{x}(t)dt & = 0
+\end{align*}
+und da $\tilde{x}$ (bis auf die Randwerte) beliebig muss 
+\begin{align}
+	\frac{\d F}{\d x}-\frac{\td}{\td t}\frac{\d F}{\d\dot{x}} & = 0
+\end{align}
+gelten.
+
+\section{Formulierung des Optimierungsproblems und Lösung}
+
+\subsection{Prinzip der Herleitung notwendiger Bedingungen}
+
+\subsection{Notwendige Bedingungen für Optimallösung}
+
+\subsection{Numerische Lösung am Beispiel "`Fall C und fester Endzeit $t_b$"'}
+\begin{itemize}
+  \item Zur Lösung der "`Endwertaufgabe"' $\dot{\psi}=\nabla_x \Ham$ mit gegeben Endwert $\psi(t_b)$ und unter der Annahme, dass $x(t)$ und $u(t)$ gegeben sind.\\
+  		Wir setzen $t=t(\tau)=t_b+t_a-\tau$ und mit 
+  		\begin{align*}
+  			\Psi(\tau) & := \psi(t(\tau)) = \psi(t_b+t_a-\tau)
+  		\end{align*}
+  		erhält man 
+  		\begin{align*}
+  			\dot{\Psi}(\tau) & = \frac{d\psi(t(\tau))}{d\tau} = \left.\frac{d\psi(t)}{dt}\right|_{t=t(\tau)}\frac{dt}{d\tau}\\
+  			& = \left.-\frac{d\psi(t)}{dt}\right|_{t=t(\tau)}=\left.-\dot{\psi}(t)\right|_{t=t(\tau)}\\
+  			& = \left.\nabla_x \Ham(x(t),u(t),\psi(t),t)\right|_{t=\tau}
+  		\end{align*}
+  		TODO BILD\\
+  		Damit ist die Anfangswertaufgabe 
+  		\begin{align*}
+  			\dot{\Psi}(\tau) & = \nabla_x \Ham(x(t_b+t_a-\tau),u(t_b+t_a-\tau),\Psi(\tau),t_b+t_a-\tau)
+  		\end{align*}
+  		mit dem \ac{AW} $\Psi(t_a)=\psi(t_b)$ zu lösen für $\tau\in[t_a,t_b]$ und es gilt
+  		\begin{align*}
+  		\psi(t) & = \Psi(t_b+t_a-\tau).
+  		\end{align*}
+  \item Zur Lösung des nichtlinearen Gleichungssystems $\nabla_u \Ham =0$ unter der Verwendung des NEWTON-Verfahrens
+\end{itemize}
+
+\subsection{Anwebdung zur Umformung von Optimierungsproblemen am Beispiel des \NoCaseChange{\acl{LQR}}-Problems}
+Minimiere das Gütefunktional
+\begin{align*}
+	J  & = \frac12 x^T(t_b)Gx(t_b)+\frac12\int\limits_{t_a}^{t_b}\left[x^T(t)Q(t)x(t)+u^TR(t)u(t)\right]dt
+\end{align*}
+bei dem Prozess 
+\begin{align*}
+	\dot{x}(t) & = A(t)x(t)+B(t)u(t)
+\end{align*}
+mit den gegebenen Werten $x(t_a)=x_a$, $t_a$, $x_a$, $t_b$, wobei der Zustandswert zur Endzeit $x(t_b)$ frei ist. Weiterhin sollen $G\ge 0$, $Q(t)\ge 0$ (semipositiv defintit), $R(t)>0$
+(positiv definit) und $Q(t)$, sowie $R(t)$ stetig differenzierbar sein.
+

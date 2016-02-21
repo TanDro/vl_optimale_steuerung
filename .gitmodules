@@ -1,0 +1,3 @@
+[submodule "latex_base"]
+	path = latex_base
+	url = http://git.tandrox.org/latex_base

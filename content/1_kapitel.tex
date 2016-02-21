@@ -1,0 +1,683 @@
+\chapter{Endlichdimensionale Optimierungsprobleme}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/kap_1_steuerung}
+	\caption{Steuerung}
+	\label{fig:kap_1_steuerung}
+\end{figure}
+Eingänge $u$ können in ihren möglichen Werten auf eine Menge möglicher Werte $U$ beschränkt werden.
+\begin{align*}
+K(u,y) & \rightarrow \min\limits_u\rightsquigarrow u^{\star}\\
+K & \ldots \text{Kostenfunktion}\\
+u^{\star} & \ldots \text{Steuerfunktion}
+\end{align*}
+Optimierung bzgl. eines zeitlich beschränkten Zeitraumes:\\
+Möglichkeit
+\begin{itemize}
+  \item Ausdehnung auf unendliche Zeit
+  \item Verschiebung des Intervalls $[t_0,t_e]$ nach jedem Zeitpunkt
+\end{itemize}
+um einen Übergang zu einer kontinuierlichen Regelung zu ermöglichen.
+\begin{figure}[htb]
+	\centering
+	\input{tikz/kap_1_horizont}
+	\caption{Optimierungshorizont}
+	\label{fig:kap_1_horizont}
+\end{figure}
+\section{Wiederholung aus der Analysis: Optimierung unter Nebenbedingungen}
+\begin{defi}
+Sei $F:D\subset\mathbb{R}^n\rightarrow\mathbb{R}$. Eine Stelle $x_0\in D$ heißt
+\begin{itemize}
+  \item globale Minimumstelle von $f$ auf $D$, wenn $f(x_0)\le f(x)\forall x\in D$
+  \item lokale Minimumstelle von $f$ auf $D$, wenn Umgebung $U_{\epsilon}(x_0):=\left\{y\in\mathbb{R}^n|\ \|y-y_0\|<\epsilon\right\}$ von $x_0$ existiert, so dass $f(x_0)\le
+  f(x)\forall x\in D\cap U_{\epsilon}(x_0)$
+  \item isolierte lokale Minimumstelle von $f$ auf $D$, wenn Umgebung $U_{\epsilon}(x_0)$ existiert, so dass $f(x_0)<f(x)\forall x\in D\cap U_{\epsilon}(x_0), x\neq
+  x_0$
+  \item Analog Maximum mit $\ge$ statt $\le$ und $>$ statt $<$.
+  \item Minimumstellen und Maximumstellen treten gemeinsam auf: Extremstellen
+\end{itemize}
+\end{defi}
+\begin{exmp}
+\begin{minipage}[c][][c]{0.3\textwidth}
+\centering
+\input{tikz/kap_1_beispiel_minmaxstelle.tex}
+\end{minipage}
+\hfill
+\begin{minipage}[c][][c]{0.7\textwidth}
+\begin{align*}
+f &: [a,b]\subset\mathbb{R}\rightarrow \mathbb{R}\\
+a &: \text{isolierte lokale Minimumstelle}\\
+x_1 &: \text{isolierte lokale Maximumstelle}\\
+x_2 &: \text{globale und isolierte lokale Minimumstelle}\\
+x_3 &: \text{lokale Minimum- und Maximumstelle (nicht isoliert)}
+\end{align*}
+\end{minipage}
+\end{exmp}
+\begin{satz}\label{satz:1}
+Sei $f:D\in\mathbb{R}^n\rightarrow\mathbb{R}, x_0\in\Inter D$\footnote{$\Inter\ldots $ interior (Mengenoperator)} und $\nabla f(x_0)$ vorhanden. Dann gilt: $x_0$ ist eine lokale
+Extremstelle $\rightarrow \nabla f(x_0)=0$.
+\end{satz}
+\begin{defi}
+ Eine Stelle $x_0$ mit $\nabla f(x_0)=0$ heißt kritische Stelle (stationärer Punkt) von $f$.
+\end{defi}
+\begin{satz}\label{satz:2}
+Sei $D\subset\mathbb{R}^n$ offen, $f\in C^2(D,\mathbb{R}),x_0\in D$ und $\nabla f(x_0)=0$. Dann gilt 
+\begin{align*}
+H f(x_0)=\left\{\begin{tabular}{c}pos. definit\\neg. definit\\ indefinit \end{tabular} \right\}\Rightarrow f\text{ ist in }x_0\left\{\begin{tabular}{c}isol. lokale Minimumstelle\\
+isol. lokale Maximumstelle\\
+keine lokale Extremstelle \end{tabular} \right\}
+\end{align*}
+\end{satz}
+\begin{uea}
+Aufgabe: Bestimmen Sie von beiden Funktionen die Definitheit und die Extremstellen!
+\begin{alignat*}{2}
+f_1(x_1,x_2) & = \frac12\left(ax_1^2+bx_2^2\right) &\Rightarrow H f_1&=\begin{bmatrix} a & 0\\ 0 & b \end{bmatrix}\\
+f_2(x_1,x_2) & = \frac12x_1^2+\frac16x_2^3 & \Rightarrow H f_2&=\begin{bmatrix} 1 & 0\\ 0 & x_2 \end{bmatrix}
+\end{alignat*}
+Lösung: 
+\end{uea}
+\begin{defi}
+Sei $D\subset\mathbb{R}^n$ offen, $f:D\rightarrow\mathbb{R},h_1,\ldots,h_m:D\rightarrow\mathbb{R}$. $\overline{x}\in D$ heisst lokale oder globale Extremstelle von $f$ unter den
+\ac{GNB} $h_1(x)=0,\ldots,h_m(x)=0$, wenn $\overline{x}$ lokale oder globale Extremstelle von $f$ auf
+\begin{align*}
+M &:=\left\{x\in D|\ h_1(x)=\ldots=h_m(x)=0\right\}
+\end{align*}
+ist.
+\end{defi}
+\begin{satz}\label{satz:3}
+(Lagrange Multiplikatorregel) Seien $f,h_1,\ldots,h_m$ stetig differenzierbar, $\overline{x}\in M$ und $\nabla h_1(\overline{x}),\ldots,\nabla h_m(\overline{x})$ linear unabhängig, dann
+ist $\overline{x}$ eine lokale Extremstelle von $f$ unter den \ac{GNB}. So gibt es Zahlen $\lambda_1,\ldots,\lambda_m\in\mathbb{R}$ (Lagrangesche Multiplikatoren), so dass
+\begin{align*}
+\nabla f(\overline{x}) & = \sum\limits_{i=1}^m\lambda_i\nabla h_i(\overline{x})
+\end{align*}
+gilt.\footnote{Hinweis: Dimension von $h$ ist $n$ für linear unabhängige $h_1,\ldots,h_m$. Für $h_1,\ldots,h_m$
+muss gelten $m\le n$. Meist ist sogar $m<n$, da sich sonst alle $h_1,\ldots,h_m$ in genau einem Punkt schneiden würden. Eine Optimierung wäre dann sinnlos.}
+\end{satz}
+\textbf{Technik zum Auflisten von Extremstellen}:
+\begin{enumerate}
+  \item Definiere Langrange-Funktion $F(x,\lambda_1,\ldots,\lambda_m):=f(x)+\sum\limits_{i=1}^m\lambda_i\nabla h_i(x)$.
+  \item Kanidaten für lokale Extremstelle unter den Lösungen von\\ $F'(x,\lambda_1,\ldots,\lambda_m)=0$ suchen:
+	\begin{align*}
+	\nabla F(x,\lambda_1,\ldots,\lambda_m)=\begin{bmatrix}
+	\nabla f(x)+\sum\lambda\nabla h_i(x)\\
+	h_1(x)\\
+	\vdots\\
+	h_m(x)
+	\end{bmatrix} = 0\in\mathbb{R}^{n+m}.
+	\end{align*}
+	D.h. durch Einführung der Lagrange-Funktion kann man die Extremstellenbedingung für unbeschränkte Probleme verwenden. 
+\end{enumerate}
+Geometrische Interpretation im Fall $n=2$, $m=1$:
+\begin{itemize}
+  \item[] Der Tangentialraum $T_{\overline{x}}M=\left\{v\in\mathbb{R}^n|\ \nabla h_i^T(\overline{x})v=0\ (i=1,\ldots,m) \right\} $ in $\overline{x}$ an die Menge $M$ ist gleich dem
+  Tangentialraum $T_{\overline{x}}N=\left\{ v\in\mathbb{R}^n|\ \nabla f(\overline{x})^Tv=0 \right\}$ in $\overline{x}$ an die Niveaumenge $N :=\left\{x\in D\subset\mathbb{R}^n|\
+  f(x)=f(\overline{x})\right\}$
+	\begin{figure}[htb]
+	\centering
+		\input{tikz/kap_1_tangraum}
+		\caption{Auffinden von Extremstellen: Geometrische Interpretation im Fall $n=2$, $m=1$}
+		\label{fig:kap_1_tangraum}
+	\end{figure}
+\end{itemize}
+
+\begin{enumerate}[label=\arabic*)]
+  \item $G\subset\mathbb{R}^n$: $\Inter G:=\left\{x\in\mathbb{R}^n|\ \exists\epsilon>0:U_{\epsilon}(x)\subset G \right\}$: Menge aller inneren Punkte von $G$. Wenn $G$ offen:
+  $\Leftrightarrow G=\Inter G$
+ 	\begin{figure}[htb]
+	\centering
+		\input{tikz/kap_1_inter_g}
+		\caption{Visualisierung von $\Inter G$}
+		\label{fig:kap_1_inter_g}
+	\end{figure}
+  \item $G$ offen. $C^k(G):=$ Menge aller $k$-mal stetig differenzierbaren Funktionen auf $G$. Auch: $C^k(G,\mathbb{R}^m)$ zur Angabe des Bildraums.
+  \item $D\subset\mathbb{R}^n$ offen, $f\in C^2(D,\mathbb{R})\Rightarrow H f(x)=\begin{bmatrix}
+  f_{11}(x) & \ldots & f_{1n}(x) \\
+  \vdots 	&		 & \vdots\\
+  f_{n1}(x) & \ldots & f_{nn}(x)
+  \end{bmatrix}$ symmetrisch\footnote{Andere Schreibweise: $\nabla^2 f$, $\frac{\partial^2 f}{\partial x^2}$, $\nabla_{xx}f$}\\
+  Sei $A$ reell und symmetrisch, d.h. $A=A^T$\\
+  Dann $A$ possitiv definit, i.Z. $A>0:\Leftrightarrow x^TAx>0\forall x\neq 0\Leftrightarrow \lambda_i(A)>0\forall i$ und $A$ positiv demidefinit, i.Z. $A\ge 0:\Leftrightarrow x^TAx\ge
+  0\forall x\Leftrightarrow \lambda_i(A)\ge 0\forall i$.\\
+  Negativ definit bzw. semidefinit analog.\\
+  $A$ indefinit: $\Leftrightarrow x^TAx$ kann sowohl positive als auch negative Werte annehmen. $\Leftrightarrow$ Es gibt positive und negative Eigenwerte von $A$.
+  \item $M\subset \mathbb{R}^n$.\\
+		$\bd M = \cl M\backslash\Inter M$: Rand von $M$\\
+		$\cl M =\left\{x\in\mathbb{R}^n|\ \exists(x_n)_{n\in N}\subset M:x_n\rightarrow x \right\}$: Abschluss der Menge $M$ (auch: Menge der Berührungspunkte)\\
+		Beispiel: \begin{tabular}[t]{lr}
+			$M=[0,1)$ & $\cl M=[0,1]$\\
+					  & $\Inter M = (0,1)$\\
+					  & $\bd M =\{0,1\}$
+		\end{tabular}
+  \item \begin{tabular}[t]{rl}
+  $\left\{v_1,\ldots,v_n \right\}$ linear unabhängig &:$\Leftrightarrow [\lambda_1 v_1+\ldots+\lambda_n v_n=0\Rightarrow \lambda_1=\ldots=\lambda_n=0]$\\
+  $\left\{v \right\}$ linear unabhängig &:$\Leftrightarrow [\lambda v=0\Rightarrow \lambda = 0]\Leftrightarrow v\neq 0$
+  \end{tabular}
+\end{enumerate}
+\begin{exmp}
+Gesucht ist die Extremstelle von $f(x,y)=4x^2-3xy$ auf $K=\left\{(x,y)^T\in\mathbb{R}|\ x^2+y^2\le 1 \right\}$.\\
+Nach Satz \ref{satz:1} findet man 
+\begin{align*}
+	\begin{bmatrix}
+	0\\0
+	\end{bmatrix} & = \nabla f = \begin{bmatrix}
+	8x-3y\\-3x
+	\end{bmatrix}\\
+	\begin{bmatrix}
+	8x-3y\\-3x
+	\end{bmatrix}\Leftrightarrow \begin{bmatrix}
+	x\\y
+	\end{bmatrix} & = \begin{bmatrix}
+	0\\0
+	\end{bmatrix}
+\end{align*}
+kritische Stelle von $f$ im Inneren von $K$, jedoch
+\begin{align*}
+		H f(x,y) & = \begin{bmatrix}
+		8 & -3\\ -3 & 0
+		\end{bmatrix} \text{ mit } \det\left(H f(0,0)\right) = -9 < 0
+\end{align*}
+Determinante ist Produkt der Eigenwerte $\rightarrow \lambda_1>0$, $\lambda_2<0\rightarrow$ es negative Eigenwerte. $H f(0,0)$ ist indefinit, d.h. $(0;0)$ keine lokalen Extremstellen
+existieren, nach Satz \ref{satz:2}.\\ 
+Andererseits ist $f$ stetig auf der kompakten Menge $K$, nach Satz von Weierstrass besitzt $f$ auf dieser Menge Minimum und Maximum. Diese müssen
+auf dem Rand liegen.
+\begin{align*}
+	\bd K  & = \left\{(x,y)^T|\ h(x,y):=x^2+y^2-1=0\right\}\\
+	\Inter K &=\left\{(x,y)^T\in\mathbb{R}^2|\ x^2+y^2<1 \right\}\\
+	\cl(\Inter K) & = K
+\end{align*}
+Da $\bd K$\footnote{$\bd K\ldots$ Rand von $K$} keine offene Menge ist, ist Satz \ref{satz:1} nicht anwendbar. Mit
+\begin{align*}
+M & = \bd K \text{ ist } \nabla h(x,y) = 2\begin{bmatrix}
+x\\y
+\end{bmatrix} \neq 0\ \forall (x,y)^T\in M 
+\end{align*}
+linear unabhängig. Nach Satz \ref{satz:3} existiert $\lambda\in\mathbb{R}$ mit\\
+\begin{minipage}{\dimexpr.5\linewidth-1em\relax} 
+  \begin{tabular}{ll}
+  (1) & 	$8x-3y=\lambda\cdot 2x$ \\
+  (2) & 	$-3x=\lambda\cdot 2y$ 
+  \end{tabular} 
+\end{minipage}% 
+\begin{minipage}[0pt]{2em} 
+  $\left.\mbox{\rule{0pt}{\baselineskip}}\right\}$ 
+\end{minipage}% 
+\begin{minipage}{\dimexpr.5\linewidth-1em\relax} 
+$\Delta F(x,y) = H f(x,y)$
+\end{minipage}
+\begin{minipage}{\dimexpr.5\linewidth-1em\relax} 
+  \begin{tabular}{ll}
+  (3) & 	$x^2+y^2-1=0$ 
+  \end{tabular} 
+\end{minipage}% 
+\begin{minipage}[0pt]{2em} 
+  $\mbox{\rule{0pt}{0.35\baselineskip}}$ 
+\end{minipage}% 
+\begin{minipage}{\dimexpr.5\linewidth-1em\relax} 
+Erfüllung der \ac{NB}en
+\end{minipage}
+Lösung:
+\begin{alignat*}{8}
+	x_{1/2} & = \pm\frac{1}{\sqrt{10}}, & \quad & y_{1/2} & = \pm\frac{3}{\sqrt{10}}, & \quad & \lambda_{1/2}=-\frac12, & \quad & F(x_{1/2},y_{1/2}) & = -\frac12\\
+	x_{3/4} & = \mp\frac{3}{\sqrt{10}}, & \quad & y_{3/4} & = \pm\frac{1}{\sqrt{10}}, & \quad & \lambda_{3/4}=\frac92, & \quad & F(x_{3/4},y_{3/4}) & = \frac92
+\end{alignat*}
+Technik:
+\begin{align*}
+	F(x,y,\lambda) & = f(x,y) +\lambda h(x,y) \Rightarrow \begin{bmatrix}
+	F_x\\ F_y \\ F_{\lambda}
+	\end{bmatrix} = 0
+\end{align*}
+Abbildung \ref{fig:kap_1_beispiel_extremstelle} stellt die Niveaulinien der Ausgangsfunktion und der Berechnungen dar. 
+\begin{figure}[htb]
+	\centering
+	\input{tikz/kap_1_beispiel_extremstelle}
+	\caption{Niveaulinien der Funktion $f$: $f=-\frac12$ (Grün), $f=0$ (Schwarz), $f=1$ (Gelb), $f=\frac92$ (Rot), $x^2+y^2=1$ (Blau)}
+	\label{fig:kap_1_beispiel_extremstelle}
+\end{figure}
+\end{exmp}
+
+\begin{defi}
+Sei $D\in\mathbb{R}^n$ offen, $f:D\rightarrow\mathbb{R},g_1,\ldots,g_m:D\rightarrow\mathbb{R},\overline{x}\in D$ heisst (lokale bzw. globale) Extremstelle von $f$ unter der \ac{UNB}
+$g_1(x)\le 0,\ldots,g_m(x)\le 0$, wenn $\overline{x}$ (lokale oder globale) Extremstelle von $f$ auf $G:=\left\{x\in D|\ g_1(x)\le 0,\ldots,g_m(x)\le 0\right\}$.
+\end{defi}
+\begin{defi}
+$I_0(x):=\left\{ i\in\left\{ 1,\ldots,m \right\}|\ g_i(x)=0 \right\}$: Indexmenge der für $x\in G$ aktiven Restriktionen (für $x\in\int G$ gilt $I_0(x)\in\emptyset$)
+\end{defi}
+$L(x,u)=f(x)+\sum\limits_{i=1}^{m}u_ig_i(x)$: Lagrange-Funktion zur Aufgabe $\min\limits_{x\in G}f(x)$
+\begin{satz}\label{satz:4}
+	(Kuhn-Tucker Bedinungen 1. Ordnung):\\
+	Sei $f,g_1,\ldots,g_m$ stetig differenzierbar, $\overline{x}\in G$ und $\nabla g_i(x)$ mit $i\in I_0(\overline{x})$ linear unabhängig. Ist $\overline{x}$ lokale Minimumstelle von $f$
+	unter \ac{UNB}, so gibt es $a_1,\ldots,a_m\in\mathbb{R}$ (Lagrange-Multiplikatoren) so, dass gilt
+	\begin{align*}
+	\nabla_x L(\overline{x},u) & = \nabla f(\overline{x})+\sum\limits_{i=1}^m u_i\nabla g_i(\overline{x})= 0\quad\text{mit } \begin{bmatrix}
+	g_i(\overline{x})\le 0\\ u_i\ge 0\\ u_ig_i(\overline{x})=0
+	\end{bmatrix},\ i=1,\ldots,m
+	\end{align*}
+\end{satz}
+\textbf{Geometrische Interpretation der Kuhn-Tucker-Bedingungen}\\
+
+\begin{figure}[!htb]
+	\centering
+	\input{tikz/kap_1_optstelle_leer}
+	\caption{Optimalstelle mit $I_0(\overline{x})=\emptyset$}
+	\label{fig:kap_1_ktb_opt_0}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\input{tikz/kap_1_optstelle_1}
+	\caption{Optimalstelle mit $I_0(\overline{x})=\{1\}$}
+	\label{fig:kap_1_ktb_opt_1}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\input{tikz/kap_1_optstelle_1_2}
+	\caption{Optimalstelle mit $I_0(\overline{x})=\{1,2\}$}
+	\label{fig:kap_1_ktb_opt_1_2}
+\end{figure}
+\begin{enumerate}[label=\alph*)]
+  \item zu \figureref{fig:kap_1_ktb_opt_0}: $u_ig_i(\overline{x})=0\Rightarrow u_1=u_2=u_3=0\Rightarrow \nabla f(\overline{x})=0$
+  \item zu \figureref{fig:kap_1_ktb_opt_1}: $u_ig_i(\overline{x})=0\Rightarrow u_2=u_3=0\Rightarrow \nabla f(\overline{x})+u_1\nabla g_1(\overline{x})=0$
+  \item zu \figureref{fig:kap_1_ktb_opt_1_2}: $u_ig_i(\overline{x})=0\Rightarrow u_3=0\Rightarrow \nabla f(\overline{x})+u_1\nabla g_1(\overline{x})+u_2\nabla g_2(\overline{x})=0$ mit
+  $u_1$, $u_2\ge 0$\\
+\end{enumerate}
+
+Bemerkung:
+\begin{itemize}
+  \item[] $x$ ist Maximumstelle von $f$ genau dann, wenn $x$ Minimumstelle von $-f$ ist.  
+\end{itemize} 
+\begin{gegenexmp}
+\begin{minipage}{0.5\textwidth}
+\begin{align*}
+f(x) & = (x_1+1)^2+x^2_2\\
+g_1(x) & = x_2-x^3_1 \le 0\\
+g_2(x) & = -x_2 \le 0
+\end{align*}
+Minimumstelle: $(0,0)$
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\centering
+\input{tikz/kap_1_gegenbeispiel.tex}
+\end{minipage}
+\end{gegenexmp}
+Bemerkung:
+\begin{itemize}
+  \item[] Die Forderung nach der Unabhängigkeit der Vektoren in $\nabla h_1(\overline{x}),\ldots,\nabla h_m(\overline{x})$ in Satz \ref{satz:3} bzw. $\nabla g_i(\overline{x})$ mit
+  $i\in I_0(\overline{x})$ in Satz \ref{satz:4} ist eine sogenannte \textit{Regularitätsbedingung} (\ac{LICQ}). Es gibt andere Regularitätsbedingungen, z.B. die Forderung das
+  $h_1,\ldots,h_m$ bzw. $g_1,\ldots,g_m$ affine lineare Funktionen sind, d.h. eine Darstellung der Form 
+  \begin{align*}
+  	M = \left\{ x\in\mathbb{R}^n:\ Ax=b \right\} & \text{ bzw. } G=\left\{ x\in\mathbb{R}^n:\ Ax\le b \right\}
+  \end{align*}
+  mit der Matrix $A\in\mathbb{R}^{m\times n}$ und dem Vektor $b\in\mathbb{R}^m$ möglich ist.
+\end{itemize}
+Für die Aufgabe $\min f(x)$ bei $g_i(x)\le 0$ ($i=1,\ldots,m$), $h_j(x)=0$ ($j=1,\ldots,p$) mit stetig differenzierbaren $f$, $g_i$, $h_j$ lautet die \ac{KTB}:
+\begin{align}
+	\nabla_x L(x,u,\lambda) & = \nabla f(x)+\sum\limits_{i=1}^m u_ig_i(x)+\sum\limits_{j=1}^p\lambda_j h_j(x) \label{eq:kap_1_ktp}\\
+	& h(x) = 0,\ u\ge 0,\ g(x)\le 0,\ u_ig_i(x)=0\ (i=1,\ldots,m) \notag
+\end{align}
+Ein Punkt $L(x,u,\lambda)$ der Gleichung \eqnref{eq:kap_1_ktp} erfüllt, heisst \ac{KTP}.
+
+\begin{exmp}
+Gesucht ist die optimale Lösung der Aufgabe $f(x)=-x^2_1+x_2^2\rightarrow\min$ bei $(x_1+1)(x_2+2)\le 4$ mit $x_1\ge 0$, $x_2\ge 0$.\\
+Mit 
+\begin{align*}
+	g_1(x) & = (x_1+1)(x_2+2)-4\le 0,\\
+	g_2(x) & = -x_1\le 0,\\
+	g_3(x) & = -x_2\le 0 
+\end{align*}
+erhält man
+\begin{align*}
+	L(x,u) & = f(x)+\sum\limits_{i=1}^3u_ig_i(x)
+\end{align*}
+und
+\begin{align*}
+\nabla_x L(x,u) & = \begin{bmatrix}
+-2x_1+u_1(x_2+2)-u_2\\
+2x_2+u_1(x_1+1)-u_3
+\end{bmatrix}.
+\end{align*}
+Die $5$ nichtlinearen Gleichungen $\nabla_x L(x,u)=0$, $u_ig_i(x)=0$ mit $i=1,2,3$ haben die reelen Lösungen:
+\begin{itemize}
+	\item $u_1=0$, $u_2=0$, $u_3=0$, $x_1=0$, $x_2=0$
+	\item $u_1=-4$, $u_2=16$, $u_3=0$, $x_1=1$, $x_2=2$ erfällt wegen Nichterfüllen der Ungleichung 
+	\item $u_1=1$, $u_2=0$, $u_3=2$, $x_1=1$, $x_2=0$
+\end{itemize}
+Wegen $f(0,0)=0$, $f(1,0)=-1$ ist $x=\begin{pmatrix} 1 & 0 \end{pmatrix}^T$ die gesuchte Minimumstelle.
+\begin{figure}[!htb]
+	\centering
+	\input{tikz/kap_1_beispiel_ktb}
+	\caption{Beispiel mit \ac{KTB}: $f=-1$ (Gelb), $f=0$ (Schwarz), $f=1$ (Grün), $g_1$ (Blau), $g_2$ (Rot), $g_3$ (Orange)}
+	\label{fig:kap_1_ktp}
+\end{figure}
+\end{exmp}
+
+\textit{Konvexe Optimierungsprobleme}:\\
+$M\subset\mathbb{R}^n$ konvex $\Leftrightarrow \left[x_1,x_2\in M\Rightarrow \lambda x_1+(1-\lambda)x_2\in M\forall\lambda\in[0,1]\right]$
+\begin{figure}[!htb]
+	\centering
+	\subfloat[konvex]{\input{tikz/kap_1_konvex}}\qquad
+	\subfloat[nicht konvex]{\input{tikz/kap_1_nicht_konvex}}
+	\caption{Konvexität}
+	\label{fig:kap_1_konvex}
+\end{figure}
+
+Sei $M\subset\mathbb{R}^n$ konvex: $f:M\rightarrow\mathbb{R}$ konvex auf $M$, wenn 
+\begin{align*}
+	\left[ x_1,x_2\in M \Rightarrow M(\lambda x_1+(1-\lambda)x_2)\right. & \left.\le \lambda f(x_1)+(1-\lambda)f(x_2)\forall\lambda\in[0,1]\right]
+\end{align*}
+\begin{figure}[!htb]
+	\centering
+	\subfloat[$f$ konvex]{\input{tikz/kap_1_f_konvex}}\qquad
+	\subfloat[$f$ nicht konvex]{\input{tikz/kap_1_f_nicht_konvex}}
+	\caption{Konvexe Funktionen}
+	\label{fig:kap_1_konvex_fkt}
+\end{figure}
+
+\textit{streng konvex auf} $M$:\\
+Sei $M\subset\mathbb{R}^n$ offen, konvex, $f\in C^2(M,\mathbb{R})$:
+\begin{itemize}
+  \item $f$ konvex auf $M\Leftrightarrow\forall x\in M:H f(x)\ge 0$
+  \item $f$ streng konvex auf $M\Leftrightarrow\forall x\in M: H f(x)>0$
+\end{itemize}
+Falls $M$ konvex und $f$ konvex auf $M$, so heisst $\min\limits_{x\in M}f(x)$ konvexe Optimierungsaufgabe und es gilt:
+\begin{itemize}
+  \item Falls $x^{\ast}\in M$ eine lokale Minimumstelle ist, so ist $x^{\ast}$ auch globale Minimumstelle auf $M$.
+  \item Ist $f$ streng konvex, so gibt es höchstens ein globales Minimum von $f$ über $M$.
+\end{itemize}
+\begin{exmp}
+Die streng konvexe Funktion $f(x)=e^x$ soll minimiert werden $\min\limits_{x\in\mathbb{R}^1}e^x$. Es soll gezeigt werden, dass höchstens ein globales Minimum von $f$ über $M$ existiert.
+Dabei ist zu beachten:
+\begin{align*}
+\left.
+ \begin{tabular}{rl}
+ $f:\mathbb{R}^n$ & $\rightarrow \mathbb{R}^1$\\
+ $g_i:\mathbb{R}^n$ & $\rightarrow \mathbb{R}^1$\\
+ $h_j:\mathbb{R}^n$ & $\rightarrow \mathbb{R}^1$
+ \end{tabular}\right\} & \text{stetig differenzierbar mit }i=1,\ldots,n\text{ und } j=1,\ldots,p
+\end{align*}
+Damit lässt sich die lokale Minimumstelle
+\begin{align*}
+x^{\ast}\in G & := \left\{ x\in\mathbb{R}^n:g_i(x)=0\ (i=1,\ldots,n),\ h_j(x)=0\ (j=1,\ldots,p) \right\}\\
+\left\{ \nabla(x^{\ast})\ (i\in I_0(x^{\ast}) \right. & \left. := \left\{ i\in\left\{1,\ldots,m\right\}|\ g_i(x^{\ast})=0 \right\}),\nabla h_j(x^{\ast})\ (j=1,\ldots,p) \right\} 
+\end{align*}
+beschreiben und für die lokale Minimumstelle $x^{\ast}$ von $f$ auf $G$  gilt $\Rightarrow\exists u^{\ast}\in\mathbb{R}^m$, $\exists\lambda^{\ast}\in\mathbb{R}^p$ mit der \ac{KTB}
+\begin{align*}
+	\nabla_x L(x^{\ast},u^{\ast}) & = \nabla f(x^{\ast})+\sum\limits_{i=1}^n u_i^{\ast}\nabla g_i(x^{\ast})+\sum\limits_{j=1}^p\lambda_j^{\ast}\nabla h_j(x^{\ast})=0
+\end{align*}
+mit $g(x^{\ast})\le 0$, $u^{\ast}\ge 0$, $u^{\ast T}g(x^{\ast})=0$, $h(x^{\ast})=0$ und dem \ac{KTP}: $\begin{pmatrix}x^{\ast}, & u^{\ast}, & \lambda^{\ast} \end{pmatrix}$
+\end{exmp}
+ 
+\begin{gegenexmp}
+\begin{minipage}{0.5\textwidth}
+\begin{align*}
+f(x) & = (x_1+1)^2+x^2_2\\
+g_1(x) & = x_2-x^3_1 \le 0\\
+g_2(x) & = -x_2 \le 0
+\end{align*}
+Minimumstelle: $x^{\ast}=(0,0)$, aber \ac{KTB} nicht erfüllt\\
+$\Rightarrow \nabla g_1(x^{\ast})$, $\nabla g_2{x^{\ast}}$ linear abhängig
+
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\input{tikz/kap_1_gegenbeispiel_bsp.tex}
+\end{minipage}
+\end{gegenexmp}
+
+\begin{satz}\label{satz:5}
+Für die Aufgabe $\min\limits_{x\in G}f(x)$ mit $G:=\left\{ x\in\mathbb{R}^n|\ g_i(x)\le 0\ (i=1,\ldots,m) \right\}$ und $f$, $g_i$ ($i=1,\ldots,m$) stetig differenzierbar und konvex
+gilt:
+\begin{itemize}
+  \item $x^{\ast}$ ist Lösung und $\exists\tilde{x}\in\mathbb{R}^n:g_i(\tilde{x})<0$ ($i=1,\ldots,m$) (Slater Bedingung)\\
+  $Rightarrow \exists u^{\ast}\in\mathbb{R}^m:(x^{\ast},u^{\ast})$ ist \ac{KTB}
+  \item $(x^{\ast},u^{\ast})$ sind \ac{KTP} $\Rightarrow x^{\ast}$ ist Lösung für alle
+  \item Falls alle $g_i$ linear, d.h. $G=\left\{x\in\mathbb{R}^n:Ax\le b \right\}$ mit $A\in\mathbb{R}^{m\times n}$, $b\in\mathbb{R}^m$, so gilt
+  \begin{align*}
+  	x^{\ast}\text{ ist Lösung } &\Leftrightarrow \exists u^{\ast}\in\mathbb{R}^m:(x^{\ast},u^{\ast})\text{ ist \ac{KTP}}
+  \end{align*}
+  Bei zusätzlichen linearen \ac{GNB}, d.h. $G=\left\{x\in\mathbb{R}^n:Ax\le b,\ Cx=d \right\}$ mit $C\in\mathbb{R}^{p\times n}$, $d\in\mathbb{R}^p$:
+  \begin{align*}
+  	x^{\ast}\text{ ist Lösung } &\Leftrightarrow \exists u^{\ast}\in\mathbb{R}^m,\lambda^{\ast}\in\mathbb{R}^m:(x^{\ast},u^{\ast},\lambda^{\ast})\text{ ist \ac{KTP}}
+  \end{align*}
+\end{itemize}
+\end{satz}
+
+\begin{uea}
+Aufgabe: 
+\begin{itemize}
+  \item[] Finden Sie alle Lösungen von $f(x)=-x_1-x_2\rightarrow\min\limits_{x\in\mathbb{R}^2}$ bei $g_1(x)=x_1+x_2^2\le 0$ (Skizze)!
+\end{itemize}
+Lösung: 
+\end{uea}
+
+\section{Anwendungen auf quadratische Optimierungsaufgaben}
+\textbf{Aufgabe}
+\begin{itemize}
+	\item[] $\min\limits_{x\in\mathbb{R}^n} \frac12 x^TQx+q^Tx$ bei $Ax\le b$, $Q>0$
+	\item[] mit $Q\in\mathbb{R}^{n\times n}$, $q\in\mathbb{R}^n$, $A\in\mathbb{R}^{m\times n}$, $b\in\mathbb{R}^m$ (convex) 
+\end{itemize}
+\subsection{Vorbereitungen}
+\begin{enumerate}[label=(\arabic*)]
+  \item $\min\limits_{x\in\mathbb{R}^n}f(x)$ mit $f(x)=\frac12 x^TQx+q^Tx$ und wegen $H f(x)=Q\ge 0$ ist $f$ convex auf $\mathbb{R}^n$. Damit gilt $x^{\ast}$ ist Lösung
+  $\Leftrightarrow x^{\ast}$ erfüllt \ac{KTB} $\Leftrightarrow\nabla f(x^{\ast})=0$. Somit erhällt man die Lösung von (1-TODO) durch Lösen des linearen Gleichungssystems
+  \begin{align*}
+  	\nabla f(x) & = Qx+q =0
+  \end{align*} 
+  \underline{Beachte}: Lösung muss nicht existieren.
+  \item $\min\limits_{x\in\mathbb{R}^n}\frac12 x^TQx+q^Tx$ bei $Cx=d$ mit $C\in\mathbb{R}^{p\times n}$, $d\in\mathbb{R}^p$. Analog zu (1): $x^{\ast}$ ist Lösung
+  $\xLeftrightarrow{\text{Satz \ref{satz:5}}}\exists\lambda^{\ast}\in\mathbb{R}^p:(x^{\ast},\lambda^{\ast})$ ist \ac{KTB}. Mit $L(x,\lambda)=\frac12
+  x^TQx+q^Tx+\lambda^T(Cx-d)$ liefert
+  \begin{align*}
+  \nabla L(x,\lambda) & = \begin{bmatrix}
+  Qx+q+C^T\lambda \\
+  Cx-d
+  \end{bmatrix} = 0
+  \end{align*} 
+  unter den \ac{KTB} $\nabla_xL(x,\lambda)=0$ und $h(x)=0$ liefert das lineare Gleichungssystem
+  \begin{align*}
+  \begin{bmatrix}
+  Q	& c^T\\ C	& 0 
+  \end{bmatrix}\begin{bmatrix}
+  x\\ \lambda
+  \end{bmatrix} & = \begin{bmatrix}
+  -q \\ d
+  \end{bmatrix}
+  \end{align*}
+  \underline{Beachte}: Kann keine oder mehrdeutige Lösungen besitzen.
+  \item Projektion auf Untervektorraum\\
+  		$A\in\mathbb{R}^{m\times n}$, $m\ge n$, $\Rang A=n$, $b\in\mathbb{R}^m$\\
+  		\begin{figure}[!htb]
+			\centering
+			\input{tikz/kap_1_projektion}
+			\caption{Projektion}
+			\label{fig:kap_1_projektion}
+		\end{figure}
+  		\begin{align}
+  			\im A & := \left\{Ax:x\in\mathbb{R}^n \right\} \notag\\
+  			(\im A)^{\bot} =\ker A^T & := \left\{y\in\mathbb{R}^m:A^Ty=0 \right\}\notag\\
+  			A^T(b-A\widehat{x}) & = 0\notag\\
+  			A^Tb & = A^TA\widehat{x}\notag\\
+  			\widehat{x} & = (A^TA)^{-1}A^Tb\notag\\ 
+  			\rightarrow P & = A(A^TA)^{-1}A^T\quad \ldots\text{ Projektor auf $\im A$} \label{eq:kap_1_projektion}
+  		\end{align}
+  		Projektion eines Vektors $v\in\mathbb{R}^n$ auf $M:=\left\{x\in\mathbb{R}^n|\ Cx=d \right\}$ mit $C\in\mathbb{R}^{p\times n}$, $p\le n$, $\Rang c = p$, siehe
+  		\figureref{fig:kap_1_projektion} und man erhält den Projektor durch ersetzen von $A^T$ durch $C$ in \eqnref{eq:kap_1_projektion}
+  		\begin{align*}
+  			\mathcal{P} & = C^T(CC^T)^{-1}C\quad \ldots\text{ Projektor auf $M$}. 
+  		\end{align*}
+  		\begin{figure}[!htb]
+			\centering
+			\input{tikz/kap_1_projektion_vec}
+			\caption{Projektion}
+			\label{fig:kap_1_projektion}
+		\end{figure}
+\end{enumerate}
+\begin{uea}
+Aufgabe:
+\begin{itemize}
+  \item[] Zeigen Sie, dass für $\min\limits_{x\in\mathbb{R}}$, d.h. $Q=0$, $q=1$, keine Lösung exisiert. 
+\end{itemize}
+Lösung:
+\end{uea}
+\begin{uea}
+Aufgabe:
+\begin{itemize}
+  \item[] Wiederholen Sie den Algorithmus aus dem Beispiel mit $x^0=\begin{bmatrix}1\\ -1 \end{bmatrix}$. 
+\end{itemize}
+Lösung:
+\end{uea}
+
+\begin{uea}
+Aufgabe:
+\begin{itemize}
+  \item[] Seien $A=\begin{bmatrix}
+2\\1
+\end{bmatrix}$, $b=\begin{bmatrix}
+1\\2
+\end{bmatrix}$. Berechnen Sie $Pb$, $(I-P)b$, $(I-P)P$, $Pb+(I-P)b$, $(Pb)^T(I-P)b$.
+	\item[] Was ist das kleinste $\alpha\in\mathbb{R}$, so dass $\|Pb\|_2\le\alpha\|b\|_2$ erfüllt ist? 
+\end{itemize}
+Lösung:
+\end{uea}
+
+
+\begin{uea}
+Aufgabe: 
+\begin{itemize}
+  \item[] Für $C=\begin{bmatrix}1 & 1 \end{bmatrix}$, $d=1$ projiziere $v_1=\begin{bmatrix}1 \\ 1 \end{bmatrix}$, $v_2=\begin{bmatrix}1 \\ 0 \end{bmatrix}$ auf $M$ (Skizze)!
+  \item[] Für $C=\begin{bmatrix}1 & 1\\ 0 & 1 \end{bmatrix}$, $d=\begin{bmatrix} 1\\1\end{bmatrix}$ projiziere $v_1=\begin{bmatrix}1 \\ 1 \end{bmatrix}$, $v_2=\begin{bmatrix}1 \\ 0
+  \end{bmatrix}$ auf $M$ (Skizze)!
+\end{itemize}
+Lösung: 
+\end{uea}
+
+
+\subsection{Aktive-Mengen-Strategie}
+\textbf{Aufgabe}:
+\begin{itemize}
+  \item[] $f(x) = \frac12 x^TQx+q^Tx\rightarrow\min$ bei $Ax\le b$
+\end{itemize}
+Seien $Q\in\mathbb{R}^{n\times n}$, $Q>0$ possitiv definit, $q\in\mathbb{R}^n$, $A=\begin{bmatrix}a_1^T\\\vdots\\ a_m^T\end{bmatrix}\in\mathbb{R}^{m\times n}$, $b\in\mathbb{R}^m$.\\
+Für $x\in G:=\left\{x\in\mathbb{R}^n|\ Ax\le b \right\}$ bezeichne $I_a(x)=\left\{i\in(1,\ldots,m):a_i^Tx=b_i\right\}$\footnote{Menge der im Punkt $x\in G$ aktiven Restriktionen} und
+$M(I) = \left\{y\in\mathbb{R}^n|\ a_i^Ty=b_i, i\in I_a(x) \right\}$.\\
+Sei $\left\{a_i|\ i\in I_a(x) \right\}$ linear unabhängig $\forall x\in G$.\\
+\ac{NB}:
+\begin{align*}
+  g_i(x) := a_i^Tx -b_i & \le 0\\
+  \nabla g_i(x) & = a_i
+\end{align*}
+
+\textbf{Algorithmus der Aktive-Mengen-Strategie}:
+\begin{enumerate}[label=(S\arabic*)]
+  \item Wähle ein $x^0\in G$, setze $I_0:=I_a(x^0)$ und setze $k:=0$.
+  \item Falls Projektion von $\nabla f(x^k)=Qx^k+q$ auf $M(I_k)$ gleich dem Nullvektor ist, so sind die zu $x^k$ gehörigen Lagrange-Multiplikatoren
+  $u_i^k$ aus $\nabla f(x^k)+\sum\limits_{i\in I_k}u_i^ka_i=0$ zu bestimmen.
+  \begin{enumerate}[label=(S2\alph*)]
+    \item Falls $u_i^k\ge 0$ mit $i\in I_k$, so ist $x^k$ Optimalstelle. Stop!
+    \item Andernfalls sind der Index $r\in I_k$ mit $u_i^k<0$ zu bestimmen und es ist $I_k\leftarrow I_k\backslash\{r\}$\footnote{Interpretation: Entferne $r$ aus der Indexmenge $I_k$}
+    zu setzen.
+  \end{enumerate}
+  \item Bestimme $y^k:=\argmin f(y)$\footnote{Bemerkung: $x^{\star}=\argmin f(x) \leftrightarrow x^{\star}\ldots$ Minimumstelle von $f$} bei $y\in
+  M(I_k)$.\\
+  		Setze $\alpha_k=\max\left\{\alpha\in[0,1]:x^k+\alpha(y^k-x^k)\in G\right\}$, $x^{k+1}=x^k+\alpha(y^k-x^k)$, $I_{k+1}:=I_a(x^{k+1})$ und gehe mit
+  		$k\rightarrow k+1$ zu (S2)
+\end{enumerate}
+
+Bemerkung zu (S3):
+\begin{itemize}
+  \item[] Die im Punkt $x^k$ inaktive UNBen sind $a_j^Tx^k\le b_j$, $j\notin I_k$.
+  \item[] Wir bestimmen das maximale $\beta > 0$ derart, dass $\beta(y^k-x^k)+x^k$ noch zulässig ist, d.h. $a_j^T(\beta(y^k-x^k)+x^k)\le b_j$.
+  \item[] Dies ist wegen $a_j^Tx^k\le b_j$ und $\beta a_j^T(y^k-x^k)\le b_j-a_j^Tx^k$ stets für diejenigen $j$ erfüllt, für die $a_j^T(y^k-x^k)\le 0$ gilt. 
+  \item[] Also ergibt sich das gesuchte \begin{align*}
+  \beta & = \min\left\{\left.\ gfrac{b_j-a_j^Tx^k}{a_j^T(y^k-x^k)}\right|\ j\notin J_k\text{ mit } a_j^T(y^k-x^k)>0 \right\}.
+  \end{align*}
+  \item[] (S3) berechnet $\alpha_k=\min\left\{1,\beta\right\}$.
+\end{itemize}
+
+Bemerkung zum Algorithmus:
+\begin{itemize}
+  \item Die Voraussetzungen ``$C>0$'' und ``$\left\{a_i|\ i\in I_a(x)\right\}$ linear unabhängig $\forall k\in G$'' sichern die eindeutige Lösbarkeit des linearen Gleichungssystems in
+  (S2) und (S3)
+  \item Alle Iterationen $x^k$ sind zulässig. In der Praxis gilt bei jedem Durchlauf von (S3): $f(x^{k+1})<f(x^k)$. Der Algorithmus ist endlich (gutartiger, schneller Algorithmus).
+\end{itemize}
+
+\textbf{Finden eines zulässigen Startpunktes}:\\
+Zur Aufgabe 
+\begin{align}
+	f(x) & =\frac12 x^TQx+q^Tx\rightarrow\min\limits_{x\in\mathbb{R}^n} \text{ bei } Ax\le b \label{eq:startpkt_1}
+\end{align} 
+bildet Aufgabe 
+\begin{align}
+	y & \rightarrow\min\limits_{\substack{x\in\mathbb{R}^n\\y\in\mathbb{R}^1}} \text{ bei } Ax\le b+\mathds{1}_m y,\ 0\le y \label{eq:startpkt_2}\\
+	& \text{mit: } \mathds{1}_m\ldots \text{ Einheitsmatrix} \notag\\
+	\Leftrightarrow \begin{bmatrix} 0 & \ldots & 0 & 1 \end{bmatrix}\begin{bmatrix} x\\y \end{bmatrix} & \rightarrow\min  \text{ bei } \begin{bmatrix} A & -\mathds{1}_m\\0 & -1
+	\end{bmatrix}\begin{bmatrix} x\\y \end{bmatrix}\le \begin{bmatrix} b\\0 \end{bmatrix} \label{eq:startpkt_3}
+\end{align}
+Zulässiger Startwert:
+\begin{itemize}
+  \item[] $x^0$ beliebig und $y^0:=\max\left([0;\ Ax^0-b]\right)$
+  \item[] $\begin{bmatrix}\overline{x}\\ \overline{y} \end{bmatrix}$ sei Lösung der linearen Optimierungsaufgabe \eqnref{eq:startpkt_3}.
+  \item[] Falls $\overline{y}=0$, so gilt 
+  $A\overline{x}\le b$, d.h. $\overline{x}$ ist zulässig von \eqnref{eq:startpkt_1}.
+\end{itemize}
+
+\textbf{Erweiterungen des Algorithmus}:
+\begin{itemize}
+  \item Falls $Q=0$, d.h. $f(x)=q^Tx\rightarrow\min$ bei $Ax\le b$, so liegt eine Aufgabe der linearen Optimierung vor. In (S3) wir dann $\alpha_k:=\max\left\{ \alpha\ge 0: x^k+\alpha
+  s^k\in G \right\}$ wobei $s^k$ der auf $M(I_k)$ projizierte negative Gradient $-\nabla f(x^k)=-q$ ist.
+  \item Treten UNB und GNB gleichzeitig auf, d.h. $f(x)=\frac12 x^TQx+q^Tx\rightarrow\min$ bei $Ax\le b$ und $Cx=d$ so werden die GNB wie aktive UNB behandelt.
+ \end{itemize}
+
+\begin{exmp}
+Seien $A=\begin{bmatrix}1 & \frac13\\0 & 1\\ -1 & 0 \end{bmatrix}$, $b=\begin{bmatrix}1\\1\\0 \end{bmatrix}$, $Q=\begin{bmatrix}2 & 0\\ 0 & 2
+\end{bmatrix}$, $q=\begin{bmatrix}-2\\-4 \end{bmatrix}$.
+\begin{enumerate}[label=(S\arabic*)]
+  \item Mit $x^0:=\begin{bmatrix}0\\0 \end{bmatrix}$ ist $I_0=\{3\}$.
+  \item Projektion von $\nabla f(x^0)=\begin{bmatrix}-2\\-4 \end{bmatrix}$ auf $M(I_0)=\left\{\begin{bmatrix}0\\x_2 \end{bmatrix}:x_2\in\mathbb{R}
+  \right\}$ ist $\begin{bmatrix}0\\-4 \end{bmatrix}\neq 0$.
+  \item Man findet $y^0=\begin{bmatrix}0\\2 \end{bmatrix}$, $x^1=\begin{bmatrix}0\\1 \end{bmatrix}$, $I_1=\{2,3\}$.
+  \item[(S2)] Projektion von $\nabla f(x^1)=\begin{bmatrix}-2\\-2 \end{bmatrix}$ auf $M(I_1)=\left\{\begin{bmatrix}0\\1
+  \end{bmatrix}\right\}$\footnote{Bemerkung: d.h. nur ein Punkt! Projektion auf 1 Punkt ist immer der Nullvektor.} ist $\begin{bmatrix}0\\0
+  \end{bmatrix}$ an der Stelle an der beide Restriktionen wirken mit $I_1=\{2,3\}$.\\
+  Lagrange-Multiplikatoren $\begin{bmatrix}u_2^1\\u_3^1 \end{bmatrix}=\begin{bmatrix}2\\-2 \end{bmatrix}$, setze $I_1\leftarrow
+  I_1\backslash\{3\}=\{2\}$.
+  \item[(S3)] Man findet $y^1=\begin{bmatrix}1\\1 \end{bmatrix}$, $x^2=\begin{bmatrix}\frac23\\1 \end{bmatrix}$, $I_2=\{1,2\}$.
+  \item[(S2)] Projektion von $\nabla f(x^2)=\begin{bmatrix}-\frac23\\-2 \end{bmatrix}$ auf $M(x^2)$ ist $\begin{bmatrix}0\\0 \end{bmatrix}$.\\
+  		Lagrange-Multiplikatoren $\begin{bmatrix}u^2_1\\u_2^2 \end{bmatrix}=\begin{bmatrix}\frac23\\\frac{16}{9} \end{bmatrix}\ge 0$. Stop!
+\end{enumerate}
+\end{exmp}
+
+\textbf{Grafische Darstellung der Optimierungsaufgabe und deren Lösung}:\\
+\newline
+\begin{minipage}[c]{0.5\textwidth}
+Zielfunktion:
+\begin{itemize}
+  \item[] $f(x)=(x_1-1)^2+(x_2-2)^2-5$ 
+\end{itemize}
+Zulässiger Bereich:
+\begin{enumerate}[label=(\arabic*)]
+  \item $x_1+\frac{x_2}{3}\le 1$
+  \item $x_2\le 1$
+  \item $x_1 \ge 0$ 
+\end{enumerate}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.5\textwidth}
+Bild folgt
+\end{minipage}
+
+\begin{uea}
+Aufgabe: 
+\begin{itemize}
+  \item[] Erweitern Sie den Algorithmus um die Auffindung eines zulässigen Startpunktes!
+\end{itemize}
+Lösung: 
+\end{uea}
+
+\begin{uea}
+Aufgabe: 
+\begin{itemize}
+  \item[] Erweitern Sie den Algorithmus um die Aufgabe der linearen Optimierung und die Verwendung von GNB als aktive UNB!
+\end{itemize}
+Lösung: 
+\end{uea}

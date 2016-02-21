@@ -1,0 +1,20 @@
+\begin{tikzpicture}[scale=2.0]
+
+	\draw[->] (-0.5,0) -- (3,0);
+	\draw[->] (0,-0.5) -- (0,2);
+	
+	\draw[-] (-1,2) -- (0.25, -0.5);
+	\draw[-] (-0.5,-0.25) -- (3, 1.5);
+	
+	\draw[->,color=blue] (2,2) -- node[anchor=east] {$I-P$} (-0.4,0.8);
+	\draw[->,color=blue] (2,2) -- node[anchor=west] {$P$} (2.4, 1.2);
+	
+	\draw (2,2) node[branch] {};
+	\draw (2,2) node[anchor=south] {$b$};
+	\draw (2.4,1.2) node[anchor=west] {$Pb=A\widehat{x}$};
+	\draw (-0.4,0.8) node[anchor=east] {$(I-P)b$};
+	
+	\rechterWinkel{0,0}{27}{.25}
+	\rechterWinkel{2.4,1.2}{27}{.25}
+		
+\end{tikzpicture}

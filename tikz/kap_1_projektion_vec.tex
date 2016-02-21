@@ -1,0 +1,24 @@
+\begin{tikzpicture}[auto, scale=2.0, >=latex']
+
+	\draw[->] (-0.5,0) -- (3,0);
+	\draw[->] (0,-0.5) -- (0,3);
+	
+	\draw[thick,color=black] plot[samples=200, domain=-0.5:3] (\x,{0.5*\x+1});
+	\draw[thick,color=black] plot[samples=200, domain=-0.5:3] (\x,{0.5*\x});
+	
+	\draw[->,color=blue] (1,1.5) -- node[anchor=north] {$\mathcal{P}_v$} (1.5,1.75);
+	\draw[dotted] (1.5,1.75) -- (1.25,2.25);
+	\draw[->,color=blue] (1,1.5) -- node[anchor=east] {$v$} (1.25,2.25);
+	
+	\rechterWinkel{1.5,1.75}{27}{.25}
+	
+	\draw[<-] (1.25,0.625) -- node[anchor=east] {$\mathcal{P}$} (1,1.125);
+	\draw[->, dotted] (0,0) -- (1,1.125);
+
+	\rechterWinkel{1.25,0.625}{27}{.25}
+	
+	\draw (1.25,0.625) node[anchor=north] {$\mathcal{P}_v$};
+	\draw (1,1.125) node[anchor=south] {$v$};
+	\draw (2.5,1.25) node[anchor=west] {$\{x\in\mathbb{R}^n: Cx=0\}$};
+	
+\end{tikzpicture}

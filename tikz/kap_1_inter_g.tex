@@ -1,0 +1,14 @@
+\begin{tikzpicture}[auto, >=latex'] 
+	\draw plot[smooth cycle] coordinates{(0,0) (1,0) (2,1) (1,2)};
+	
+	\draw (1.5,1.5) node[anchor=north] {$G$};
+	\draw (2,1) node[branch] (online) {};
+	\draw (1.8,0.1) node[branch] (outline) {};
+	\draw (1,1) node[branch] {};
+	
+	\draw (3,1) node[anchor=west] (txt) {nicht zu $\Inter G$};
+	
+	\draw [->] (txt) -- (online);
+	\draw [->] (txt) -- (outline);
+	
+\end{tikzpicture}

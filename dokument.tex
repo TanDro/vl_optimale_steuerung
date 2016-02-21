@@ -1,0 +1,113 @@
+%% Dokumentenklasse (Koma Script) -----------------------------------------
+\documentclass[%
+   %final,      % fertiges Dokument
+	 % --- Paper Settings ---
+   paper=a4,%
+   paper=portrait, % landscape
+   pagesize, % driver
+   % --- Base Font Size ---
+   fontsize=13bp,%
+	 % --- Koma Script Version ---
+   version=last, %
+ ]{scrreprt} % Classes: scrartcl, scrreprt, scrbook
+
+%%%% Dokument/PDF Metadaten
+\title{Vorlesung - Optimale Steuerung kontinuierlicher Prozesse}
+\author{Jens Wurm}
+
+% Encoding der Dateien (sonst funktionieren Umlaute nicht)
+% Fuer Linux -> utf8
+% Fuer Windows, alte Linux Distributionen -> latin1
+
+% Empfohlen latin1, da einige Pakete mit utf8 Zeichen nicht
+% funktionieren, z.B: listings, soul.
+%\usepackage[latin1]{inputenc}
+%\usepackage[ansinew]{inputenc}
+\usepackage[utf8]{inputenc}
+%\usepackage{ucs}
+%\usepackage[utf8x]{inputenc}
+
+%%% Preambel
+\input{../doc_base/preambel/settings}
+\input{../doc_base/preambel/preambel}
+%
+%%%% Neue Befehle
+\input{../doc_base/macros/newcommands}
+\input{../doc_base/macros/TableCommands}
+
+%%% Silbentrennung
+\input{../doc_base/preambel/Hyphenation}
+
+%% Dokument Beginn
+%% Gliederung:
+%%		Deckblatt
+%%		Inhaltsverzeichnis..................I
+%%		Abkürzungsverzeichnis...............II
+%%		Verwendete Formelm..................III
+%%		Verwendete Indizies.................IV
+%%		Abbildungsverzichnis................V
+%%		(Tabellenverzeichnis................VI)
+%%		1. Einleitung.......................1
+%%		2. .................................3
+%%		.
+%%		.
+%%		.
+%%		Literatur- und Quellenverzeichnis...56
+%%		Erklärung...........................60
+%%		(Danksagung.........................61)
+%%		Anhang..............................A-1
+
+\begin{document}
+% Deckblatt
+\input{content/0_titel}
+\cleardoublepage
+\frontmatter
+\cleardoublepage
+% Inhaltsverzeichnis in den PDF-Links eintragen
+\tableofcontents
+\cleardoublepage
+% Abkuerzungsverzeichnis
+\input{content/0_1_abkuerzungsverzeichnis}
+\cleardoublepage
+% Verzeichnis der Formelzeichen
+\input{content/0_2_formelverzeichnis}
+%\cleardoublepage
+% Verzeichnis der verwendeten Indizes
+%\input{content/0_3_indizes}
+%\cleardoublepage
+% Verzeichnis der verwendeten Symbole
+\input{content/0_4_symbole}
+\cleardoublepage
+% Abbildungs- und Tabellenverzeichnis
+\listoffigures
+\cleardoublepage
+\listoftables
+\cleardoublepage
+
+% Hauptteil
+\mainmatter
+\input{content/1_kapitel}
+\input{content/2_kapitel}
+\input{content/3_kapitel}
+\input{content/4_kapitel}
+
+
+% Anhang (Bibliographie darf im deutschen nicht in den Anhang!)
+\bibliography{bib/quellen}
+\cleardoublepage
+
+% Anhang
+\backmatter
+\appendix
+\input{content/10_anhang}
+\input{content/11_anhang_ue}
+
+\IfDefined{printindex}{\printindex}
+\IfDefined{printnomenclature}{\printnomenclature}
+\cleardoublepage
+\leerseite{}
+\cleardoublepage
+
+
+\end{document}
+

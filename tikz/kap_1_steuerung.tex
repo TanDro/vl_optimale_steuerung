@@ -1,0 +1,9 @@
+\begin{tikzpicture}[auto, scale=0.65, every node/.style={scale=0.65}, node distance=2.0cm,>=latex']
+	\node [input, node distance=2.5cm] (input) {};
+	\node [block, node distance=2.5cm, right of=input] (prozess) {$P$};
+	\node [output, node distance=2.5cm, right of=prozess] (output) {};
+
+	\draw [->] (input) -- node {$u\in U$} (prozess);
+	\draw [->] (prozess) -- node {$y\in Y$}  (output);
+		
+\end{tikzpicture}

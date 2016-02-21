@@ -1,0 +1,29 @@
+\begin{tikzpicture}[auto, scale=1.5, >=latex']
+
+	\draw[->] (-2,0) -- (2,0) node[right] {$x_1$};;
+	\draw[->] (0,-2) -- (0,2) node[above] {$x_2$};;
+	
+   	\draw (-2,0) node[anchor=north] {-2};
+   	\draw (-1,0) node[anchor=north] {1};
+   	\draw (0,0) node[anchor=north] {0};
+   	\draw (1,0) node[anchor=north] {1};
+   	\draw (2,0) node[anchor=north] {2};
+
+   	\draw (0,-1) node[anchor=east] {1};
+   	\draw (0,1) node[anchor=east] {1};
+   	\draw (0,2) node[anchor=east] {2};
+
+	\draw (0,0) node[anchor=east] {$x^{\ast}$};
+   	
+   	\foreach \x in {-2,-1.5,...,1.5}
+     	\draw (\x,0.02) -- (\x,-0.02);
+   	
+   	\foreach \y in {-2,-1.5,...,1.5}
+     	\draw (0.02,\y) -- (-0.02,\y);
+
+	\draw[thick,color=green] plot[samples=200, domain=-1.25:1.25] (\x,{\x*\x*\x});
+
+	\draw[thick,color=blue] (-1,0) circle (0.5);
+	\draw[thick,color=blue] (-1,0) circle (1);
+
+\end{tikzpicture}

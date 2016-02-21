@@ -1,0 +1,8 @@
+\begin{tikzpicture}[auto, >=latex'] 
+
+	\draw[->] (0,0) -- (4,0) node[right] {$x$};
+	\draw[->] (0,0) -- (0,4) node[above] {$f(x)$};
+	
+	\draw[black] plot[samples=200, domain=0:4] (\x,{2.0+sin(6*\x r-pi)});
+			
+\end{tikzpicture}

@@ -1,0 +1,27 @@
+\begin{tikzpicture}[auto, >=latex'] 
+	\draw (0,-0.25) .. controls (1,-0.5) .. (3,0.5);
+	\draw (-0.5,-2.25) .. controls (1,-2.5) and (2.5,-2) .. (4,-0.5);
+	\draw (2,0.25) .. controls (3,0) and (3.5,-0.25) .. (3.75,-1.25);
+	
+	\draw (0,-0.25) node[anchor=east] {$g_3=0$};
+	\draw (-0.5,-2.25) node[anchor=east] {$g_1=0$};
+	\draw (2,0.25) node[anchor=east] {$g_2=0$};
+	\draw (-0.25,-1.25) node[anchor=east] {$G$};
+
+	\draw[->] (3.625,-0.85) -- (4.77,-1.2);
+	\draw[->] (3.625,-0.85) -- (4.5, -1.7);
+	\draw[->] (3.625,-0.85) -- (4.6, -0.6);
+	
+	\draw (4.77,-1.2) node[anchor=west] {$-\nabla f(\overline{x})$};
+	\draw (4.5, -1.7) node[anchor=west] {$\nabla g_1(\overline{x})$};
+	\draw (4.6, -0.6) node[anchor=west] {$\nabla g_2(\overline{x})$};
+
+	\draw (4.77,-1.2) circle (0.4);
+	\draw (4.77,-1.2) circle (0.8);
+	\draw (4.77,-1.2) circle (1.2);
+	\draw (3.625,-0.85) circle (0.05);
+	\draw (3.625,-0.85) node[anchor=east] {$\overline{x}$};
+
+	\draw (4.77,0) node[anchor=south] {$f= const.$};
+	
+\end{tikzpicture}

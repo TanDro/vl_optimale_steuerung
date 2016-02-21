@@ -1,0 +1,35 @@
+\begin{tikzpicture}[auto, scale=2.0, >=latex']
+
+	\fill[pattern=north east lines wide, pattern color=red] (0,0) rectangle (2, -0.2);
+	\fill[pattern=north east lines wide, pattern color=orange] (0,0) rectangle (-0.2, 2.5);
+
+	\draw[->] (-2,0) -- (2,0) node[right] {$x_1$};;
+	\draw[->] (0,-1) -- (0,2.5) node[above] {$x_2$};;
+	
+   	\draw (-2,0) node[anchor=north] {-2};
+   	\draw (-1,0) node[anchor=north] {1};
+   	\draw (0,0) node[anchor=north] {0};
+   	\draw (1,0) node[anchor=north] {1};
+   	\draw (2,0) node[anchor=north] {2};
+
+   	\draw (0,-1) node[anchor=east] {1};
+   	\draw (0,1) node[anchor=east] {1};
+   	\draw (0,2) node[anchor=east] {2};
+   	
+   	\foreach \x in {-2,-1.5,...,1.5}
+     	\draw (\x,0.02) -- (\x,-0.02);
+   	
+   	\foreach \y in {-1,-0.5,...,2}
+     	\draw (0.02,\y) -- (-0.02,\y);
+
+	\draw[thick,color=black] plot[samples=200, domain=-1:2] (\x,{\x});
+
+	\draw[thick,color=yellow] plot[samples=200, domain=1:2] (\x,{sqrt(\x*\x-1)});
+	\draw[thick,color=yellow] plot[samples=200, domain=1:1.4] (\x,{-sqrt(\x*\x-1)});
+	
+	\draw[thick,color=green] plot[samples=200, domain=-1.75:1.75] (\x,{sqrt(\x*\x+1)});
+	
+	\draw[thick,color=blue,pattern=north east lines wide, pattern color=blue] plot[samples=200, domain=0:1] (\x,{4/(\x+1)-2});
+
+
+\end{tikzpicture}
