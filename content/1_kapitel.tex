@@ -37,7 +37,7 @@ Sei $F:D\subset\mathbb{R}^n\rightarrow\mathbb{R}$. Eine Stelle $x_0\in D$ heißt
   \item Minimumstellen und Maximumstellen treten gemeinsam auf: Extremstellen
 \end{itemize}
 \end{defi}
-\begin{exmp}
+\begin{exmp}\hspace{1cm}
 \begin{minipage}[c][][c]{0.3\textwidth}
 \centering
 \input{tikz/kap_1_beispiel_minmaxstelle.tex}
@@ -154,7 +154,10 @@ Geometrische Interpretation im Fall $n=2$, $m=1$:
   \end{tabular}
 \end{enumerate}
 \begin{exmp}
-Gesucht ist die Extremstelle von $f(x,y)=4x^2-3xy$ auf $K=\left\{(x,y)^T\in\mathbb{R}|\ x^2+y^2\le 1 \right\}$.\\
+Gesucht ist die Extremstelle von 
+\begin{align*}
+	f(x,y) & = 4x^2-3xy \text{ auf } K=\left\{(x,y)^T\in\mathbb{R}|\ x^2+y^2\le 1 \right\}.
+\end{align*}
 Nach Satz \ref{satz:1} findet man 
 \begin{align*}
 	\begin{bmatrix}
@@ -286,7 +289,7 @@ Bemerkung:
 \begin{itemize}
   \item[] $x$ ist Maximumstelle von $f$ genau dann, wenn $x$ Minimumstelle von $-f$ ist.  
 \end{itemize} 
-\begin{gegenexmp}
+\begin{gegenexmp}\hspace{1cm}
 \begin{minipage}{0.5\textwidth}
 \begin{align*}
 f(x) & = (x_1+1)^2+x^2_2\\
@@ -407,7 +410,7 @@ beschreiben und für die lokale Minimumstelle $x^{\ast}$ von $f$ auf $G$  gilt $
 mit $g(x^{\ast})\le 0$, $u^{\ast}\ge 0$, $u^{\ast T}g(x^{\ast})=0$, $h(x^{\ast})=0$ und dem \ac{KTP}: $\begin{pmatrix}x^{\ast}, & u^{\ast}, & \lambda^{\ast} \end{pmatrix}$
 \end{exmp}
  
-\begin{gegenexmp}
+\begin{gegenexmp}\hspace{1cm}
 \begin{minipage}{0.5\textwidth}
 \begin{align*}
 f(x) & = (x_1+1)^2+x^2_2\\
@@ -629,8 +632,11 @@ Zulässiger Startwert:
  \end{itemize}
 
 \begin{exmp}
-Seien $A=\begin{bmatrix}1 & \frac13\\0 & 1\\ -1 & 0 \end{bmatrix}$, $b=\begin{bmatrix}1\\1\\0 \end{bmatrix}$, $Q=\begin{bmatrix}2 & 0\\ 0 & 2
-\end{bmatrix}$, $q=\begin{bmatrix}-2\\-4 \end{bmatrix}$.
+Seien 
+\begin{align*}
+	A & =\begin{bmatrix}1 & \frac13\\0 & 1\\ -1 & 0 \end{bmatrix},\quad b=\begin{bmatrix}1\\1\\0 \end{bmatrix},\quad Q=\begin{bmatrix}2 & 0\\ 0 & 2
+	\end{bmatrix},\quad q=\begin{bmatrix}-2\\-4 \end{bmatrix}.
+\end{align*}
 \begin{enumerate}[label=(S\arabic*)]
   \item Mit $x^0:=\begin{bmatrix}0\\0 \end{bmatrix}$ ist $I_0=\{3\}$.
   \item Projektion von $\nabla f(x^0)=\begin{bmatrix}-2\\-4 \end{bmatrix}$ auf $M(I_0)=\left\{\begin{bmatrix}0\\x_2 \end{bmatrix}:x_2\in\mathbb{R}
