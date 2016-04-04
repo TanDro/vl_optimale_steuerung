@@ -217,7 +217,7 @@ z.B. unter der Annahme konstanter Störgrößen gemäß $\hat{d}_m[k+i|k]:=d_m[k
 Weiteren beschriebene Vorgehensweise anwendbar ist.
 
 \subsection{Darstellung des Gütefunktionals und der Beschränkungen für die Steuer- und Regelgrößen}
-Die BEstimmung der Steuergrößen $\Delta\hat{u}[k+i|k]$ für den \ac{MPR}-Prozess ($i=0,1,\ldots,H_u-1$) erfolgt so, dass ein vorgegebenes Gütefunktional minimiert wird und dabei
+Die Bestimmung der Steuergrößen $\Delta\hat{u}[k+i|k]$ für den \ac{MPR}-Prozess ($i=0,1,\ldots,H_u-1$) erfolgt so, dass ein vorgegebenes Gütefunktional minimiert wird und dabei
 vorgegebene Schranken für die Steuergrößen und für die Regelgrößen eingehalten werden.
 
 Im Folgenden werden drei Klassen von Gütefunktionalen betrachtet, das quadratische Gütefunktional ($\|\cdot\|_2$-Funktional)
@@ -260,7 +260,7 @@ Die Beschränkungen der Regelgröße, der Steuergrößendifferenzen und der Steu
 \begin{align}
 M[k]\begin{bmatrix}
 \mathcal{Z}[k]\\ \Delta\mathcal{U}[k]\\ \mathcal{U}[k]\\ 1
-\end{bmatrix} & \le 0\label{eqn:kap_4_lin_nebenbedingungen}
+\end{bmatrix} & \le 0	\label{eqn:kap_4_lin_nebenbedingungen}
 \end{align}
 dargestellt.
 \begin{exmp}
@@ -270,7 +270,7 @@ Gegeben seien ein \ac{SISO}-Prozess, das Gütefunktional
 \end{align*}
 und die Nebenbedingungen
 \begin{align}
-\begin{split}\label{ref:eqn:kap_4_bsp_1_nebenbedingungen}
+\begin{split}\label{eqn:kap_4_bsp_1_nebenbedingungen}
 	\left|\hat{y}[k+i|k]-r[k+H_p|k] \right| & \le \frac{1}{i+1}\left| y[k] - r[k+H_p|k] \right|\quad (i=1,\ldots,H_p)\\
 	\hat{y}[k+H_p|k] & = r[k+H_p|k].
 \end{split}
@@ -287,11 +287,11 @@ Die Nebenbedingungen der Aufgabe sind Forderungen an den Verlauf der Regelgröß
 an den Wert $r[k+H_p|k]$ der Referenztrajektorie am Ende des Prädiktionshorizontes erzwungen sowie für den Zeitpunkt $k+H_p$ ein exaktes Erreichen dieses Wertes verlangt. Die
 eingezeichnete Trajektorie $z^{(1)}[k+i|k]$ ist ein Beispiel für einen diesbezüglich zulässigen Verlauf. Stellt man zusätzlich die Monotonieforderung
 \begin{align}
-	\hat{y}[k+i+1|k] & \ge \hat{y}[k+i|k],
+	\hat{y}[k+i+1|k] & \ge \hat{y}[k+i|k], \label{eqn:kap_4_monotonie_anf}
 \end{align}
 so darf die Regelgröße den Wert $r[k+H_p|k]$ nicht überschreiten. Der Verlauf $z^{(2)}[k+i|k]$ ist dann in diesem Sinne zulässig.
 \end{exmp}
-Es ist eine Übung unter \picref{cha:anhang_uebungen}{Übungen} zu finden.
+Es ist eine Übung unter \picref{sec:uebung_darstellung_guetefunktional}{Darstellung des Gütefunktionals und der Beschränkungen für die Steuer- und Regelgrößen} im Anhang zu finden.
 
 \section{Darstellung der Steuerungsaufgabe als Optimierungsproblem und numerische Lösung}
 \subsection{Aufgabe mit $\|\cdot\|_2$-Funktionial ohne Beschränukung der Steuer- und Regelgröße}
@@ -667,10 +667,10 @@ also ist insbesondere auch
 \end{align}
 Man findet 
 \begin{align*}
-	\mathcal{V}(x[k+1]) & \le \mathcal{V}(x[k])-\left\| Q_y z^{\ast}[k+1|k]\right\|_2^2-\left\| Q_{\Delta u}\Delta u^{\ast}[k|k]\right\|_2^2.
+	\mathcal{V}(x[k+1]) & \le \mathcal{V}(x[k])-\left\| Q_y z^{\ast}[k+1|k]\right\|_2^2-\left\| Q_{\Delta u}\Delta u^{\ast}[k|k]\right\|_2^2,
 \end{align*}
-also gilt $\mathcal{V}(x[k+1])\le \mathcal{V}(x[k])$. Weiter wird in ? gezeigt, dass es im Fall $x[k]\neq 0$ ein $i_0\in\left\{ 1,\ldots,n_x \right\}$ gibt, wobei $n_x$ die Länge des
-Vektors $x[k]$ bezeichnet, so dass sogar $\mathcal{V}(x[k+i_0])<\mathcal{V}(x[k])$ erfüllt ist. Wegen $\mathcal{V}\ge 0$ und $\mathcal{V}$ stetig, ist $\mathcal{V}$ eine
+also gilt $\mathcal{V}(x[k+1])\le \mathcal{V}(x[k])$. Weiter wird in \cite{Maciejowski2002} gezeigt, dass es im Fall $x[k]\neq 0$ ein $i_0\in\left\{ 1,\ldots,n_x \right\}$ gibt, wobei
+$n_x$ die Länge des Vektors $x[k]$ bezeichnet, so dass sogar $\mathcal{V}(x[k+i_0])<\mathcal{V}(x[k])$ erfüllt ist. Wegen $\mathcal{V}\ge 0$ und $\mathcal{V}$ stetig, ist $\mathcal{V}$ eine
 Ljapunov-Funktion zur Gleichgewichtslage $x=0$. Und bei geeigneter Indizierung ist $\mathcal{V}$ sogar eine strikte Ljapunov-Funktion. Weiter folgt aus $\left\| x[k]
 \right\|_2\rightarrow+\infty$ dann $\mathcal{V}(x[k])\rightarrow +\infty$. Also ist der geschlossene Regelkreis asymptotisch stabil!
 \begin{remark}
@@ -679,5 +679,5 @@ positiv definite Matrix $\bar{Q}$. Diese Gewichtungsmatrix kann gemäß \eqnref{
 $\bar{Q}=\text{\lstinline[columns=fixed]{dlyap}}\left(A^T,C_y^TQ_y^TQ_yC_y\right)$ bestimmt werden. Die Gewichtung des Endzustandes ist praktisch eine wesentlich schwächere
 Voraussetzung als das Einführen einer Endbedingung der Form $\hat{x}[k+H_u|k]=0$ wie in \secref{subsec:kap_4_stab_geschl_rk}.\\
 Die beschriebene Vorgehensweise kann auf instabile Prozesse, auf von Null verschiedene Referenztrajektorien, auf beschränkte Steuer- und Regelgrößen sowie auf $\|.\|_1$- und
-$\|\cdot\|_{\infty}$-Gütefunktionale erweitert werden.
+$\|.\|_{\infty}$-Gütefunktionale erweitert werden.
 \end{remark}
