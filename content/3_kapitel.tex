@@ -9,3 +9,88 @@
 
 \section{Das zeitkontinuierliche \NoCaseChange{\acl{LQR}}-Problem}
 
+\section{Beispiel der räumlichen Führung (\ac{PN})}
+\subsection{Modellbildung}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Geometrie des Problems der räumlichen Führung}
+	\label{fig:kap_3_bsp_rf_geometrie}
+\end{figure}
+Die Geometrie des Problems der räumlichen Führung  soll vereinfachend in der Ebene betrachtet werden (siehe \figref{fig:kap_3_bsp_rf_geometrie}). In $(r,\sigma)$-Koordinaten wird es
+beschrieben durch
+\begin{align}
+	\begin{split}\label{eqn:kap_3_bsp_rf_rskoord}
+		r\dot{\sigma} & = v_1\sin(\varphi - \sigma) - v_2\sin(\gamma - \sigma)\\
+		\dot{r} & = v_1\cos(\varphi - \sigma) - v_2\cos(\gamma - \sigma)
+	\end{split}
+\end{align}
+und in $(x,y)$-Koordinaten durch
+\begin{align}
+	\begin{aligned}\label{eqn:kap_3_bsp_rf_xykoord}
+		\dot{x}_2 & = v_2 \cos \gamma  & \qquad \dot{x}_1 & = v_1 \cos \varphi\\
+		\dot{y}_2 & = v_2 \sin \gamma  & \qquad \dot{y}_1 & = v_1 \sin \varphi.
+	\end{aligned}
+\end{align}
+Gegeben sind der Gierwinkel $\varphi(t)$, die Geschwindigkeiten $v_1(t)$ und $v_2(t)$ sowie die Anfangswerte $x_1(0)$, $y_1(0)$, $x_2(0)$, $y_2(0)$. Es gelte $v_1(t) < v_2(t)$. Mit
+\begin{align}\label{eqn:kap_3_bsp_rf_sigma}
+\sigma & = \left\{ \begin{array}{rl}
+	\arcsin\frac{y_1-y_2}{r}	& \text{für } x_1\geq x_2\\
+	\pi-\arcsin\frac{y_1-y_2}{r} & \text{für } x_1 < x_2
+\end{array} \right.
+\end{align}
+und
+\begin{align}
+	r & = \sqrt{ (x_1 - x_2)^2 + (y_1 - y_2)^2 } \label{eqn:kap_3_bsp_rf_regelgesetz}
+\end{align}
+werden die Anfangswerte $r(0)$ und $\sigma(0)$ für \eqnref{eqn:kap_3_bsp_rf_rskoord} berechnet (zum Wertebereich von $\sigma$ siehe \figref{fig:kap_3_bsp_rf_wertebereich}). Die Funktion
+$\gamma(t)$ dient als Steuerfunktion. Im Falle der sogenannten Proportionalnavigation wird das Regelgesetz
+\begin{align}
+	\dot{\gamma} & = a \dot{\sigma}
+\end{align}
+verwendet, wobei für die Proportionalverstärkung $a\geq 1$ gilt.
+
+Das Annäherungsverhalten kann mit \eqnref{eqn:kap_3_bsp_rf_rskoord} zusammen mit \eqnref{eqn:kap_3_bsp_rf_regelgesetz} simuliert werden (ergibt drei Zustandsvariablen). Soll die
+Flugbahn in die Kartenebene gezeichnet werden, so wird man für die Simulation \eqnref{eqn:kap_3_bsp_rf_xykoord} zusammen mit \eqnref{eqn:kap_3_bsp_rf_regelgesetz} (ergibt fünf
+Zustandsvariablen), wobei die erforderliche Messgröße $\dot{\sigma}$ entweder aus \eqnref{eqn:kap_3_bsp_rf_rskoord} (weitere zwei Zustandsvariablen) oder ohne Vergrößerung der Anzahl
+der Zustandsvariablen wie folgt berechnet wird. Mit
+\begin{align}
+	\zeta & := \begin{bmatrix}
+	y_2 - y_1\\
+	x_1 - x_2
+	\end{bmatrix},\quad \zeta_0:=\frac{\zeta}{\left\| \zeta \right\|_2},\quad \alpha_1:=\zeta_0^T\begin{bmatrix}
+	\dot{x}_1 \\ \dot{y}_1
+	\end{bmatrix},\quad \alpha_2:=\zeta_0^T\begin{bmatrix}
+	\dot{x}_2\\ \dot{y}_2
+	\end{bmatrix}
+\end{align}
+und wegen $\alpha_1 = v_1 \sin(\varphi - \sigma)$, $\alpha_2 = v_2 \sin(\gamma - \sigma)$ (siehe \figref{fig:kap_3_bsp_rf_geschwindigkeit}), $r = \left\|\zeta \right\|_2$ und
+\eqnref{eqn:kap_3_bsp_rf_rskoord} erhält man
+\begin{align}
+	\dot{\sigma} & = \frac{\zeta_0^T\left( \begin{bmatrix}
+	\dot{x}_1 \\ \dot{y}_1
+	\end{bmatrix} - \begin{bmatrix} 
+	\dot{x}_2 \\ \dot{y}_2
+	\end{bmatrix}\right)}{\left\| \zeta \right\|_2}.	\label{eqn:kap_3_bsp_rf_messgroesse}
+\end{align}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{$\sigma$-Wertebereich für $x_2=y_2=0$ und $(x_1,y_1)$ auf dem Kreis $\mathcal{K}$}
+	\label{fig:kap_3_bsp_rf_wertebereich}
+\end{figure}
+\begin{remark}
+Die Berechnung der Ableitung erfolgt in \eqnref{eqn:kap_3_bsp_rf_messgroesse} ohne die Verwendung von Winkelfunktionen. Alternativ kann $\dot{\sigma}$ auch über
+$r\dot{\sigma}=v_1\sin(\varphi - \sigma)-v_2\sin(\gamma - \sigma)$ bestimmt werden. Das dafür nötige $\sigma$ wird mittels \eqnref{eqn:kap_3_bsp_rf_sigma} bestimmt. Das dabei nur die
+Einschränkung der Sinus-Funktion auf $\left[-\frac{\pi}{2},\frac{3}{2}\pi \right]$ betrachtet wird und damit bei einer kontinuierlichen Bewegung des Körpers 2 auf einer Kreisbahn um den Körper 1 bei
+$\sigma = -\frac{\pi}{2}$ ein Sprung der Höhe $2\pi$ auftritt (\figref{fig:kap_3_bsp_rf_wertebereich}), ist unproblematisch, da dieser Sprung durch die Periodizität der Sinunsfunktion
+nicht in den Funktionswerten $\sin(\varphi - \sigma)$ und $\sin(\gamma - \sigma)$ erscheint.
+\end{remark}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Komponenten der Geschwindigkeitsvektoren}
+	\label{fig:kap_3_bsp_rf_geschwindigkeit}
+\end{figure}
+
+\subsection{Parallele Annäherung als Spezialfall der \ac{PN}}

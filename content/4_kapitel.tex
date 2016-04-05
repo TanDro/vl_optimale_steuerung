@@ -158,9 +158,9 @@ so erhält man aus \eqnref{eqn:kap_4_zustandsraummodell} die Darstellung des \ac
 \hat{x}[k+H_p|k]
 \end{bmatrix} & = \underbrace{\begin{bmatrix}
 A\\ \vdots\\ A^{H_u}\\ A^{H_u+1}\\ \vdots\\ A^{H_p}
-\end{bmatrix}}_{\Psi}x[k]+\underbrace{\begin{bmatrix}
+\end{bmatrix}}_{\mathrm{\Psi}}x[k]+\underbrace{\begin{bmatrix}
 B\\ \vdots \\ \sum_{i=0}^{H_u-1}A^iB\\ \sum_{i=0}^{H_u}A^iB\\ \vdots \\ \sum_{i=0}^{H_p-1}A^iB
-\end{bmatrix}}_{\Upsilon}u[k-1]\\
+\end{bmatrix}}_{\mathrm{\Upsilon} }u[k-1]\\
 &\quad +\underbrace{\begin{bmatrix}
 B 						&	\ldots 	& 	0\\
 \vdots					&	\ddots	& 	\vdots\\
@@ -168,7 +168,7 @@ B 						&	\ldots 	& 	0\\
 \sum_{i=0}^{H_u}A^iB	& \ldots	& 	AB+B\\
 \vdots					&			& 	\vdots\\
 \sum_{i=0}^{H_p-1}A^iB	& \ldots	& 	\sum_{i=0}^{H_p-H_u}A^iB
-\end{bmatrix}}_{\Theta} \underbrace{\begin{bmatrix}
+\end{bmatrix}}_{\mathrm{\Theta}} \underbrace{\begin{bmatrix}
 \Delta\hat{u}[k|k]\\
 \vdots\\
 \Delta\hat{u}[k+H_u-1|k]
@@ -195,9 +195,9 @@ die man mit
 	\Delta\hat{u}[k+H_u-1|k]
 	\end{bmatrix}
 \end{align*}
-und entsprechender Defintion der Matrizen $\mathrm{\Upsilon}$, $\Psi$ und $\Theta$ kürzer in der Form % TODO
+und entsprechender Defintion der Matrizen $\mathrm{\Upsilon}$, $\mathrm{\Psi}$ und $\mathrm{\Theta}$ kürzer in der Form
 \begin{align}
-\mathcal{Y}[k] & = \underbrace{\Psi x[k]+\Upsilon u[k-1]}_{\text{freie Bewegung}}+\Theta\Delta\mathcal{U}[k] \label{eqn:kap_4_zustandsraummodell_steuerdiff}
+\mathcal{Y}[k] & = \underbrace{\mathrm{\Psi} x[k]+\mathrm{\Upsilon} u[k-1]}_{\text{freie Bewegung}}+\mathrm{\Theta}\Delta\mathcal{U}[k] \label{eqn:kap_4_zustandsraummodell_steuerdiff}
 \end{align}
 schreiben kann.
 
@@ -326,12 +326,13 @@ gilt
 \begin{align}
 	V(k) & = \left\| \mathcal{Q}_{y}\left(\mathcal{Z}[k]-\mathcal{T}[k]\right) \right\|_2^2 + \left\| \mathcal{Q}_{\Delta\mathcal{U}}\Delta\mathcal{U}[k] \right\|_2^2
 \end{align}
-Mit $\mathcal{E}[k]:=\mathcal{T}[k]-\Psi x[k]-\Upsilon u[k-1]$ wird die Differenz zwischen der Referenztrajektorie $\mathcal{T}[k]$ und der freien Bewegung $\Psi x[k]+\Upsilon u[k-1]$
-des \ac{MPR}-Prozesses (nicht des Prozesses!) bezeichnet. Somit gilt
+Mit $\mathcal{E}[k]:=\mathcal{T}[k]-\mathrm{\Psi} x[k]-\mathrm{\Upsilon} u[k-1]$ wird die Differenz zwischen der Referenztrajektorie $\mathcal{T}[k]$ und der freien Bewegung
+$\mathrm{\Psi} x[k]+\mathrm{\Upsilon} u[k-1]$ des \ac{MPR}-Prozesses (nicht des Prozesses!) bezeichnet. Somit gilt
 \begin{align}
 \begin{split}\label{eqn:kap_4_quad_kostenfunktional_ohne_beschr}
-	V[k] & = \left\| \mathcal{Q}_{y}\left(\Theta\Delta\mathcal{U}[k]-\mathcal{E}[k]\right) \right\|_2^2 + \left\| \mathcal{Q}_{\Delta\mathcal{U}}\Delta\mathcal{U}[k] \right\|_2^2\\
-	& = \left\| \begin{bmatrix} \mathcal{Q}_y\left(\Theta\Delta\mathcal{U}[k] - \mathcal{E}[k]\right)\\ \mathcal{Q}_{\Delta\mathcal{U}\Delta\mathcal{U}[k]} \end{bmatrix}
+	V[k] & = \left\| \mathcal{Q}_{y}\left(\mathrm{\Theta}\Delta\mathcal{U}[k]-\mathcal{E}[k]\right) \right\|_2^2 + \left\| \mathcal{Q}_{\Delta\mathcal{U}}\Delta\mathcal{U}[k]
+	\right\|_2^2\\
+	& = \left\| \begin{bmatrix} \mathcal{Q}_y\left(\mathrm{\Theta}\Delta\mathcal{U}[k] - \mathcal{E}[k]\right)\\ \mathcal{Q}_{\Delta\mathcal{U}\Delta\mathcal{U}[k]} \end{bmatrix}
 	\right\|_2^2
 \end{split}
 \end{align}
@@ -342,7 +343,7 @@ und man erhält die Lösung $\Delta\mathcal{U}^{\ast}[k]$ der unbeschränkten Op
 als Quadratmittellösung eines überbestimmten linearen Gleichungssystems
 \begin{align}
 	\begin{bmatrix}
-	\mathcal{Q}_y\Theta\\ \mathcal{Q}_{\Delta\mathcal{U}}
+	\mathcal{Q}_y\mathrm{\Theta}\\ \mathcal{Q}_{\Delta\mathcal{U}}
 	\end{bmatrix}\Delta\mathcal{U}[k] & \cong \begin{bmatrix}
 	\mathcal{Q}_y\mathcal{E}[k]\\ 0
 	\end{bmatrix}. \label{eqn:kap_4_quadratmittelproblem}
@@ -386,7 +387,7 @@ Aus \eqnref{eqn:kap_4_quadratmittelproblem} folgt damit
 	\Delta\mathcal{U}^{\ast}[k] & = \begin{bmatrix}
 	\Delta u^{\ast}[k|k]\\ \vdots\\ \Delta u^{\ast}[k+H_u-1|k]
 	\end{bmatrix}=\bar{K}\mathcal{E}[k]\quad\text{mit }\bar{K}:=\begin{bmatrix}
-	\mathcal{Q}_y\Theta\\ \mathcal{Q}_{\Delta\mathcal{U}}
+	\mathcal{Q}_y\mathrm{\Theta}\\ \mathcal{Q}_{\Delta\mathcal{U}}
 	\end{bmatrix}\backslash\begin{bmatrix}
 	\mathcal{Q}_y\\ 0
 	\end{bmatrix}.
@@ -394,7 +395,7 @@ Aus \eqnref{eqn:kap_4_quadratmittelproblem} folgt damit
 Sei $K:=\bar{K}(1:n_{\mathcal{U}},:)$, wobei $n_{u}$ die Länge des Vektors $u[k]$ ist. Gemäß dem Schritt (S2) des Algorithmus der modellprädiktiven Regelung aus
 \secref{subsec:grundprinzip_mpr} ist die im Schritt $k$ ausgegebene Steuergröße gleich
 \begin{align*}
-	\Delta u[k] & = \Delta u^{\ast}[k|k] = K\mathcal{E}[k]=K\left(\mathcal{T}[k]-\Psi x[k]-\Upsilon u[k-1]\right).
+	\Delta u[k] & = \Delta u^{\ast}[k|k] = K\mathcal{E}[k]=K\left(\mathcal{T}[k]-\mathrm{\Psi} x[k]-\mathrm{\Upsilon} u[k-1]\right).
 \end{align*}
 Die Multiplikation der Signale $\mathcal{T}[k]$, $x[k]$ und $u[k-1]$ mit zeitunabhängigen Matrizen zur Ermittlung der optimalen Steuergröße $u^{\ast}[k]$ stellt ein lineares und
 zeitinvariantes Regelgesetz dar. Die Struktur des realisierten Reglers ist in der \figref{fig:kap_4_struktur_mpr} dargestellt. Man stellt fest, dass durch die geschickte
@@ -407,7 +408,7 @@ Die in \secref{subsec:aufgabe_quad_ohne_beschr} betrachtete Aufgabe wird nun auf
 Minimierung von 
 \begin{align}
 V[k] & = \left\| \begin{bmatrix}
-	\mathcal{Q}_y \left(\Theta\Delta\mathcal{U}[k]-\mathcal{E}[k] \right)\\
+	\mathcal{Q}_y \left(\mathrm{\Theta}\Delta\mathcal{U}[k]-\mathcal{E}[k] \right)\\
 	\mathcal{U}_{\Delta\mathcal{U}}\Delta\mathcal{U}[k]
 \end{bmatrix} \right\|_2^2
 \end{align}
@@ -423,7 +424,7 @@ unter der Nebenbedingung \eqnref{eqn:kap_4_lin_nebenbedingungen}, d.h.
 	\mathcal{Z}[k]\\ \Delta\mathcal{U}[k]\\ \mathcal{U}[k]\\ 1
 	\end{bmatrix}\le 0. \label{eqn:kap_4_nebenbedinungen_beschr}
 \end{align}
-Mit $\mathcal{Z}[k]=\Psi x[k]+\Upsilon u[k-1]+\Theta\Delta\mathcal{U}[k]$ und
+Mit $\mathcal{Z}[k]=\mathrm{\Psi} x[k]+\mathrm{\Upsilon} u[k-1]+\mathrm{\Theta}\Delta\mathcal{U}[k]$ und
 \begin{align*}
 \mathcal{U}[k] & = \begin{bmatrix}
 I & \ldots & 0\\
@@ -439,13 +440,13 @@ kann man \eqnref{eqn:kap_4_nebenbedinungen_beschr} in die Form
 \end{align}
 mit einer Matrix $\Xi=\Xi[k]$ und einem Vektor $\xi = \xi[k]$ überführen. Weiter gilt füt die Zielfunktion
 \begin{align*}
-	V[k] & = \left( \Theta\Delta\mathcal{U}[k]-\mathcal{E}[k] \right)^T\mathcal{Q}_y^T\mathcal{Q}_y\left( \Theta\Delta\mathcal{U}[k]-\mathcal{E}[k]
+	V[k] & = \left( \mathrm{\Theta}\Delta\mathcal{U}[k]-\mathcal{E}[k] \right)^T\mathcal{Q}_y^T\mathcal{Q}_y\left( \mathrm{\Theta}\Delta\mathcal{U}[k]-\mathcal{E}[k]
 	\right)+\Delta\mathcal{U}[k]^T\mathcal{Q}^T_{\Delta u}\mathcal{Q}_{\Delta u}\Delta\mathcal{U}[k]\\
 	& = \Delta\mathcal{U}[k]^T H \Delta\mathcal{U}[k]-\Delta\mathcal{U}[k]^TG+F
 \end{align*}
-mit $H:=\Theta^T\mathcal{Q}_y^T\mathcal{Q}_y\Theta+\mathcal{Q}^T_{\Delta u}\mathcal{Q}_{\Delta u}$,
-$G:=2\Theta^T\mathcal{Q}_y^T\mathcal{Q}_y\mathcal{E}[k]$ und $F:=\mathcal{E}[k]^T\mathcal{Q}_y^T\mathcal{Q}_y\mathcal{E}[k]$. Also ist $V[k]$ eine quadratische Zielfunktion und mit der linearen Nebenbedingung
-\eqnref{eqn:kap_4_lin_nebenbedinung_form} ist
+mit $H:=\mathrm{\Theta}^T\mathcal{Q}_y^T\mathcal{Q}_y\mathrm{\Theta}+\mathcal{Q}^T_{\Delta u}\mathcal{Q}_{\Delta u}$,
+$G:=2\mathrm{\Theta}^T\mathcal{Q}_y^T\mathcal{Q}_y\mathcal{E}[k]$ und $F:=\mathcal{E}[k]^T\mathcal{Q}_y^T\mathcal{Q}_y\mathcal{E}[k]$. Also ist $V[k]$ eine quadratische Zielfunktion und
+mit der linearen Nebenbedingung \eqnref{eqn:kap_4_lin_nebenbedinung_form} ist
 \begin{align}
 	\min\limits_{\Delta\mathcal{U}[k]}V[k] & \text{ bei } \Xi\Delta\mathcal{U}[k]\le \xi\label{eqn:kap_4_quad_opt_aufgabe_lin_nebenbedingungen}
 \end{align}
@@ -469,16 +470,16 @@ Beschränkungen ergibt. Formt man die Zielfunktion $V[k]$ analog dem \secref{sub
 \eqnref{eqn:kap_4_eins_norm_guetefunktional}
 \begin{align}
 V[k] & = \left\| \begin{bmatrix}
-\mathcal{Q}_y\left( \Theta\Delta\mathcal{U}[k]-\mathcal{E}[k] \right)\\ \mathcal{Q}_{\Delta\mathcal{U}}\Delta\mathcal{U}[k]
+\mathcal{Q}_y\left( \mathrm{\Theta}\Delta\mathcal{U}[k]-\mathcal{E}[k] \right)\\ \mathcal{Q}_{\Delta\mathcal{U}}\Delta\mathcal{U}[k]
 \end{bmatrix} \right\|_1 = \left\| \begin{bmatrix}
-\mathcal{Q}_y\Theta\\ \mathcal{Q}_{\Delta\mathcal{U}}
+\mathcal{Q}_y\mathrm{\Theta}\\ \mathcal{Q}_{\Delta\mathcal{U}}
 \end{bmatrix}\Delta\mathcal{U}[k]-\begin{bmatrix}
 \mathcal{Q}_y\mathcal{E}[k]\\ 0
 \end{bmatrix} \right\|_1
 \end{align}
 und für die Gütefunktionale \eqnref{eqn:kap_4_max_norm_guetefunktional_1} und \eqnref{eqn:kap_4_max_norm_guetefunktional_2} erhält man
 \begin{align}
-	V[k] & = \left\| \mathcal{Q}_y\Theta\Delta\mathcal{U}[k]-\mathcal{Q}_y\mathcal{E}[k] \right\|_{\infty}
+	V[k] & = \left\| \mathcal{Q}_y\mathrm{\Theta}\Delta\mathcal{U}[k]-\mathcal{Q}_y\mathcal{E}[k] \right\|_{\infty}
 \end{align}
 bzw.
 \begin{align}
