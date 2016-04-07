@@ -9,6 +9,25 @@
 
 \section{Das zeitkontinuierliche \NoCaseChange{\acl{LQR}}-Problem}
 
+\begin{satz}
+Das \ac{LQR}-Problem wird gelöst durch die optimale Steuergröße
+\end{satz}
+\begin{remark}
+ist mathematisch eine Anfangswertaufgabe (Substitution $\tau:=T-t$), somit ist die Lösung $X$ eindeutig. Mit $X$ ist auch $X^T$ eine Lösung von . Also gilt $X=X^T$.
+\end{remark}
+\begin{proof}
+\begin{enumerate}[label=(\alph*)]
+  \item Zeigen: $V(x(t),t)=x^T(t)X(t)x(t)$.\\
+  Linke Seite
+\end{enumerate}
+\end{proof}
+
+\begin{satz}
+Sei $(A,B)$ stabilisierbar, $R=\bar{R}^T\bar{R}$, $(A,\bar{R})$ ermittelbar.\\
+Dann exisitert eine eindeutige positive semidefinite Lösung $X$ der \ac{ARE} $0=R+XA+A^TX-XBQ^{-1}B^TX$. Weiter ist die Rückkopplung $u^{\ast}(t)=Fx(t)$, $F:=-Q^{-1}B^TX$,
+stabilisierend und führt zum minimalen Wert des Kostenfunktionals.
+\end{satz}
+
 \section{Beispiel der räumlichen Führung (\ac{PN})}
 \subsection{Modellbildung}
 \begin{figure}[htb]
@@ -46,7 +65,7 @@ und
 werden die Anfangswerte $r(0)$ und $\sigma(0)$ für \eqnref{eqn:kap_3_bsp_rf_rskoord} berechnet (zum Wertebereich von $\sigma$ siehe \figref{fig:kap_3_bsp_rf_wertebereich}). Die Funktion
 $\gamma(t)$ dient als Steuerfunktion. Im Falle der sogenannten Proportionalnavigation wird das Regelgesetz
 \begin{align}
-	\dot{\gamma} & = a \dot{\sigma}
+	\dot{\gamma} & = a \dot{\sigma}	\label{eqn:kap_3_bsp_rf_regelgesetz}
 \end{align}
 verwendet, wobei für die Proportionalverstärkung $a\geq 1$ gilt.
 
@@ -94,3 +113,110 @@ nicht in den Funktionswerten $\sin(\varphi - \sigma)$ und $\sin(\gamma - \sigma)
 \end{figure}
 
 \subsection{Parallele Annäherung als Spezialfall der \ac{PN}}
+Für die nacholgenden Betrachtungen wird angenommen, dass $\varphi$, $v_1$ und $v_2$ konstante Größen sind. Dann stellt sich für $a\rightarrow +\infty$ in
+\eqnref{eqn:kap_3_bsp_rf_regelgesetz} im Regelkreis der mit dem Index $o$ bezeichnete Arbeitspunkt $\dot{\sigma}_o=0$ ein (siehe \figref{fig:kap_3_bsp_rf_methode}).\\
+Aus der ersten Gleichung in \eqnref{eqn:kap_3_bsp_rf_rskoord} folgt dann
+\begin{align}
+	\gamma_o & = \sigma_o + \arcsin\frac{v_1 \sin(\varphi - \sigma_o)}{v_2},
+\end{align}
+also insbesondere $\dot{\gamma}_o=0$, und die zweite Gleichung liefert die konstante Annäherungsgeschwindigkeit $\dot{r}_o<0$. Für die Herleitung der Gleichungen für den Lenkregelkreis
+reicht es aus, die erste Gleichung in \eqnref{eqn:kap_3_bsp_rf_rskoord} zu betrachten. Wir betrachten kleine Abweichungen $\Delta r$, $\Delta \sigma$, $\Delta\dot{\sigma}$, $\Delta
+\gamma$ vom Arbeitspunkt. Die Linearisierung von \eqnref{eqn:kap_3_bsp_rf_rskoord} erfolgt durch Bilden des vollständigen Differentials für beide Seiten am Arbeitspunkt
+\begin{align}
+	r_o\cdot\Delta\dot{\sigma}+\dot{\sigma}_o\cdot\Delta r & = -v_2\cos(\gamma_o-\sigma_o)\cdot\Delta\gamma - \left(v_1\cos(\varphi - \sigma_o) - v_2\cos(\gamma_o -
+	\sigma_o)\right)\cdot\Delta\sigma .
+\end{align}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Methode der parallelen Annäherung}
+	\label{fig:kap_3_bsp_rf_methode}
+\end{figure}
+Bei Berücksichtigung von $\dot{\sigma}_o=0$ und Vergleich der Koeffizienten von $\Delta\sigma$ mit der zweiten Gleichung in \eqnref{eqn:kap_3_bsp_rf_rskoord} erhält man
+\begin{align}
+r_o\cdot\Delta\dot{\sigma}+\dot{r}_o\cdot\Delta\sigma & = -v_2\cos(\gamma_o - \sigma_o)\cdot\Delta\gamma.
+\end{align}
+Die Division durch $|\dot{r}_o|$ liefert mit der Restlaufzeit $T_f(t):=\frac{r_o}{|\dot{r}_o|}=\frac{r(0)}{|\dot{r}_o|} - t=t_f - t$ bis zum Endzeitpunkt $t_f$ und der
+Verfolgergeschwindigkeit $\beta_2 := v_2\cos(\gamma_o - \sigma_o)\in(0,v_2]$ entlang der Sichtlinie die lineare und wegen des Koeffizienten $T_f(t)$ zeitvariante Differentialgleichung
+erster Ordnung
+\begin{align}
+	T_f\cdot\Delta\dot{\sigma}-\Delta\sigma & = -\beta_2\cdot\Delta\gamma .
+\end{align}
+Durch Differentiation der Gleichung erhalten wir eine Differentialgleichung für $\Delta\dot{\sigma}_o$
+\begin{align}
+	T_f\cdot\Delta\ddot{\sigma} + \dot{T}_f\cdot\Delta\dot{\sigma}-\Delta\dot{\sigma} & = -\beta_2\cdot\Delta\dot{\gamma},
+\end{align}
+woraus wegen $\dot{T}_f=-1$
+\begin{align}
+	T_f\cdot\Delta\ddot{\sigma}-2\cdot\Delta\dot{\sigma} & = -\beta_2\cdot\Delta\cdot{\gamma}
+\end{align}
+folgt. Wir schreiben kürzer für Zustandsvariable $x:=\Delta\dot{\sigma}$ und für die Steuergröße $u:=\Delta\dot{\gamma}$ und erhalten die Lösung der Differentialgleichung im Intervall
+$[t_0,t]\subset[0,t_f]$
+\begin{align}
+	x(t) & = \frac{\beta_2\int_{t_0}^t(\tau - t_f)u(\tau)d\tau + (t_0-t_f)^2x(t_0) }{(t-t_f)^2}.
+\end{align}
+Für die stückweise konstante Steuerfunktion $u(t)=const.$ für $t\in[t_k,t_{k+1})$ erhält man mit den Bezeichnungen $u[k]:=u(t_k)$ und $x[k]:=x(t_k)$ die zeitdiskrete Prozessbeschreibung
+\begin{align}\label{eqn:kap_3_bsp_rf_ressys}
+	x[k+1] & = \underbrace{\frac{(t_k-t_f)^2}{(t_{k+1}-t_f)^2} }_{A_k}x[k] + \underbrace{\frac{\beta_2\int_{t_k}^{t_{k+1}}(\tau - t_f)d\tau }{(t_{k+1}-t_f)^2} }_{B_k}u[k].
+\end{align}
+\begin{table}[htb]
+\caption{Parameter des zeitvarianten Systems und \ac{LQR}-Regler aus \exmpref{exmp:kap_3_bsp_rf_c2}}
+\centering
+\begin{tabular}{|c|r|r|r|}
+	\hline
+	k 	& $A_k$		& $B_k$		& $F_k$	\\\hline
+	0	& 1.1688	& -0.0422	& 5.7838\\
+	1	& 1.1843	& -0.0461	& 5.7668\\
+	2	& 1.2030	& -0.0507	& 5.7470\\
+	3	& 1.2258	& -0.0564	& 5.7235\\
+	4	& 1.2545	& -0.0636	& 5.6953\\
+	5	& 1.2914	& -0.0728	& 5.6606\\
+	6	& 1.3409	& -0.0852	& 5.6170\\
+	7	& 1.4104	& -0.1026	& 5.5605\\
+	8	& 1.5151	& -0.1288	& 5.4845\\
+	9	& 1.6906	& -0.1726	& 5.3765\\
+	10	& 2.0421	& -0.2605	& 5.2107\\
+	11	& 3.0673	& -0.5168	& 4.9214\\
+	12	& 16.1787	& -3.7942	& 4.2611\\\hline
+\end{tabular}
+\label{tab:kap_3_bsp_rf_parameter}
+\end{table}
+\begin{exmp}\label{exmp:kap_3_bsp_rf_c2}
+Aus den Anfangswerten
+\begin{align*}
+	x_1(t_0) & = 10,\quad y_1(t_0) = 0.33,\quad x_2(t_0) = 0,\quad y_2(t_0)=0
+\end{align*}
+und den als zeitlich konstant angenommenen Größen
+\begin{align}
+	v_1(t) & = 0.2,\quad v_2(t) = 0.5,\quad \phi(t)=-\pi\qquad\forall t\in[0,t_f]
+\end{align}
+erhält man für die Methode der parallelen Annäherung die Anfangswerte
+\begin{align}
+	\gamma(0) & = 0.049,\quad \sigma(0)=0.033,\quad t_f=13.33.
+\end{align}
+Betrachtet man das resultierende System \eqnref{eqn:kap_3_bsp_rf_ressys} auf den Zeitintervallen $[t_k,t_{k+1}]$ ($k=0,1,\ldots,12$), so ergeben sich die in
+\tabref{tab:kap_3_bsp_rf_parameter} dargestellten Werte für $A_k$ und $B_k$. Für dieses System wird ein zeitvarianter \ac{LQR}-Regler $F_k$ nach Satz ? berechnet, wobei für die
+Gewichtungsmatrizen $R=0$, $Q=1$, $X_{12}=100$ gesetzt wird, d.h. neben den Steuergrößen soll allein die Abweichung des Zustandes im Endzeitpunkt vom Sollwert $0$ minimiert werden. Für
+eine Anfangsabweichung $x[0]=\Delta\dot{\sigma}[0]=0.05$ vom Sollwert zeigt \figref{fig:kap_3_bsp_rf_verlauf_regelgroesse} den mit $x_{LQR}[k]$ bezeichneten Verlauf der Zustandsgröße
+für den \ac{LQR}-Regler im Vergleich zu den mit $x_{PN}$ bezeichneten Verlauf für den Fall, dass die Steuergröße mit einem zeitlich konstanten Regler berechnet wird, wobei hier konkret
+der \ac{LQR}-Regler zum Zeitpunkt $k=10$ eingesetzt wird, d.h. es gilt
+\begin{align}
+	u_{PN}[k] & = F_{10}\cdot x_{PN}[k]. \label{eqn:kap_3_bsp_rf_bsp_konst_regler}
+\end{align}
+In \figref{fig:kap_3_bsp_rf_verlauf_steuergroesse} sind die zugehörigen Verläufe der Steuergröße dargestellt. Man erkennt, dass der zeitvariante \ac{LQR}-Relger die Zustandsgröße im
+Endzeitpunkt $k=13$ nahe an den Zielzustand $0$ bringt, während der zeitlich konstante Regler $F_{10}$ gegenüber dem \ac{LQR}-Regler anfangs eine "`zu kleine"' und am Ende des
+Zeithorizontes eine "`zu große"' Verstärkung aufweist.
+\end{exmp}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Verlauf der Regelgröße für das \exmpref{exmp:kap_3_bsp_rf_c2}}
+	\label{fig:kap_3_bsp_rf_verlauf_regelgroesse}
+\end{figure}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Verlauf der Steuergröße für das \exmpref{exmp:kap_3_bsp_rf_c2}}
+	\label{fig:kap_3_bsp_rf_verlauf_steuergroesse}
+\end{figure}
+Es sind zwei Übungen unter \picref{sec:uebung_raeumliche_fuehrung}{Beispiel der räumlichen Führung} im Anhang zu finden.
