@@ -2,7 +2,13 @@
 \addcontentsline{toc}{section}{Übungen Kapitel 3} 
 \label{sec:uebung_kapitel_3}
 
-\subsection*{Aufgabe 1}
-\addcontentsline{toc}{subsection}{Aufgabe 1} 
-
-
+\subsection*{Beispiel der räumlichen Führung}
+\addcontentsline{toc}{subsection}{Beispiel der räumlichen Führung} 
+\label{sec:uebung_raeumliche_fuehrung}
+\begin{enumerate}
+  \item Überlegen Sie, warum in \eqnref{eqn:kap_3_bsp_rf_bsp_konst_regler} eine konstante Rückführung mit $F_{12}$ anstelle von $F_{10}$ zu besseren Ergebnissen führen könnte.
+  \item Praktisch steht die Gierwinkelrate $\Delta\dot{\gamma}$ nicht direkt als Steuergröße zur Verfügung. Vielmehr kann diese nur zeitlich verzögert beeinflusst werden, was über die
+  Differentialgleichung $T\cdot\Delta\ddot{\gamma}+\Delta\dot{\gamma}=u$ mit einer Zeitkonstante $T$ (deutlich unter einer Sekunde) modelliert werden kann. Stellen Sie die lineare
+  zeitvariante Zustandsdifferentialgleichung für das resultierende System 2. Ordung auf und machen Sie sich anhand eines Beispiels durch Simulation klar, dass ein zeitlich konstanter
+  Regler im Vergleich zum zeitvarianten \ac{LQR}-Regler zu deutlichen Stabilitätsproblemen führt.
+\end{enumerate}
