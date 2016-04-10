@@ -3,6 +3,122 @@
 
 
 \section{Das zeitdiskrete \NoCaseChange{\acl{LQR}}-Problem}
+Der Prozess wird beschrieben durch
+\begin{align}
+	x[\kappa + 1] & = Ax[\kappa] + B u[\kappa]
+\end{align}
+mit gegebenen Anfangszustand $x[0]$.\\
+Das Kostenfunktional ist gegeben mit
+\begin{align}
+	K\left(x[0];u[0],\ldots,u[k-1] \right) & = \sum\limits_{\kappa=0}^{k-1}c\left(x[\kappa],u[\kappa] \right) + K_k(x[\kappa])
+\end{align}
+wobei $c(x,u):=x^TRx + u^TQu$ und $K_k(x):=x^TX_kx$ ist und $R\geq0$, $Q>0$ und $X_k\geq 0$ gilt.\\
+Das \ac{LQR}-Problem wird ausgedrückt durch
+\begin{align}
+	\min\limits_{u[0],\ldots,u[k-1]}K\left(x[0];u[0],\ldots,u[k-1] \right).
+\end{align}
+\begin{satz}{Hilfssatz über quadratische Formen}\label{satz:kap_3_quad_form}
+Seien $R$, $Q$ symmetrische Matrizen und $Q>0$, dann gilt
+\begin{align}
+	\min\limits_u\left\{\begin{bmatrix}
+	x^T	& u^T
+	\end{bmatrix}\begin{bmatrix}
+	K	&	S^T\\ S	&	Q
+	\end{bmatrix}\begin{bmatrix}
+	x\\ u
+	\end{bmatrix} \right\} & = x^T\left(R-S^TQ^{-1}S \right)x
+\end{align}
+und das Minimum wird angenommen für $u=-Q^{-1}Sx$.
+\end{satz}
+\begin{proof}
+Es gilt 
+\begin{multline} % TODo
+	x^TRx + x^TS u + u^TS x + u^TQ u\\ 
+	= x^T\left(R-S^TQ^{-1}S \right)x + \left(u^T + x^TS^TQ^{-1} \right)\underbrace{Q\left(u + Q^{-1}Sx \right) }_{=:y}\\
+	\geq x^T \left(R-S^TQ^{-1}S \right)x,
+\end{multline}
+da $y^TQy\geq 0\ \forall y$ ($Q^{-1}$ existiert, da $Q>0$ und positiv definit). Für $u=-Q^{-1}Sx$ gilt "`="'.
+\end{proof}
+\begin{satz}
+Das \ac{LQR}-Problem wird gelöst durch $u^{\ast}[\kappa]=F_{\kappa}x[\kappa]$ mit der zeitvarianten Rückführung 
+\begin{align*}
+	F_{\kappa} & = -\left(Q + B^TX_{\kappa + 1}B \right)^{-1}B^TX_{\kappa + 1}A
+\end{align*}
+und der Riccatischen Rückwärts-Differentialgleichung
+\begin{align}
+	X_{\kappa} & = R + A^TX_{\kappa + 1}A-A^TX_{\kappa + 1} B\left(Q+B^TX_{\kappa + 1}B \right)^{-1}B^TX_{\kappa + 1} A 
+\end{align}
+mit $\kappa = k-1, k-2,\ldots,0$.
+\end{satz}
+\begin{proof}
+	Es gilt $V(x,k)=x^TX_kx$. Mit der Gleichung der \ac{DP} und \satzref{satz:kap_3_quad_form} folgt für $\kappa = k$
+	\begin{align*}
+		V(x,\kappa - 1) & = \min\limits_u\left\{c(x,u)+V\left(f(x,u),\kappa \right) \right\}\\
+		& = \min\limits_u\left\{x^TRx + u^TQu + V\left(Ax + Bu, \kappa \right) \right\}\\
+		& = \min\limits_u\underbrace{\left\{x^TRx + u^TQu + (Ax+Bu)^TX_{\kappa}(Ax+Bu) \right\}}_{\geq 0}\\
+		& = \min\limits_u\left\{\begin{bmatrix}
+		x^T & u^T
+		\end{bmatrix}\begin{bmatrix}
+		R+A^TX_{\kappa}A	& A^TX_{\kappa} B\\
+		B^TX_{\kappa} A		& Q+B^TX_{\kappa}B
+		\end{bmatrix}\begin{bmatrix}
+		x\\ u
+		\end{bmatrix} \right\}\\
+		& = x^T\underbrace{\left(R+A^TX_{\kappa}A - A^TX_{\kappa}B\left(Q+B^TX_{\kappa}B \right)^{-1}B^TX_{\kappa}A \right)}_{X_{\kappa +1}}x\\
+		& = x^TX_{\kappa +1}x \geq 0
+	\end{align*}
+	und die Minimierung wird angenommen für % TODO Siteseitenreferenz einbauen + Kap1 überarbeiten + an Flori senden
+\end{proof}
+\begin{remark}\hspace{1mm}
+\begin{itemize}
+  \item $u^{\ast}[\kappa]=F_{\kappa}x[\kappa]$ kann als zeitvariante lineare Zustandsrückführung interpretiert werden. 
+  \item Eine analoge Herleitung für zeitvariante Prozess
+  \begin{align*}
+  	x[\kappa + 1] & = A_{\kappa}x[\kappa] + B_{\kappa}u[\kappa]
+  \end{align*}
+  und zeitvariante Gewichtungen $R_{\kappa}$ und $Q_{\kappa}$ ist möglich.
+\end{itemize}
+\end{remark}
+Es ist eine Übung unter \picref{sec:uebung_zeitdiskretes_lqr_problem}{Das zeitdiskrete LQR-Problem} im Anhang zu finden.
+
+\subsection{Übergang zu unendlichem Zeithorizont}
+Das Kostenfunktional ist gegeben mit
+\begin{align}
+	K\left(x[0];u[0],u[1],\ldots \right) & := \sum\limits_{\kappa=0}^{\infty}c\left(x[\kappa],u[\kappa] \right),
+\end{align}
+wobei $c(x,u):=x^TRx + u^TQu$ ist und $R\geq 0$ und $Q>0$ gilt.\\
+Das \ac{LQR}-Problem wird ausgedrückt durch
+\begin{align*}
+	\min\limits_{\left\{u[\kappa]|\kappa=0,1,\ldots \right\}} K\left(x[0];u[0],u[1],\ldots \right).
+\end{align*} 
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Interpretation des Lösungszuganges}
+	\label{fig:kap_3_loesungszugang}
+\end{figure}
+Man kann zeigen, dass falls $(A,B)$ stabilisierbar ist, die Folge der Lösungen der Riccatischen Rückwärts-Differentialgleichung $X_{\kappa}$ für $\kappa=k-1,k-2,\ldots$ gegen ein $X\geq
+0$ konvergiert und somit die
+\ac{DARE} 
+\begin{align*}
+	X & = R + A^TXA - A^TXB\left(Q + B^TXB \right)^{-1}B^TXA
+\end{align*}
+erfüllt ist. 
+
+\begin{satz}
+Sei $(A,B)$ stabilisierbar und $R=\bar{R}^T\bar{R}$, $(A,\bar{R})$ ermittelbar. Dann existiert eine eindeutige, positive semidefinite Lösung $X$ der \ac{DARE}. Weiter ist die
+Rückkoppelung $u[\kappa]=F x[\kappa]$ mit $F:=\left(Q+B^TXB \right)^{-1}B^TXA$, stabilisierend, d.h $A+BF$ ist stabil, und führt zum minimalen Wert des Kostenfunktionals.
+\end{satz}
+Der Beweis dieses Satzes ist in \cite{ludyk1995theoretische} nachzulesen.
+\begin{remark}\hspace{1mm}
+\begin{itemize}
+  \item Bei Übergang zu endlichem Zeithorizont gilt für $\kappa\rightarrow -\infty:\ X_{\kappa}\rightarrow X$ und $F_{\kappa}\rightarrow F$, also ergibt sich eine zeitinvariante
+  Zustandsrückführung.
+  \item Doe Bestimmung von $X$ erfolgt rekursiv mittels der Riccatischen Rückwärts-Differentialgleichung oder besser durch numerische Lösung der \ac{DARE}.
+  \item "`$(A,\bar{R})$ ermiitelbar"' kann derart interpretiert werden, dass alle instabilen Eigenbewegungen im Term $x^TRx$ mit positiver Geschwindigkeit erfallst werden müssen. Die
+  Bestimmung eines $\bar{R}$ kann durch \ac{SVD} $R=V\sum V^T$, $\bar{R}:=\sum^{\nicefrac12}V^T$ erfolgen. 
+\end{itemize}
+\end{remark}
 
 \section{Zeitkontinuierliche Optimalsteuerng bei endlichen Zeithorizont}
 \label{sec:3_3_zeitkont_opt_endl}
@@ -32,7 +148,14 @@ und der Grenzübergang von $h\rightarrow +0$ liefert in kontinuierlicher Zeit ei
 
 \subsection{Lösung}
 In die Gleichung der \ac{DP} setzt man $V(x, \kappa) := \min\limits_{u(.)|_{[t,T]}} \int\limits_t^T c(x, u, \tau)d\tau + K_T\left(x(T) \right)$, $V\left(f^D(x, u, \kappa),\kappa + 1
-\right) := V\left(x(t+h),t+h \right)$ und $c^D(x,u,\kappa):=\int\limits_t^{t+h}c(x,u,\tau)d\tau$. Für die in $[t,t+h]$ auflaufenden Kosten gilt
+\right) := V\left(x(t+h),t+h \right)$ und $c^D(x,u,\kappa):=\int\limits_t^{t+h}c(x,u,\tau)d\tau$. 
+\begin{remark}
+Differentiation nach variabler oberer Grenze $\frac{\td }{\td y}\int\limits_a^y f(t)dt=f(y)$. Also für $g:=y\mapsto\int\limits_t^y c(x,u,\tau)d\tau$ gilt $g'=y\mapsto c(x,u,y)$ und
+$g'(t)=x(x,u,t)$.\\
+Es wird definiert $r(x)=o(\gamma(x))$ für $x\rightarrow a\ :\Leftrightarrow\frac{r(x)}{\gamma(x)}\rightarrow 0$ für $x\rightarrow a$ was für den hier betrachtet Fall zu $r(h)=o(h)$ für
+$h\rightarrow 0\ :\Leftrightarrow\frac{r(h)}{h}\rightarrow 0$ für $h\rightarrow 0$ führt.
+\end{remark}
+Für die in $[t,t+h]$ auflaufenden Kosten gilt
 \begin{align}
 	\underbrace{\int\limits_t^{t+h}c(x,u,\tau)d\tau }_{=g(t+h)} & = \underbrace{\int\limits_{t}^tc(x,u,\tau)d\tau }_{=0}+c(x,u,t)+o(h)\\
 	g(t+h) & = g(t) + g'(t)\cdot h + o(h)
@@ -50,9 +173,9 @@ Die Subtraktion von $V(x,t)+\frac{\d V(x,t)}{\d t}\cdot h$ und die Division durc
 	-\frac{\d V(x,t)}{\d t} & = \min\limits_u\left(c(x,u,t) + \frac{\d V(x,t)}{\d x}f(x,u,t)+\frac{o(h)}{h} \right).
 \end{align}
 Für $h\rightarrow +0$ ergibt sich die \ac{HJB}-Gleichung 
-\begin{align}
+\begin{align*}
 	-\frac{\d V(x,t)}{\d t} & = \min\limits_u\left(c(x,u,t) + \frac{\d V(x,t)}{\d x}f(x,u,t) \right).	
-\end{align}
+\end{align*}
 und es gilt $V(x,T)=K_T(x)$.
 
 Somit ist die \ac{HJB}-Gleichung für $t\in[0,T]$ unter der Randbedingung $V(x,T)=K_T(x)$ zu lösen. Die Minimalkosten sind $V(x(0),0)$ und eine optimale Zustandsrückführung ergibt sich
@@ -60,6 +183,15 @@ aus
 \begin{align}
 	u(x,t) & = \arg\min\limits_u\left(c(x,u,t) + \frac{\d V(x,t)}{\d x}f(x,u,t) \right).
 \end{align}
+\begin{remark}
+Es gilt
+\begin{align*}
+	\left\{ \begin{array}{ll}
+	y^{\ast}:=\min\limits_x f(x)	& : \text{Min. von }f\\
+	x^{\ast}:=\arg\min\limits_x f(x)& : \text{Min.-stelle von }f
+	\end{array}\right\} & :\Leftrightarrow f\left(x^{\ast}\right) = y^{\ast} \leq f(x) \forall x.
+\end{align*}
+\end{remark}
 
 \section{Das zeitkontinuierliche \NoCaseChange{\acl{LQR}}-Problem}
 Der Prozess wird beschrieben durch
@@ -136,7 +268,11 @@ Das \ac{LQR}-Problem stellt sich wie folgt dar:
 \end{itemize}
 \begin{satz}
 Sei $(A,B)$ stabilisierbar und $R=\bar{R}^T\bar{R}$, $(A,\bar{R})$ ermittelbar.\\
-Dann exisitert eine eindeutige positive semidefinite Lösung $X$ der \ac{ARE} $0=R+XA+A^TX-XBQ^{-1}B^TX$. Weiter ist die Rückkopplung $u^{\ast}(t)=Fx(t)$ mit $F:=-Q^{-1}B^TX$,
+Dann exisitert eine eindeutige positive semidefinite Lösung $X$ der \ac{ARE} 
+\begin{align*}
+	0 & = R+XA+A^TX-XBQ^{-1}B^TX.
+\end{align*} 
+Weiter ist die Rückkopplung $u^{\ast}(t)=Fx(t)$ mit $F:=-Q^{-1}B^TX$,
 stabilisierend und führt zum minimalen Wert des Kostenfunktionals.
 \end{satz}
 
