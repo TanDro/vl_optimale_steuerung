@@ -6,25 +6,137 @@
 
 \section{Zeitkontinuierliche Optimalsteuerng bei endlichen Zeithorizont}
 \label{sec:3_3_zeitkont_opt_endl}
+Der Prozess wird beschrieben durch
+\begin{align}
+	\dot{x} & = f(x,u,t)
+\end{align}
+mit $x(t)\in\mathbb{R}^n$, $u(t)\in\mathbb{R}^m$, $t\in[0,T]$ und gegebenen Anfangszustand $x(0)$.\\
+Das Kostenfunktion ist gegeben mit
+\begin{align}
+	K(x(0),u) & = \int\limits_0^T c(x,u,t)dt + K_T(x(T)).
+\end{align}
+Die Aufgabe besteht darin, eine Steuerung $u^{\ast}$ zu finden, so dass $K\left(x(0,u^{\ast}) \right)$ minimal wird.
+\subsection{Lösungsprinzip}
+Es wird die kontinuierliche Zeit $t$ diskretisiert, so dass $t=\kappa\cdot h$, mit der Schrittweite $h$, $h>0$, gilt. Damit erfolgt die Approximation durch ein zeitdiskretes Problem. 
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Lösungsprinzip}
+	\label{fig:kap_3_loesungsprinzip}
+\end{figure}
+Die Anwendung der Gleichung der \ac{DP} 
+\begin{align}
+	V(x,\kappa) & = \min\limits_{u}\left(c^D(x, u, \kappa) + V\left(f^D(x, u ,\kappa),\kappa+1 \right) \right)
+\end{align}
+und der Grenzübergang von $h\rightarrow +0$ liefert in kontinuierlicher Zeit ein Analogen zur Gleichung der \ac{DP}.
+
+\subsection{Lösung}
+In die Gleichung der \ac{DP} setzt man $V(x, \kappa) := \min\limits_{u(.)|_{[t,T]}} \int\limits_t^T c(x, u, \tau)d\tau + K_T\left(x(T) \right)$, $V\left(f^D(x, u, \kappa),\kappa + 1
+\right) := V\left(x(t+h),t+h \right)$ und $c^D(x,u,\kappa):=\int\limits_t^{t+h}c(x,u,\tau)d\tau$. Für die in $[t,t+h]$ auflaufenden Kosten gilt
+\begin{align}
+	\underbrace{\int\limits_t^{t+h}c(x,u,\tau)d\tau }_{=g(t+h)} & = \underbrace{\int\limits_{t}^tc(x,u,\tau)d\tau }_{=0}+c(x,u,t)+o(h)\\
+	g(t+h) & = g(t) + g'(t)\cdot h + o(h)
+\end{align}
+und für die minimalen Restkosten zum Zeitpunkt $t+h$ gilt
+\begin{align}
+	V\left(x(t+h),t+h \right) & = V(x,t)+\frac{\d V(x,t)}{\d x}f(x,u,t)\cdot h + \frac{\d V(x,t)}{\d t}\cdot h + o(h).
+\end{align}
+Also gilt
+\begin{align}
+	V(x,t) & = \min\limits_u\left(c(x,u,t)\cdot h + V(x,t) + \frac{\d V(x,t)}{\d x}f(x,u,t)\cdot h + \frac{\d V(x,t)}{\d t}\cdot h + o(h) \right).
+\end{align}
+Die Subtraktion von $V(x,t)+\frac{\d V(x,t)}{\d t}\cdot h$ und die Division durch $h$ liefert 
+\begin{align}
+	-\frac{\d V(x,t)}{\d t} & = \min\limits_u\left(c(x,u,t) + \frac{\d V(x,t)}{\d x}f(x,u,t)+\frac{o(h)}{h} \right).
+\end{align}
+Für $h\rightarrow +0$ ergibt sich die \ac{HJB}-Gleichung 
+\begin{align}
+	-\frac{\d V(x,t)}{\d t} & = \min\limits_u\left(c(x,u,t) + \frac{\d V(x,t)}{\d x}f(x,u,t) \right).	
+\end{align}
+und es gilt $V(x,T)=K_T(x)$.
+
+Somit ist die \ac{HJB}-Gleichung für $t\in[0,T]$ unter der Randbedingung $V(x,T)=K_T(x)$ zu lösen. Die Minimalkosten sind $V(x(0),0)$ und eine optimale Zustandsrückführung ergibt sich
+aus
+\begin{align}
+	u(x,t) & = \arg\min\limits_u\left(c(x,u,t) + \frac{\d V(x,t)}{\d x}f(x,u,t) \right).
+\end{align}
 
 \section{Das zeitkontinuierliche \NoCaseChange{\acl{LQR}}-Problem}
-
+Der Prozess wird beschrieben durch
+\begin{align}
+	\dot{x} & = A(t)x + B(t)u
+\end{align}
+mit dem gegebenen Anfangszustand $x(0)$. Die Systemmatrizen $A(t)$ und $B(t)$ sind stetig bezüglich der Zeit $t$.\\
+Das Kostenfunktional ist gegeben mit
+\begin{align}
+	K\left(x(0),u \right) & := \int\limits_0^T x^TR(t)x + u^TQ(t)u dt + x(T)^TX_Tx(T),
+\end{align} 
+wobei $R(t)$ und $Q(t)$ stetig bezüglich der Zeit $t$ sind und $R(t)\geq 0$, $Q(t)>0\ \forall t\in[0,T]$, $X_T\geq 0$ gilt.\\
+Das \ac{LQR}-Problem stellt sich wie folgt dar:
+\begin{itemize}
+  \item[] Finde die Rückführung $F(t)$ so, dass für $u^{\ast}(t):=F(t)x(t):\ K\left(x(0),u^{\ast} \right)$ minimal wird. 
+\end{itemize}
 \begin{satz}
 Das \ac{LQR}-Problem wird gelöst durch die optimale Steuergröße
+\begin{align}
+	u^{\ast}(t) & = F(t)x(t)\quad \forall t\in[0,T],
+\end{align}
+mit der Rückführung $F(t)=-Q^{-1}(t)B^T(t)X(t)$ und der Riccatischen Differentialgleichung
+\begin{subequations}\label{eqn:kap_3_riccatischedgl}
+\begin{align}
+	-\dot{X} & = R(t)+X A(t)+A^T(t)X-XB(t)Q^{-1}(t)B^T(t)X
+\end{align}
+mit der Endbedingung
+\begin{align}
+	X(T) & = X_T.
+\end{align}
+\end{subequations}
+Dabei gilt $V\left(x(0),0 \right) = x^T(0)X(0)x(0)$.
 \end{satz}
 \begin{remark}
-ist mathematisch eine Anfangswertaufgabe (Substitution $\tau:=T-t$), somit ist die Lösung $X$ eindeutig. Mit $X$ ist auch $X^T$ eine Lösung von . Also gilt $X=X^T$.
+\eqnref{eqn:kap_3_riccatischedgl} ist mathematisch eine Anfangswertaufgabe (Substitution $\tau:=T-t$), somit ist die Lösung $X$ eindeutig. Mit $X$ ist auch $X^T$ eine Lösung von
+\eqnref{eqn:kap_3_riccatischedgl}. Also gilt $X=X^T$.
 \end{remark}
 \begin{proof}
 \begin{enumerate}[label=(\alph*)]
-  \item Zeigen: $V(x(t),t)=x^T(t)X(t)x(t)$.\\
-  Linke Seite
+  \item Es muss gezeigt werdem, dass $V(x(t),t)=x^T(t)X(t)x(t)$ gilt.\\
+  Linke Seite der \ac{HJB}-Gleichung: Es ist $-\frac{\d V}{\d t} = -x^T\dot{X}x$.
+  Rechte Seite der \ac{HJB}-Gleichung: Mit $\frac{\d V}{\d x} = 2x^TX$ gilt
+  \begin{multline}
+  	\min\limits_{u}\left(x^TRx + u^TQu + \left(x^TX + x^TX \right)\left(Ax + Bu \right) \right)\\
+  	= \min\limits_{u}\left(x^T\left(R + XA +A^TX \right)x + x^TXBu + u^TB^TXx + u^TQ u
+  	\right)\\
+  	= \min\limits_{u}\left(\begin{bmatrix}
+  	x^T & u^T
+  	\end{bmatrix}\begin{bmatrix}
+  	R + XA + A^T X & XB\\ B^TX	& Q
+  	\end{bmatrix}\begin{bmatrix}
+  	x\\ u
+  	\end{bmatrix} \right)\\
+  	 = x^T\left(R + XA + A^TX - XBQ^{-1}B^TX \right)x. \label{eqn:kap_3_zeitkont_proof}
+  \end{multline} 
+  \item Das Minimum \eqnref{eqn:kap_3_zeitkont_proof} wird angenommen für $u = \underbrace{-Q^{-1}B^TX}_{=:F}x$, also $u^{\ast}(t)=F(t)x(t)$.
 \end{enumerate}
 \end{proof}
 
+\subsection{Übergang zu unendlichem Zeithorizont}
+Der Prozess wird beschrieben durch
+\begin{align}
+	\dot{x} & = A x + B u
+\end{align}
+mit gegebenen Anfangszustand $x(0)$.\\
+Das Kostenfunktional wird angegeben mit
+\begin{align}
+	K\left(x(0), u \right) & := \int\limits_0^{\infty}x^TRx + u^TQu dt,
+\end{align}
+wobei $R\geq 0$ und $Q>0$ gilt.\\
+Das \ac{LQR}-Problem stellt sich wie folgt dar:
+\begin{itemize}
+  \item[] Finde die Rückführung $F$ so, dass für $u^{\ast}(t):=Fx(t):\ K\left(x(0),\bm{u}^{\ast} \right)$ minimal wird. 
+\end{itemize}
 \begin{satz}
-Sei $(A,B)$ stabilisierbar, $R=\bar{R}^T\bar{R}$, $(A,\bar{R})$ ermittelbar.\\
-Dann exisitert eine eindeutige positive semidefinite Lösung $X$ der \ac{ARE} $0=R+XA+A^TX-XBQ^{-1}B^TX$. Weiter ist die Rückkopplung $u^{\ast}(t)=Fx(t)$, $F:=-Q^{-1}B^TX$,
+Sei $(A,B)$ stabilisierbar und $R=\bar{R}^T\bar{R}$, $(A,\bar{R})$ ermittelbar.\\
+Dann exisitert eine eindeutige positive semidefinite Lösung $X$ der \ac{ARE} $0=R+XA+A^TX-XBQ^{-1}B^TX$. Weiter ist die Rückkopplung $u^{\ast}(t)=Fx(t)$ mit $F:=-Q^{-1}B^TX$,
 stabilisierend und führt zum minimalen Wert des Kostenfunktionals.
 \end{satz}
 
