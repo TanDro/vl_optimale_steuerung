@@ -3,7 +3,57 @@
 
 \begin{remark}\hspace{1mm}
 \begin{itemize}
-  \item $\pi$ ist die
+  \item Optimale Steuerfolge $u^{\ast}[\kappa],\ldots,u^{\ast}[k-1]$ zum Erreichen der minimalen Restkosten $V\left(x[\kappa],\kappa \right)$ ist allein von $x[\kappa]$ abhängig, also
+  ist die Kenntnis von $u[0],\ldots,u[k-1]$ nicht erforderlich.
+  \item Es gilt das Optimalitätsprinzip von Bellmann:\\
+  	Sei $u^{\ast}[\kappa],\ldots,u^{\ast}[k-1]$ optimale Steuerfolge für den Prozess mit Anfangszustand $x[\kappa]$, dann ist $u^{\ast}[\kappa+1],\ldots,u^{\ast}[k-1]$ optimale
+  	Steuerfolge für den Prozess mit dem Anfangszustand $f\left(x[\kappa],u^{\ast}[\kappa] \right)$.
+\end{itemize}
+\end{remark}
+Anwendung der Gleichung der \ac{DP} zur Bestimmung einer optimalen Steuerfolge
+
+Rekursive Rückwärtsrechnungen
+\begin{enumerate}[label=(S\arabic*)]
+  \item Berechne
+  \begin{align*}
+  	V\left(x[k-1],k-1 \right) & = \min\limits_{u[k-1]}\left\{c(x[k-1],u[k-1]) + K_k\left(f(x[k-1],u[k-1]) \right) \right\}
+  \end{align*}
+  sowie Funktion
+  \begin{align*}
+  	\pi_{k-1} & := x[k-1]\mapsto u^{\ast}[k-1],
+  \end{align*}
+  d.h. 
+  \begin{align*}
+  	\pi_{k-1}\left(x[k-1] \right) & = u^{\ast}[k-1].
+  \end{align*}
+  \item Für $\kappa=k-2,\ldots,0$ berechne 
+  \begin{align*}
+  	V\left(x[\kappa],\kappa \right) & = \min\limits_{u[\kappa]}\left\{c\left(x[\kappa],u[\kappa] \right) + V\left(f(x[\kappa],u[\kappa],\kappa +1) \right) \right\},
+  \end{align*}
+  sowie
+  \begin{align*}
+  	\pi_{\kappa} & := x[\kappa]\mapsto u^{\ast}[\kappa].
+  \end{align*}
+\end{enumerate}
+Rekursive Vorwärtsrechnung
+\begin{enumerate}[label=(S\arabic*),resume] 
+  \item Zu gegebenen $x[0]$ bestimme für $\kappa=0,1,\ldots,k-1$
+  \begin{align*}
+  	u^{\ast}[\kappa] & = \pi_{\kappa}(x[\kappa]).
+  \end{align*}
+\end {enumerate} 
+
+\begin{remark}\hspace{1mm}
+\begin{itemize}
+  \item $\pi$ ist die Zustandsrückführung. Es ist die Prozessgleichung notwendig. Vor- und Rückwärtsrechnung durchführen, danach sind diese für beliebige Anfangswerte
+  anwendbar. Die Rückführungen bleiben. Bei Änderung von einem $u[\kappa]$ muss nur neu eingesetzt werden, daher ist dieser Algorithmus sehr effizient.
+  \item \ac{NB} der Form $u[\kappa]\in U_{\kappa}\subset\mathbb{R}^m$, $x[\kappa]\in X_{\kappa}\subset\mathbb{R}^n$ sind möglich.\\
+  Speziell sind zum Beispiel Endwertbedingungen der Form $x[k]=x_{end}$ mit gegebenen $x_{end}$.
+  \item Zeitvariante Prozesse $x[\kappa+1]=f(x[\kappa],u[\kappa],\kappa)$ und zeitvariante inkrementale Kosten $c(x[\kappa],u[\kappa],\kappa)$ sind möglich.Dann ist Kostenfunktion der
+  \ac{DP}
+  \begin{align*}
+  	V(x,\kappa) & = \min\limits_u\left(c(x,u,\kappa)+V\left(f(x,u,\kappa), \kappa +1 \right) \right).
+  \end{align*}
 \end{itemize}
 \end{remark}
 \begin{exmp}\label{exmp:kap_3_zeitdis_opt_1}
