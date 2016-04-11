@@ -1,6 +1,92 @@
 \chapter{Optimale Zustandsrückführung}
 \section{Zeitdiskrete Optimalsteuerung bei endlichen Zeithorizont}
 
+\begin{remark}\hspace{1mm}
+\begin{itemize}
+  \item $\pi$ ist die
+\end{itemize}
+\end{remark}
+\begin{exmp}\label{exmp:kap_3_zeitdis_opt_1}
+Der Prozess ist gegeben mit
+\end{exmp}
+
+\begin{exmp}
+Wie \exmpref{exmp:kap_3_zeitdis_opt_1}, aber keine Endwertbedingung, dafür Endwertkosten und zusätzliche Steuergrößenbeschränkungen $-1\leq
+u[\kappa]\leq 1$ für $\kappa=0,1,2$ und dem Kostenfunktional
+\begin{align*}
+	K
+\end{align*}
+\end{exmp}
+
+\subsection{Numerische Durchführung des Algorithmus der Dynamsichen Programmierung}
+Sei $x[\kappa+1] = f\left(x[\kappa],u[\kappa] \right)$ mit 
+\begin{exmp}
+Der Prozess ist beschrieben durch
+\begin{align}
+	x[\kappa + 1] & = \frac{1}{2}\left(x[\kappa]+u[\kappa] \right)
+\end{align}
+mit der Anfangsbedingung $x[0] = 4$ und dem zeithorizont $k=3$. Die Steuergrößenbeschränkungen sind gegeben mit $-1\leq u[\kappa]\leq 1$ für $\kappa =
+0,1,2$. Das Kostenfunktional ist gegeben mit
+\begin{align}
+	K\left(x[0];u[0],u[1],u[2] \right) & = \sum\limits_{\kappa = 0}^2\left(x[\kappa]^2+u[\kappa]^2 \right) + x[3]^2.
+\end{align}
+% TODO Python Script draus machen + Plots
+\begin{lstlisting}[style=PythonStyle, caption=Numerische Algorithmus der Dynamischen Programmierung, label=code:kap_3_sec_1_num_dp] 
+  	clear all
+	
+	# Rueckwaertsrechnung
+	x0=4; K=3
+	
+	uGitter=-1:0.1:1; xGitter=0:0.1:4;
+	nu=length(uGitter); nx=length(xGitter);
+	
+	V=zeros(nx,K+1); V(:,K+1)=xGitter(:).^2;
+	U=zeros(nx,K);
+	
+	for k=[K-1:-1:0]+1
+		for i=1:nx
+			for j=1:nu
+				xFolge=(xGitter(i)+uGitter(j))/2;
+				Kosten(j)=xGitter(i)^2+uGitter(j)^2\
+					+interpl(xGitter,V(:,k+1),xFolge,'linear',inf); #Kosten ausserhalb Gitter unendlich
+			end
+			[minval,minind]=min(Kosten);
+			V(i,k)=minval; U8i,k)=uGitter(minind)
+		end
+	end
+	
+	# Vorwaertsrechnung
+	x(1)=x0;
+	for k=[0:K-1]+1
+		u(k)=interpl(xGitter,U(:,k),x(k));
+		x(k+1)=(x(k)+u(k))/2;
+	end
+	
+	figure(1), surface(V)
+	figure(2), plot([0:K-1],u,'.')
+	figure(3), plot([0:K],x)
+\end{lstlisting}  
+Im Algorithmus \ref{code:kap_3_sec_1_num_dp} entspricht $K\hat{=}k$, $nx=\hat{=}N$, $nu\hat{=}M$ und $k\hat{=}\kappa$ und dieser liefert die (im
+Rahmen der Diskretisierung) optimale Steuerfolge
+\begin{align*}
+	u & = \left[u_0, u_1, u_2\right] = \left[-1.00, -0.30, -0.10\right]
+\end{align*}
+und Zustandstrajektorie
+\begin{align*}
+	x & = \left[x_0,x_1,x_2,x_3 \right]=\left[4.00,1.50,0.60,0.25 \right].
+\end{align*}
+\end{exmp}
+Der Rechenaufwand des Algorithmus beträgt
+\begin{itemize}
+  \item $k\cdot M\cdot N$ - Berechnungen von $c(x,u)+V\left(f(x,u),\kappa+1 \right)$ für die \ac{DP},
+  \item $k\cdot M^k$ - Berechnungen von $c(x,u)$ und $f(x,u)$
+  \item $M^k$ - Berechnungen von $K_k(x)$ \hphantom{ $c(x,u)$ und $f(x,u)$}
+  \llap{\smash{\raisebox{\dimexpr0.5\normalbaselineskip+\jot}{$\left.\begin{array}{c}\null\\[\jot]\null\end{array}\right\}\quad$}}}
+      \text{\smash{\raisebox{\dimexpr0.5\normalbaselineskip+\jot}{\begin{tabular}{l}
+      für vollständige Enumeration\\ bei geg. $x[0]$
+      \end{tabular} }}}
+\end{itemize}
+Minimierungsfunktion ist parallelisierbar.
 
 \section{Das zeitdiskrete \NoCaseChange{\acl{LQR}}-Problem}
 Der Prozess wird beschrieben durch
@@ -32,11 +118,11 @@ und das Minimum wird angenommen für $u=-Q^{-1}Sx$.
 \end{satz}
 \begin{proof}
 Es gilt 
-\begin{multline} % TODo
-	x^TRx + x^TS u + u^TS x + u^TQ u\\ 
-	= x^T\left(R-S^TQ^{-1}S \right)x + \left(u^T + x^TS^TQ^{-1} \right)\underbrace{Q\left(u + Q^{-1}Sx \right) }_{=:y}\\
-	\geq x^T \left(R-S^TQ^{-1}S \right)x,
-\end{multline}
+\begin{align}
+	\MoveEqLeft x^TRx + x^TS u + u^TS x + u^TQ u\\ 
+	& = x^T\left(R-S^TQ^{-1}S \right)x + \left(u^T + x^TS^TQ^{-1} \right)\underbrace{Q\left(u + Q^{-1}Sx \right) }_{=:y}\\
+	& \geq x^T \left(R-S^TQ^{-1}S \right)x,
+\end{align}
 da $y^TQy\geq 0\ \forall y$ ($Q^{-1}$ existiert, da $Q>0$ und positiv definit). Für $u=-Q^{-1}Sx$ gilt "`="'.
 \end{proof}
 \begin{satz}
@@ -65,9 +151,17 @@ mit $\kappa = k-1, k-2,\ldots,0$.
 		x\\ u
 		\end{bmatrix} \right\}\\
 		& = x^T\underbrace{\left(R+A^TX_{\kappa}A - A^TX_{\kappa}B\left(Q+B^TX_{\kappa}B \right)^{-1}B^TX_{\kappa}A \right)}_{X_{\kappa +1}}x\\
-		& = x^TX_{\kappa +1}x \geq 0
+		& = x^TX_{\kappa +1}x \geq 0,
 	\end{align*}
-	und die Minimierung wird angenommen für % TODO Siteseitenreferenz einbauen + Kap1 überarbeiten + an Flori senden
+	weil gilt
+	\begin{align*}
+		\underbrace{y^T\left(Q+B^TX_{\kappa}B \right)y}_{> 0\ \forall y\neq 0} & =
+		\underbrace{y^TQy}_{>0}+\underbrace{\underbrace{y^TB^T}_{=z^T}X_{\kappa}\underbrace{By}_{=z} }_{\geq 0}
+	\end{align*}
+	und die Minimierung wird angenommen für $u = \underbrace{-\left(Q+B^TX_{\kappa}B \right)^{-1}BX_{\kappa}A}_{=F_{\kappa - 1}}x$ also
+	$u^{\ast}[\kappa - 1]=F_{\kappa - 1}x[\kappa - 1]$. Weiter gilt $X_{\kappa - 1}\geq 0$ (positiv semidefinit).\\
+	Analog gilt die Durchführung für $\kappa=k-1,\ldots,1$.\\
+	Im Kern des Beweises ist die Nutzung der Gleichung der \ac{DP} anwendbar.
 \end{proof}
 \begin{remark}\hspace{1mm}
 \begin{itemize}
