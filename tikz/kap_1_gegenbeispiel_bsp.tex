@@ -21,9 +21,9 @@
    	\foreach \y in {-2,-1.5,...,1.5}
      	\draw (0.02,\y) -- (-0.02,\y);
 
-	\draw[thick,color=green] plot[samples=200, domain=-1.25:1.25] (\x,{\x*\x*\x});
-
 	\draw[thick,color=blue] (-1,0) circle (0.5);
 	\draw[thick,color=blue] (-1,0) circle (1);
+
+	\draw[thick,color=green] plot[samples=200, domain=-1.25:1.25] (\x,{\x*\x*\x});
 
 \end{tikzpicture}

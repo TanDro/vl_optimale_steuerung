@@ -5,7 +5,7 @@
 	\caption{Steuerung}
 	\label{fig:kap_1_steuerung}
 \end{figure}
-Eingänge $u$ können in ihren möglichen Werten auf eine Menge möglicher Werte $U$ beschränkt werden.
+Die Eingänge $u$ können in ihren möglichen Werten auf eine Menge möglicher Werte $U$ beschränkt werden.
 \begin{align*}
 K(u,y) & \rightarrow \min\limits_u\rightsquigarrow u^{\star}\\
 K & \ldots \text{Kostenfunktion}\\
@@ -37,7 +37,7 @@ Sei $F:D\subset\mathbb{R}^n\rightarrow\mathbb{R}$. Eine Stelle $x_0\in D$ heißt
   \item Minimumstellen und Maximumstellen treten gemeinsam auf: Extremstellen
 \end{itemize}
 \end{defi}
-\begin{exmp}\hspace{1cm}
+\begin{exmp}\hspace{1cm}\\
 \begin{minipage}[c][][c]{0.3\textwidth}
 \centering
 \input{tikz/kap_1_beispiel_minmaxstelle.tex}
@@ -68,14 +68,7 @@ isol. lokale Maximumstelle\\
 keine lokale Extremstelle \end{tabular} \right\}
 \end{align*}
 \end{satz}
-\begin{uea}
-Aufgabe: Bestimmen Sie von beiden Funktionen die Definitheit und die Extremstellen!
-\begin{alignat*}{2}
-f_1(x_1,x_2) & = \frac12\left(ax_1^2+bx_2^2\right) &\Rightarrow H f_1&=\begin{bmatrix} a & 0\\ 0 & b \end{bmatrix}\\
-f_2(x_1,x_2) & = \frac12x_1^2+\frac16x_2^3 & \Rightarrow H f_2&=\begin{bmatrix} 1 & 0\\ 0 & x_2 \end{bmatrix}
-\end{alignat*}
-Lösung: 
-\end{uea}
+Es ist eine Übung unter \picref{sec:uebung_kapitel_1_def_extrem}{Definitheit und Extremstellen} im Anhang zu finden.
 \begin{defi}
 Sei $D\subset\mathbb{R}^n$ offen, $f:D\rightarrow\mathbb{R},h_1,\ldots,h_m:D\rightarrow\mathbb{R}$. $\overline{x}\in D$ heisst lokale oder globale Extremstelle von $f$ unter den
 \ac{GNB} $h_1(x)=0,\ldots,h_m(x)=0$, wenn $\overline{x}$ lokale oder globale Extremstelle von $f$ auf
@@ -154,7 +147,7 @@ Geometrische Interpretation im Fall $n=2$, $m=1$:
   \end{tabular}
 \end{enumerate}
 \begin{exmp}
-Gesucht ist die Extremstelle von 
+Gesucht sind die lokalen Extremstelle von 
 \begin{align*}
 	f(x,y) & = 4x^2-3xy \text{ auf } K=\left\{(x,y)^T\in\mathbb{R}|\ x^2+y^2\le 1 \right\}.
 \end{align*}
@@ -284,12 +277,10 @@ $L(x,u)=f(x)+\sum\limits_{i=1}^{m}u_ig_i(x)$: Lagrange-Funktion zur Aufgabe $\mi
   \item zu \figureref{fig:kap_1_ktb_opt_1_2}: $u_ig_i(\overline{x})=0\Rightarrow u_3=0\Rightarrow \nabla f(\overline{x})+u_1\nabla g_1(\overline{x})+u_2\nabla g_2(\overline{x})=0$ mit
   $u_1$, $u_2\ge 0$\\
 \end{enumerate}
-
-Bemerkung:
-\begin{itemize}
-  \item[] $x$ ist Maximumstelle von $f$ genau dann, wenn $x$ Minimumstelle von $-f$ ist.  
-\end{itemize} 
-\begin{gegenexmp}\hspace{1cm}
+\begin{remark}
+	$x$ ist Maximumstelle von $f$ genau dann, wenn $x$ Minimumstelle von $-f$ ist.  
+\end{remark} 
+\begin{gegenexmp}\hspace{1cm}\\
 \begin{minipage}{0.5\textwidth}
 \begin{align*}
 f(x) & = (x_1+1)^2+x^2_2\\
@@ -303,23 +294,21 @@ Minimumstelle: $(0,0)$
 \input{tikz/kap_1_gegenbeispiel.tex}
 \end{minipage}
 \end{gegenexmp}
-Bemerkung:
-\begin{itemize}
-  \item[] Die Forderung nach der Unabhängigkeit der Vektoren in $\nabla h_1(\overline{x}),\ldots,\nabla h_m(\overline{x})$ in Satz \ref{satz:3} bzw. $\nabla g_i(\overline{x})$ mit
+\begin{remark}
+  Die Forderung nach der Unabhängigkeit der Vektoren in $\nabla h_1(\overline{x}),\ldots,\nabla h_m(\overline{x})$ in Satz \ref{satz:3} bzw. $\nabla g_i(\overline{x})$ mit
   $i\in I_0(\overline{x})$ in Satz \ref{satz:4} ist eine sogenannte \textit{Regularitätsbedingung} (\ac{LICQ}). Es gibt andere Regularitätsbedingungen, z.B. die Forderung das
   $h_1,\ldots,h_m$ bzw. $g_1,\ldots,g_m$ affine lineare Funktionen sind, d.h. eine Darstellung der Form 
   \begin{align*}
   	M = \left\{ x\in\mathbb{R}^n:\ Ax=b \right\} & \text{ bzw. } G=\left\{ x\in\mathbb{R}^n:\ Ax\le b \right\}
   \end{align*}
   mit der Matrix $A\in\mathbb{R}^{m\times n}$ und dem Vektor $b\in\mathbb{R}^m$ möglich ist.
-\end{itemize}
+\end{remark}
 Für die Aufgabe $\min f(x)$ bei $g_i(x)\le 0$ ($i=1,\ldots,m$), $h_j(x)=0$ ($j=1,\ldots,p$) mit stetig differenzierbaren $f$, $g_i$, $h_j$ lautet die \ac{KTB}:
 \begin{align}
 	\nabla_x L(x,u,\lambda) & = \nabla f(x)+\sum\limits_{i=1}^m u_ig_i(x)+\sum\limits_{j=1}^p\lambda_j h_j(x) \label{eq:kap_1_ktp}\\
 	& h(x) = 0,\ u\ge 0,\ g(x)\le 0,\ u_ig_i(x)=0\ (i=1,\ldots,m) \notag
 \end{align}
 Ein Punkt $L(x,u,\lambda)$ der Gleichung \eqnref{eq:kap_1_ktp} erfüllt, heisst \ac{KTP}.
-
 \begin{exmp}
 Gesucht ist die optimale Lösung der Aufgabe $f(x)=-x^2_1+x_2^2\rightarrow\min$ bei $(x_1+1)(x_2+2)\le 4$ mit $x_1\ge 0$, $x_2\ge 0$.\\
 Mit 
@@ -410,7 +399,7 @@ beschreiben und für die lokale Minimumstelle $x^{\ast}$ von $f$ auf $G$  gilt $
 mit $g(x^{\ast})\le 0$, $u^{\ast}\ge 0$, $u^{\ast T}g(x^{\ast})=0$, $h(x^{\ast})=0$ und dem \ac{KTP}: $\begin{pmatrix}x^{\ast}, & u^{\ast}, & \lambda^{\ast} \end{pmatrix}$
 \end{exmp}
  
-\begin{gegenexmp}\hspace{1cm}
+\begin{gegenexmp}\hspace{1cm}\\
 \begin{minipage}{0.5\textwidth}
 \begin{align*}
 f(x) & = (x_1+1)^2+x^2_2\\
@@ -444,14 +433,7 @@ gilt:
   \end{align*}
 \end{itemize}
 \end{satz}
-
-\begin{uea}
-Aufgabe: 
-\begin{itemize}
-  \item[] Finden Sie alle Lösungen von $f(x)=-x_1-x_2\rightarrow\min\limits_{x\in\mathbb{R}^2}$ bei $g_1(x)=x_1+x_2^2\le 0$ (Skizze)!
-\end{itemize}
-Lösung: 
-\end{uea}
+Es ist eine Übung unter \picref{sec:uebung_kapitel_1_ktb}{Kuhn-Tucker-Bedingung} im Anhang zu finden.
 
 \section{Anwendungen auf quadratische Optimierungsaufgaben}
 \textbf{Aufgabe}
@@ -466,7 +448,7 @@ Lösung:
   \begin{align*}
   	\nabla f(x) & = Qx+q =0
   \end{align*} 
-  \underline{Beachte}: Lösung muss nicht existieren.
+  \textit{Beachte}: Lösung muss nicht existieren.
   \item $\min\limits_{x\in\mathbb{R}^n}\frac12 x^TQx+q^Tx$ bei $Cx=d$ mit $C\in\mathbb{R}^{p\times n}$, $d\in\mathbb{R}^p$. Analog zu (1): $x^{\ast}$ ist Lösung
   $\xLeftrightarrow{\text{Satz \ref{satz:5}}}\exists\lambda^{\ast}\in\mathbb{R}^p:(x^{\ast},\lambda^{\ast})$ ist \ac{KTB}. Mit $L(x,\lambda)=\frac12
   x^TQx+q^Tx+\lambda^T(Cx-d)$ liefert
@@ -486,7 +468,8 @@ Lösung:
   -q \\ d
   \end{bmatrix}
   \end{align*}
-  \underline{Beachte}: Kann keine oder mehrdeutige Lösungen besitzen.
+  \underline{Beachte}: Kann keine oder mehrdeutige Lösungen besitzen.\\
+  Es ist eine Übung unter \picref{sec:uebung_bsp_quad_opt}{Beispiele zur Quadratischen Optimierung} im Anhang zu finden.
   \item Projektion auf Untervektorraum\\
   		$A\in\mathbb{R}^{m\times n}$, $m\ge n$, $\Rang A=n$, $b\in\mathbb{R}^m$\\
   		\begin{figure}[!htb]
@@ -496,13 +479,15 @@ Lösung:
 			\label{fig:kap_1_projektion}
 		\end{figure}
   		\begin{align}
-  			\im A & := \left\{Ax:x\in\mathbb{R}^n \right\} \notag\\
-  			(\im A)^{\bot} =\ker A^T & := \left\{y\in\mathbb{R}^m:A^Ty=0 \right\}\notag\\
-  			A^T(b-A\widehat{x}) & = 0\notag\\
-  			A^Tb & = A^TA\widehat{x}\notag\\
-  			\widehat{x} & = (A^TA)^{-1}A^Tb\notag\\ 
-  			\rightarrow P & = A(A^TA)^{-1}A^T\quad \ldots\text{ Projektor auf $\im A$} \label{eq:kap_1_projektion}
+  			\Image A & := \left\{Ax:x\in\mathbb{R}^n \right\} \notag\\
+  			(\Image A)^{\bot} =\ker A^T & := \left\{y\in\mathbb{R}^m:A^Ty=0 \right\}\notag\\
+  			A^T(b-A\hat{x}) & = 0\notag\\
+  			A^Tb & = A^TA\hat{x}\notag\\
+  			\hat{x} & = (A^TA)^{-1}A^Tb\notag\\ 
+  			\rightarrow P & = A(A^TA)^{-1}A^T\quad \ldots\text{ Projektor auf $\Image A$} \label{eq:kap_1_projektion}
   		\end{align}
+  		Es ist eine Übung unter \picref{sec:uebung_proj_untervekraum}{Projektion auf Unterverktorraum} im Anhang zu finden.
+  		
   		Projektion eines Vektors $v\in\mathbb{R}^n$ auf $M:=\left\{x\in\mathbb{R}^n|\ Cx=d \right\}$ mit $C\in\mathbb{R}^{p\times n}$, $p\le n$, $\Rang c = p$, siehe
   		\figureref{fig:kap_1_projektion} und man erhält den Projektor durch ersetzen von $A^T$ durch $C$ in \eqnref{eq:kap_1_projektion}
   		\begin{align*}
@@ -514,52 +499,14 @@ Lösung:
 			\caption{Projektion}
 			\label{fig:kap_1_projektion}
 		\end{figure}
+  		Es ist eine Übung unter \picref{sec:uebung_proj_vektor}{Projektion eines Vektors} im Anhang zu finden.
 \end{enumerate}
-\begin{uea}
-Aufgabe:
-\begin{itemize}
-  \item[] Zeigen Sie, dass für $\min\limits_{x\in\mathbb{R}}$, d.h. $Q=0$, $q=1$, keine Lösung exisiert. 
-\end{itemize}
-Lösung:
-\end{uea}
-\begin{uea}
-Aufgabe:
-\begin{itemize}
-  \item[] Wiederholen Sie den Algorithmus aus dem Beispiel mit $x^0=\begin{bmatrix}1\\ -1 \end{bmatrix}$. 
-\end{itemize}
-Lösung:
-\end{uea}
-
-\begin{uea}
-Aufgabe:
-\begin{itemize}
-  \item[] Seien $A=\begin{bmatrix}
-2\\1
-\end{bmatrix}$, $b=\begin{bmatrix}
-1\\2
-\end{bmatrix}$. Berechnen Sie $Pb$, $(I-P)b$, $(I-P)P$, $Pb+(I-P)b$, $(Pb)^T(I-P)b$.
-	\item[] Was ist das kleinste $\alpha\in\mathbb{R}$, so dass $\|Pb\|_2\le\alpha\|b\|_2$ erfüllt ist? 
-\end{itemize}
-Lösung:
-\end{uea}
-
-
-\begin{uea}
-Aufgabe: 
-\begin{itemize}
-  \item[] Für $C=\begin{bmatrix}1 & 1 \end{bmatrix}$, $d=1$ projiziere $v_1=\begin{bmatrix}1 \\ 1 \end{bmatrix}$, $v_2=\begin{bmatrix}1 \\ 0 \end{bmatrix}$ auf $M$ (Skizze)!
-  \item[] Für $C=\begin{bmatrix}1 & 1\\ 0 & 1 \end{bmatrix}$, $d=\begin{bmatrix} 1\\1\end{bmatrix}$ projiziere $v_1=\begin{bmatrix}1 \\ 1 \end{bmatrix}$, $v_2=\begin{bmatrix}1 \\ 0
-  \end{bmatrix}$ auf $M$ (Skizze)!
-\end{itemize}
-Lösung: 
-\end{uea}
-
 
 \subsection{Aktive-Mengen-Strategie}
-\textbf{Aufgabe}:
-\begin{itemize}
-  \item[] $f(x) = \frac12 x^TQx+q^Tx\rightarrow\min$ bei $Ax\le b$
-\end{itemize}
+Die Aufgabe besteht in
+\begin{align}
+  f(x) = \frac12 x^TQx+q^Tx\rightarrow\min\text{ bei } Ax\le b.
+\end{align}
 Seien $Q\in\mathbb{R}^{n\times n}$, $Q>0$ possitiv definit, $q\in\mathbb{R}^n$, $A=\begin{bmatrix}a_1^T\\\vdots\\ a_m^T\end{bmatrix}\in\mathbb{R}^{m\times n}$, $b\in\mathbb{R}^m$.\\
 Für $x\in G:=\left\{x\in\mathbb{R}^n|\ Ax\le b \right\}$ bezeichne $I_a(x)=\left\{i\in(1,\ldots,m):a_i^Tx=b_i\right\}$\footnote{Menge der im Punkt $x\in G$ aktiven Restriktionen} und
 $M(I) = \left\{y\in\mathbb{R}^n|\ a_i^Ty=b_i, i\in I_a(x) \right\}$.\\
@@ -570,7 +517,7 @@ Sei $\left\{a_i|\ i\in I_a(x) \right\}$ linear unabhängig $\forall x\in G$.\\
   \nabla g_i(x) & = a_i
 \end{align*}
 
-\textbf{Algorithmus der Aktive-Mengen-Strategie}:
+\subsubsection{Algorithmus der Aktive-Mengen-Strategie}
 \begin{enumerate}[label=(S\arabic*)]
   \item Wähle ein $x^0\in G$, setze $I_0:=I_a(x^0)$ und setze $k:=0$.
   \item Falls Projektion von $\nabla f(x^k)=Qx^k+q$ auf $M(I_k)$ gleich dem Nullvektor ist, so sind die zu $x^k$ gehörigen Lagrange-Multiplikatoren
@@ -585,26 +532,23 @@ Sei $\left\{a_i|\ i\in I_a(x) \right\}$ linear unabhängig $\forall x\in G$.\\
   		Setze $\alpha_k=\max\left\{\alpha\in[0,1]:x^k+\alpha(y^k-x^k)\in G\right\}$, $x^{k+1}=x^k+\alpha(y^k-x^k)$, $I_{k+1}:=I_a(x^{k+1})$ und gehe mit
   		$k\rightarrow k+1$ zu (S2)
 \end{enumerate}
-
-Bemerkung zu (S3):
-\begin{itemize}
-  \item[] Die im Punkt $x^k$ inaktive UNBen sind $a_j^Tx^k\le b_j$, $j\notin I_k$.
-  \item[] Wir bestimmen das maximale $\beta > 0$ derart, dass $\beta(y^k-x^k)+x^k$ noch zulässig ist, d.h. $a_j^T(\beta(y^k-x^k)+x^k)\le b_j$.
-  \item[] Dies ist wegen $a_j^Tx^k\le b_j$ und $\beta a_j^T(y^k-x^k)\le b_j-a_j^Tx^k$ stets für diejenigen $j$ erfüllt, für die $a_j^T(y^k-x^k)\le 0$ gilt. 
-  \item[] Also ergibt sich das gesuchte \begin{align*}
+\begin{remark}[zu (S3)]
+  Die im Punkt $x^k$ inaktive UNBen sind $a_j^Tx^k\le b_j$, $j\notin I_k$.
+  Wir bestimmen das maximale $\beta > 0$ derart, dass $\beta(y^k-x^k)+x^k$ noch zulässig ist, d.h. $a_j^T(\beta(y^k-x^k)+x^k)\le b_j$.
+  Dies ist wegen $a_j^Tx^k\le b_j$ und $\beta a_j^T(y^k-x^k)\le b_j-a_j^Tx^k$ stets für diejenigen $j$ erfüllt, für die $a_j^T(y^k-x^k)\le 0$ gilt. 
+  Also ergibt sich das gesuchte \begin{align*}
   \beta & = \min\left\{\left.\ gfrac{b_j-a_j^Tx^k}{a_j^T(y^k-x^k)}\right|\ j\notin J_k\text{ mit } a_j^T(y^k-x^k)>0 \right\}.
   \end{align*}
-  \item[] (S3) berechnet $\alpha_k=\min\left\{1,\beta\right\}$.
-\end{itemize}
-
-Bemerkung zum Algorithmus:
+  (S3) berechnet $\alpha_k=\min\left\{1,\beta\right\}$.
+\end{remark}
+\begin{remark}[zum Algorithmus]\hspace{1mm}
 \begin{itemize}
   \item Die Voraussetzungen ``$C>0$'' und ``$\left\{a_i|\ i\in I_a(x)\right\}$ linear unabhängig $\forall k\in G$'' sichern die eindeutige Lösbarkeit des linearen Gleichungssystems in
   (S2) und (S3)
   \item Alle Iterationen $x^k$ sind zulässig. In der Praxis gilt bei jedem Durchlauf von (S3): $f(x^{k+1})<f(x^k)$. Der Algorithmus ist endlich (gutartiger, schneller Algorithmus).
 \end{itemize}
-
-\textbf{Finden eines zulässigen Startpunktes}:\\
+\end{remark}
+\subsubsection{Finden eines zulässigen Startpunktes}
 Zur Aufgabe 
 \begin{align}
 	f(x) & =\frac12 x^TQx+q^Tx\rightarrow\min\limits_{x\in\mathbb{R}^n} \text{ bei } Ax\le b \label{eq:startpkt_1}
@@ -623,15 +567,18 @@ Zulässiger Startwert:
   \item[] Falls $\overline{y}=0$, so gilt 
   $A\overline{x}\le b$, d.h. $\overline{x}$ ist zulässig von \eqnref{eq:startpkt_1}.
 \end{itemize}
+Es ist eine Übung unter \picref{sec:uebung_finden_startwert}{Finden eines zulässigen Startwertes für den Aktiven Mengen Algorithmus} im Anhang zu finden.
 
-\textbf{Erweiterungen des Algorithmus}:
+
+\subsubsection{Erweiterungen des Algorithmus}
 \begin{itemize}
   \item Falls $Q=0$, d.h. $f(x)=q^Tx\rightarrow\min$ bei $Ax\le b$, so liegt eine Aufgabe der linearen Optimierung vor. In (S3) wir dann $\alpha_k:=\max\left\{ \alpha\ge 0: x^k+\alpha
   s^k\in G \right\}$ wobei $s^k$ der auf $M(I_k)$ projizierte negative Gradient $-\nabla f(x^k)=-q$ ist.
   \item Treten UNB und GNB gleichzeitig auf, d.h. $f(x)=\frac12 x^TQx+q^Tx\rightarrow\min$ bei $Ax\le b$ und $Cx=d$ so werden die GNB wie aktive UNB behandelt.
- \end{itemize}
-
-\begin{exmp}
+\end{itemize}
+Es ist eine Übung unter \picref{sec:uebung_erweiterung_algo}{Erweiterung des Aktiven Mengen Algorithmus} im Anhang zu finden.
+ 
+\begin{exmp}\label{exmp:kap_1_ama}
 Seien 
 \begin{align*}
 	A & =\begin{bmatrix}1 & \frac13\\0 & 1\\ -1 & 0 \end{bmatrix},\quad b=\begin{bmatrix}1\\1\\0 \end{bmatrix},\quad Q=\begin{bmatrix}2 & 0\\ 0 & 2
@@ -651,10 +598,7 @@ Seien
   \item[(S2)] Projektion von $\nabla f(x^2)=\begin{bmatrix}-\frac23\\-2 \end{bmatrix}$ auf $M(x^2)$ ist $\begin{bmatrix}0\\0 \end{bmatrix}$.\\
   		Lagrange-Multiplikatoren $\begin{bmatrix}u^2_1\\u_2^2 \end{bmatrix}=\begin{bmatrix}\frac23\\\frac{16}{9} \end{bmatrix}\ge 0$. Stop!
 \end{enumerate}
-\end{exmp}
-
-\textbf{Grafische Darstellung der Optimierungsaufgabe und deren Lösung}:\\
-\newline
+Grafische Darstellung der Optimierungsaufgabe und deren Lösung\\
 \begin{minipage}[c]{0.5\textwidth}
 Zielfunktion:
 \begin{itemize}
@@ -671,19 +615,5 @@ Zulässiger Bereich:
 \begin{minipage}[c]{0.5\textwidth}
 Bild folgt
 \end{minipage}
-
-\begin{uea}
-Aufgabe: 
-\begin{itemize}
-  \item[] Erweitern Sie den Algorithmus um die Auffindung eines zulässigen Startpunktes!
-\end{itemize}
-Lösung: 
-\end{uea}
-
-\begin{uea}
-Aufgabe: 
-\begin{itemize}
-  \item[] Erweitern Sie den Algorithmus um die Aufgabe der linearen Optimierung und die Verwendung von GNB als aktive UNB!
-\end{itemize}
-Lösung: 
-\end{uea}
+\end{exmp}
+Es ist eine Übung unter \picref{sec:uebung_ama}{Aktiver Mengen Algorithmus} im Anhang zu finden.

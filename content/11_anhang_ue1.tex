@@ -2,7 +2,7 @@
 \addcontentsline{toc}{section}{Übungen Kapitel 1} 
 \label{sec:uebung_kapitel_1}
 
-\subsection*{Übung - Definitheit und Extremstellen}
+\subsection*{Definitheit und Extremstellen}
 \addcontentsline{toc}{subsection}{Übung - Definitheit und Extremstellen}
 \label{sec:uebung_kapitel_1_def_extrem} 
 Bestimmen Sie von beiden Funktionen die Definitheit und die Extremstellen!
@@ -13,37 +13,53 @@ f_2(x_1,x_2) & = \frac12x_1^2+\frac16x_2^3 & \Rightarrow H f_2&=\begin{bmatrix} 
 
 \subsubsection{Lösung}
  
-\subsection*{Übung - Kuhn-Tucker-Bedingung}
-\addcontentsline{toc}{subsection}{Übung - Kuhn-Tucker-Bedingung}
+\subsection*{Kuhn-Tucker-Bedingung}
+\addcontentsline{toc}{subsection}{Kuhn-Tucker-Bedingung}
 \label{sec:uebung_kapitel_1_ktb} 
 Finden Sie alle Lösungen von $f(x)=-x_1-x_2\rightarrow\min\limits_{x\in\mathbb{R}^2}$ bei $g_1(x)=x_1+x_2^2\le 0$! Skizzieren Sie ihr Ergebnis.
 
 \subsubsection{Lösung} 
 
-\subsection*{Übung - Quadratische Optimierung}
-\addcontentsline{toc}{subsection}{Übung - Quadratische Optimierung}
-\label{sec:uebung_kapitel_1_quadopt} 
-Zeigen Sie, dass für $\min\limits_{x\in\mathbb{R}}$, d.h. $Q=0$, $q=1$, keine Lösung exisiert.
-
-\subsubsection{Lösung} 
-
-\subsection*{Übung - ?}
-\addcontentsline{toc}{subsection}{Übung - ?}
-\label{sec:uebung_kapitel_1_?} 
-Wiederholen Sie den Algorithmus aus dem Beispiel mit $x^0=\begin{bmatrix}1\\ -1 \end{bmatrix}$. 
-
-\subsubsection{Lösung} 
-
-\subsection*{Übung - Projektion}
-\addcontentsline{toc}{subsection}{Übung - Projektion}
-\label{sec:uebung_kapitel_1_projektion} 
+\subsection*{Beispiele zur Quadratischen Optimierung}
+\addcontentsline{toc}{subsection}{Beispiele zur Quadratischen Optimierung}
+\label{sec:uebung_bsp_quad_opt}
+Seien $Q=\begin{bmatrix}
+1 & 1\\ 1 & 2
+\end{bmatrix}$, $q=\begin{bmatrix}
+2\\1
+\end{bmatrix}$, $C = \begin{bmatrix}
+1 & 1
+\end{bmatrix}$ und $d = 1$. Lösen Sie die folgenden Aufgaben
 \begin{enumerate}[label=\alph*)]
-	\item Seien $A=\begin{bmatrix}
+  \item $\min\limits_{x\in\mathbb{R}^n}\frac12 x^TQx + q^T x$
+  \item $\min\limits_{x\in\mathbb{R}^n}\frac12 x^TQx +q^T x$ bei $Cx=d$
+\end{enumerate}
+
+\subsubsection{Lösung}
+
+\subsection*{Projektion auf Untervektorraum}
+\addcontentsline{toc}{subsection}{Projektion auf Untervektorraum}
+\label{sec:uebung_proj_untervekraum} 
+Seien $A=\begin{bmatrix}
 							2\\1
 							\end{bmatrix}$, $b=\begin{bmatrix}
 							1\\2
-							\end{bmatrix}$. Berechnen Sie $Pb$, $(I-P)b$, $(I-P)P$, $Pb+(I-P)b$, $(Pb)^T(I-P)b$.
-	\item Was ist das kleinste $\alpha\in\mathbb{R}$, so dass $\|Pb\|_2\le\alpha\|b\|_2$ erfüllt ist? 
+							\end{bmatrix}$. Berechnen Sie 							
+\begin{enumerate}[label=\alph*)]
+	\item $Pb$. 
+	\item $(I-P)b$.
+	\item $(I-P)P$.
+	\item $Pb+(I-P)b$.
+	\item $(Pb)^T(I-P)b$.
+	\item Was ist das kleinste $\alpha\in\mathbb{R}^1$, so dass $\|Pb\|_2\le\alpha\|b\|_2$ erfüllt ist? 
+\end{enumerate}  
+
+\subsubsection{Lösung} 
+
+\subsection*{Projektion eines Vektors}
+\addcontentsline{toc}{subsection}{Projektion eines Vektors}
+\label{sec:uebung_proj_vektor} 
+\begin{enumerate}[label=\alph*)]
   \item Für $C=\begin{bmatrix}1 & 1 \end{bmatrix}$, $d=1$ projiziere $v_1=\begin{bmatrix}1 \\ 1 \end{bmatrix}$, $v_2=\begin{bmatrix}1 \\ 0 \end{bmatrix}$ auf $M$ (Skizze)!
   \item Für $C=\begin{bmatrix}1 & 1\\ 0 & 1 \end{bmatrix}$, $d=\begin{bmatrix} 1\\1\end{bmatrix}$ projiziere $v_1=\begin{bmatrix}1 \\ 1 \end{bmatrix}$, $v_2=\begin{bmatrix}1 \\ 0
   \end{bmatrix}$ auf $M$ (Skizze)!
@@ -51,12 +67,25 @@ Wiederholen Sie den Algorithmus aus dem Beispiel mit $x^0=\begin{bmatrix}1\\ -1 
 
 \subsubsection{Lösung} 
 
-\subsection*{Übung - Aktive-Mengen-Strategie}
-\addcontentsline{toc}{subsection}{Übung - Aktive-Mengen-Strategie}
-\label{sec:uebung_kapitel_1_ams} 
-\begin{enumerate}[label=\alph*)]
-  \item Erweitern Sie den Algorithmus um die Auffindung eines zulässigen Startpunktes!
-  \item Erweitern Sie den Algorithmus um die Aufgabe der linearen Optimierung und die Verwendung von GNB als aktive UNB!
-\end{enumerate}
+\subsection*{Finden eines zulässigen Startwertes für den Aktiven Mengen Algorithmus}
+\addcontentsline{toc}{subsection}{Finden eines zulässigen Startwertes für den Aktiven Mengen Algorithmus}
+\label{sec:uebung_finden_startwert} 
+Erweitern Sie den Algorithmus um die Auffindung eines zulässigen Startpunktes!
+ 
+\subsubsection{Lösung}
+ 
+\subsection*{Erweiterung des Aktiven Mengen Algorithmuss}
+\addcontentsline{toc}{subsection}{Erweiterung des Aktiven Mengen Algorithmus}
+\label{sec:uebung_erweiterung_algo} 
+Erweitern Sie den Algorithmus um die Aufgabe der linearen Optimierung und die Verwendung von GNB als aktive UNB!
 
 \subsubsection{Lösung} 
+
+\subsection*{Aktiver Mengen Algorithmus}
+\addcontentsline{toc}{subsection}{Aktiver Mengen Algorithmus}
+\label{sec:uebung_ama} 
+Wiederholen Sie das \exmpref{exmp:kap_1_ama} mit dem Aktiven Mengen Algorithmus mit dem Startwert $x^0:=\begin{bmatrix}
+1\\ -1
+\end{bmatrix}$.
+\subsubsection{Lösung} 
+
