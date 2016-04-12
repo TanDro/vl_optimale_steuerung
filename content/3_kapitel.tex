@@ -1,6 +1,52 @@
 \chapter{Optimale Zustandsrückführung}
 \section{Zeitdiskrete Optimalsteuerung bei endlichen Zeithorizont}
+Es wird der Prozess
+\begin{align}
+	x[\kappa + 1] & = f\left(x[\kappa], u[\kappa] \right)
+\end{align}
+betrachtet mit $x[\kappa]\in\mathbb{R}^n$, $u[\kappa]\in\mathbb{R}^m$, dem Prozesszustand $x[\kappa]:=x(\kappa T_A)$ mit der Abtastzeit $T_a$ zu
+diskreten Zeitpunkten $\kappa=0,1,\ldots,k$ und gegebenen Anfangszustand $x[0]$.
 
+Das Kostenfunktional wird mit
+\begin{align}
+	K\left(x[0];u[0],..,u[k-1] \right) & := \sum\limits_{\kappa=0}^{k-1}\underbrace{c\left(x[\kappa],u[\kappa] \right)}_{\begin{tabular}{c}inkrementale
+	Kosten\\ im Schritt $\kappa$\end{tabular}} + \underbrace{K_k(x[k])}_{\begin{tabular}{c}Endwertkosten\end{tabular}}
+\end{align}
+angenommen.\\
+Die Aufgabe besteht in der Minimierung des Kostenfunktionals
+\begin{align}
+	\min\limits_{u[0],\ldots,u[k-1]}K\left(x[0];u[0],\ldots,u[k-1]\right).
+\end{align}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Darstellung des k-stetigen Entscheidungsprozesses}
+	\label{fig:kap_3_entscheidungsprozess}
+\end{figure}
+Es werden die minimalen Restkosten im Schritt $\kappa=0,\ldots,k$ wie folgt definiert 
+\begin{align}
+	V\left(x[\kappa],\kappa \right) & := \min\limits_{u[\kappa],\ldots,u[k-1]}\left\{\sum\limits_{i=\kappa}^{k-1} c\left(x[i],u[i] \right) +
+	K_k(x[k])\right\}.
+\end{align}
+Man beachte, dass $V\left(x[k],k\right)=K_k(x[k])$ ist und dann die Minimalkosten
+\begin{align*}
+	V\left(x[0],0 \right) & = \min K\left(x[0];u[0],\ldots,u[k-1] \right)
+\end{align*}
+sind. Es gilt für $\kappa=k-1,\ldots,0$
+\begin{align}
+	V\left(x[\kappa],\kappa \right) & = \min\limits_{u[\kappa],\ldots,u[k-1]}\left\{ c\left(x[\kappa],u[\kappa] \right)+\sum\limits_{i=\kappa+1}^{k-1} \ldots
+	\right\}\\
+	& = \min\limits_{u[\kappa]}\left\{\min\limits_{u[\kappa + 1],\ldots,u[k-1]}\left(c\left(x[\kappa],u[\kappa] \right) + \sum\limits_{i=\kappa +
+	1}^{k-1} \ldots\right) \right\}\\
+	& = \min\limits_{u[\kappa]}\Bigg\{c\left(x[\kappa], u[\kappa] \right) + \min\limits_{u[\kappa
+	+1],\ldots,u[k-1]}\underbrace{\sum\limits_{i=\kappa+1}^{k-1}\ldots}_{V\left(x[\kappa+1],\kappa+1 \right)} \Bigg\}\\
+	& = \min\limits_{u[\kappa]}\left\{c\left(x[\kappa],u[\kappa] \right)+V\left(f\left(x[\kappa],u[\kappa] \right),\kappa+1 \right)
+	\right\}.\label{eqn:kap_3_dp}
+\end{align}
+Gleichung \eqnref{eqn:kap_3_dp} entspricht der Gleichung der \ac{DP} und kann in Kurzform wie folgt dargestellt werden
+\begin{align}
+	V(x,x) & = \min\limits_u\left(c(x,u)+V\left(f(x,u),\kappa +1 \right) \right)
+\end{align}
 \begin{remark}\hspace{1mm}
 \begin{itemize}
   \item Optimale Steuerfolge $u^{\ast}[\kappa],\ldots,u^{\ast}[k-1]$ zum Erreichen der minimalen Restkosten $V\left(x[\kappa],\kappa \right)$ ist allein von $x[\kappa]$ abhängig, also
@@ -58,14 +104,25 @@ Rekursive Vorwärtsrechnung
 \end{remark}
 \begin{exmp}\label{exmp:kap_3_zeitdis_opt_1}
 Der Prozess ist gegeben mit
-\end{exmp}
-
-\begin{exmp}
-Wie \exmpref{exmp:kap_3_zeitdis_opt_1}, aber keine Endwertbedingung, dafür Endwertkosten und zusätzliche Steuergrößenbeschränkungen $-1\leq
-u[\kappa]\leq 1$ für $\kappa=0,1,2$ und dem Kostenfunktional
 \begin{align*}
-	K
+	x[\kappa + 1] & = \frac12\left(x[\kappa]+u[\kappa] \right)
 \end{align*}
+und der Anffangsbedingung $x[0]=4$, sowie dem Zeithorizont $k=3$. Der Endwert ist gegeben mit $x[3]=0$ und das Kostenfunktional mit
+\begin{align}
+	K\left(x[0];u[0],u[1],u[2] \right) & = \sum\limits_{\kappa=0}^2\left(x[\kappa]^2+u[\kappa]^2 \right).
+\end{align}
+Für die Berechnung der optimalen Steuerfolge und Zustandstrajektorie wird im ersten Schritt die Rückwärtsrechnung durchgeführt.
+\begin{enumerate}
+  \item 
+\end{enumerate}
+\end{exmp}
+\begin{exmp}
+Benutzt den selben Prozess wie \exmpref{exmp:kap_3_zeitdis_opt_1}. Hat aber keine Endwertbedingung, dafür Endwertkosten und zusätzliche
+Steuergrößenbeschränkungen $-1\leq u[\kappa]\leq 1$ für $\kappa=0,1,2$ und das Kostenfunktional
+\begin{align*}
+	K\left(x[0];u[0],u[1],u[2]\right) & = \sum\limits_{\kappa=0}^2\left(x[\kappa]^2+u[\kappa]^2 \right) + x[3]^2.
+\end{align*}
+Für die Berechnung der optimalen Steuerfolge und Zustandstrajektorie wird im ersten Schritt die Rückwärtsrechnung durchgeführt.
 \end{exmp}
 
 \subsection{Numerische Durchführung des Algorithmus der Dynamsichen Programmierung}
