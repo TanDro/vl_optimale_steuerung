@@ -1,0 +1,36 @@
+\begin{tikzpicture}[auto, scale=1.5,>=latex']
+	\fill[color=green, opacity=0.2] (0,-0.1) -- (0,1) -- (0.6666,1.0) -- (1.0333,-0.1);
+
+	\draw[->] (0,0) -- (2.5,0) node[right] {$x_1$};
+	\draw	(1,0) node[anchor=north] {$1$}
+			(2,0) node[anchor=north] {$2$};
+
+	\draw[->] (0,0) -- (0,2.5)node[above] {$x_2$};
+	\draw	(0,1) node[anchor=east] {$1$}
+			(0,2) node[anchor=east] {$2$};
+	
+	\foreach \x in {1,...,2}
+     	\draw (\x,0.02) -- (\x,-0.02);
+   	
+   	\foreach \y in {1,...,2}
+     	\draw (0.02,\y) -- (-0.02,\y);
+
+	\draw[dashed, color=gray] (1,2) circle (0.05);
+	\draw[dashed, color=gray] (1,2) circle (0.25);
+	\draw[dashed, color=gray] (1,2) circle (0.5);
+	
+	\draw[thin, dotted, color=gray] (0,2) -- (2,2);
+	\draw[thin, dotted, color=gray] (2,2) -- (2,0);
+	\draw[thin, dotted, color=gray] (1,0) -- (1,2);
+	\draw[thin, dotted, color=gray] (0,1) -- (2,1);
+	
+	\draw[thick, color=green] (0,-0.1) -- (0,1.8);
+	\draw[thick, color=green] (-0.1,1) -- (1.8,1);
+	\draw[thick, color=green] (1.0333,-0.1) -- (0.4,1.8);
+	
+	\draw (0.8,0.5) node[anchor=west] {(1)};
+	\draw (1.5,1.0) node[anchor=south] {(2)};
+	\draw (0.0,0.5) node[anchor=east] {(3)};
+	
+	
+\end{tikzpicture}
