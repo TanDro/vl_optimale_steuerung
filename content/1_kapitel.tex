@@ -622,5 +622,90 @@ Zulässiger Bereich:
 	\caption{Zwischenergebnisse der Iterationen}
 	\label{fig:kap_1_example_active_set_ews}
 \end{figure}
+\begin{lstlisting}[style=PythonStyle, caption=Anwendung Aktive Mengen Algorithmus für \exmpref{exmp:kap_1_ama}, label=code:kap_1_active_set] 
+import numpy as np
+import sys
+
+
+def projector(A):
+    if A.ndim == 1:
+        n = np.size(A)
+        A = np.array([A])
+    else:
+        m, n = A.shape
+    return np.eye(n) - A.T.dot(np.linalg.inv(A.dot(A.T))).dot(A)
+
+A = np.array([[1., 1/3.],
+              [0., 1.],
+              [-1., 0]
+              ])
+b = np.array([1., 1., 0])
+Q = 2. * np.array([[1., 0],
+                   [0, 1.]
+                   ])
+q = np.array([-2., -4.])
+x0 = np.array([0., 0.])
+
+if np.any(A.dot(x0) > b):
+    print 'x0 ist kein zulaessiger Punkt'
+    sys.exit()
+
+tol = 1e-6
+m, n = A.shape
+k = 0
+
+y = []
+
+print "--- S1 ---"
+x = [x0]
+
+while True:
+    res = np.abs(A.dot(x[k]) - b)
+    I0 = np.where(res < tol)[0]
+    Aa = A[I0]
+    ba = b[I0]
+    Ai = A[np.setdiff1d(range(m), I0)]
+    bi = b[np.setdiff1d(range(m), I0)]
+
+    print "--- S2 ---"
+    df = Q.dot(x[k]) + q
+
+    if np.linalg.norm(projector(Aa).dot(df)) < tol:
+        u = np.linalg.solve(-Aa.T, df)
+        print "u: " + str(u)
+        if np.all(u >= -tol):
+            sys.exit()
+        else:
+            r = np.where(u <= -tol)[0]
+            I0 = np.delete(I0, r)
+            Aa = A[I0]
+            ba = b[I0]
+            Ai = A[np.setdiff1d(range(m), I0)]
+            bi = b[np.setdiff1d(range(m), I0)]
+
+    print "--- S3 ---"
+    if Aa.ndim == 1:
+        AaT = Aa.reshape((-1, 1))
+    else:
+        AaT = Aa.T
+        Aa = Aa.ravel()
+    ts1 = np.vstack((np.hstack((Q, AaT)),
+                     np.hstack((Aa,
+                                np.zeros(np.size(I0))
+                                ))
+                     ))
+    ts2 = np.vstack((-q.reshape(-1, 1), ba))
+    xec = np.linalg.solve(ts1, ts2)
+    y.append(xec[0:n].ravel())
+    numer = bi.ravel() - Ai.dot(x[k])
+    denon = Ai.dot(y[k] - x[k])
+    index = np.where(denon > 0)[0]
+    beta = numer[index] / denon[index]
+    resmin = np.min(np.hstack((1, beta))) * (y[k] - x[k]) + x[k]
+    x.append(resmin)
+    print "x: " + str(x[k+1])
+    print "y: " + str(y[k])
+    k = k + 1
+\end{lstlisting}
 \end{exmp}
 Es ist eine Übung unter \picref{sec:uebung_ama}{Aktiver Mengen Algorithmus} im Anhang zu finden.
