@@ -1,0 +1,33 @@
+\begin{tikzpicture}[auto, >=latex']
+	\draw[->] (0,0) -- (5.5,0) node[right] {$\kappa$};
+	\draw	(0,0) node[anchor=north] {$0$}
+			(1,0) node[anchor=north] {$1$}
+			(2.5,-0.15) node[anchor=north] {$\ldots$}
+			(4,0) node[anchor=north] {$k-1$}
+			(5,0) node[anchor=north] {$k$};
+	\draw (0,0.04) -- (0,-0.04);
+	\draw (1,0.04) -- (1,-0.04);
+	\draw (4,0.04) -- (4,-0.04);
+	\draw (5,0.04) -- (5,-0.04);
+
+	\draw[->] (0,0) -- (0,4.5);
+	\draw	(0,1) node[anchor=east] {$x_1$}
+			(0,2) node[anchor=east] {$x_2$}
+			(0,3) node[anchor=east] {$\vdots$}
+			(0,4) node[anchor=east] {$x_N$};
+	\draw (0.04,0) -- (-0.04,0);
+	\draw (0.04,1) -- (-0.04,1);
+	\draw (0.04,2) -- (-0.04,2);
+	\draw (0.04,4) -- (-0.04,4);
+
+	\draw[dashed] (1,0) -- (1,4);
+	\draw[dashed] (4,0) -- (4,4);
+	\draw[dashed] (5,0) -- (5,4);
+
+	\draw[dashed] (0,1) -- (5,1);
+	\draw[dashed] (0,2) -- (5,2);
+	\draw[dashed] (0,4) -- (5,4);
+
+	\draw[->, color=green] (4,1) -- node[anchor=west] {$u_1$} (5,2);
+		
+\end{tikzpicture}

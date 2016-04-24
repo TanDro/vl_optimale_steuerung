@@ -111,10 +111,54 @@ und der Anffangsbedingung $x[0]=4$, sowie dem Zeithorizont $k=3$. Der Endwert is
 \begin{align}
 	K\left(x[0];u[0],u[1],u[2] \right) & = \sum\limits_{\kappa=0}^2\left(x[\kappa]^2+u[\kappa]^2 \right).
 \end{align}
-Für die Berechnung der optimalen Steuerfolge und Zustandstrajektorie wird im ersten Schritt die Rückwärtsrechnung durchgeführt.
-\begin{enumerate}
-  \item 
+Für die Berechnung der optimalen Steuerfolge und Zustandstrajektorie wird als erstes die Rückwärtsrechnung schrittweise durchgeführt. 
+\begin{enumerate}[label=(S\arabic*)]
+  \item Mit $k=3$ und keinen Endwertkosten $K_3$, da Endwert mit $x[3]=0$ gegeben, ergibt sich
+\begin{align*}
+	V\left(x[k-1],k-1\right) & = \min\limits_{u[k-1]}\left\{c\left(x[k-1],u[k-1]\right) + K_k\left(f(x[k-1],u[k-1]) \right) \right\}\\
+	V\left(x[2],2\right) & = \min\limits_{u[2]}\left\{x[2]^2+u[2]^2\bigg| x[3]=0 \right\}\\
+	x[3] & = \frac12 \left(x[2] + u[2] \right)\quad \Rightarrow\quad u[2] = -x[2]\\
+	V\left(x[2],2\right) & = x[2]^2 + \left(-x[2]\right)^2 = 2x[2]^2
+\end{align*}
+Damit ist der optimale Steuerwert $u^{\ast}[2]=-x[2]$, $V\left(x[2],2\right)=2x[2]^2$ und die Zustandsrückführung
+$\pi_2\left(x[2]\right)=-x[2]=u^{\ast}_2[2]$.
+  \item Mit $\kappa=k-2=1$ lässt sich
+  \begin{align*}
+  	V\left(x[\kappa],\kappa\right) & = \min\limits_{u[\kappa]}\left\{c\left(x[\kappa],u[\kappa]\right)+V\left(f\left(x[\kappa],u[\kappa]
+  	\right),\kappa+1 \right) \right\}\\ 
+  	V\left(x[1], 1 \right) & = \min\limits_{u[1]}\underbrace{\left\{x[1]^2+u[1]^2 + V\left(x[2], 2 \right) \right\}
+  	}_{=:\nu_1}\\
+  	& = \min\limits_{u[1]}\underbrace{\left\{x[1]^2+u[1]^2 + 2\left(\frac12\left(x[1]+u[1] \right) \right)^2 \right\}
+  	}_{=:\nu_1}\\
+  	\frac{\d \nu_1}{\d u[1]} & = x[1]+3u[1]=0\quad \Rightarrow\quad u[1]=-\frac{x[1]}{3}\\
+  	\left.\frac{\d^2 \nu_1}{\d u[1]^2}\right|_{u[1]} & = 3 > 0 \quad \Rightarrow\quad\text{Minimum!}\\
+  	V\left(x[1], 1 \right) & = x[1]^2 + \left(-\frac13x[1]\right)^2 + 2\left(\frac12\left(x[1] -\frac13x[1] \right)\right)^2=\frac43x[1]^2
+  \end{align*}  
+  ermitteln. Damit ist $u^{\ast}[1]=-\frac13x[1]$, $V\left(x[1],1\right)=\frac43x[1]^2$ und die Zustandsrückführung
+  $\pi_1\left(x[1]\right)=-\frac13x[1]=u^{\ast}_1[1]$.\\
+  Weiter wird mit $\kappa=k-3=0$
+  \begin{align*}
+  	V\left(x[\kappa],\kappa\right) & = \min\limits_{u[\kappa]}\left\{c\left(x[\kappa],u[\kappa]\right)+V\left(f\left(x[\kappa],u[\kappa]
+  	\right),\kappa+1 \right) \right\}\\ 
+  	V\left(x[0], 0 \right) & = \min\limits_{u[0]}\underbrace{\left\{x[0]^2+u[0]^2 + V\left(x[1], 1 \right) \right\}
+  	}_{=:\nu_0}\\
+  	& = \min\limits_{u[0]}\underbrace{\left\{x[0]^2+u[0]^2 + \frac43\left(\frac12\left(x[0]+u[0] \right) \right)^2 \right\}
+  	}_{=:\nu_0}\\
+  	\frac{\d \nu_0}{\d u[0]} & = \frac23x[0]+\frac83u[0]=0\quad \Rightarrow\quad u[0]=-\frac{x[0]}{4}\\
+  	\left.\frac{\d^2 \nu_0}{\d u[0]^2}\right|_{u[0]} & = 8 > 0 \quad \Rightarrow\quad\text{Minimum!}\\
+  	V\left(x[0], 0 \right) & = x[0]^2 + \left(-\frac14x[0]\right)^2 + \frac43\left(\frac12\left(x[0] -\frac14x[0] \right)\right)^2=\frac54x[0]^2  
+  \end{align*}
+  der letzte Wert für die optimale Steuerfolge berechnet. Damit ergibt sich $u^{\ast}[0]=-\frac14x[0]$, $V\left(x[0],0\right)=\frac54x[0]^2$ und die
+  Zustandsrückführung $\pi_0\left(x[0],0 \right)=-\frac14x[0]=u^{\ast}_0[0]$.
 \end{enumerate}
+Mit den Ergebnissen der Rückwärtsrechnung kann mittels der Vorwärtsrechnung die optimale Steuerfolge und
+Zustandstrajektorie berechnet werden
+\begin{align*}
+& && & x^{\ast}[0] & = 4\\
+u^{\ast}[0] & = -\frac14\cdot 4 = -1 && \Rightarrow  &x^{\ast}[1]& = \frac12\cdot(4-1)=\frac32\\
+u^{\ast}[1] & = -\frac13\cdot\frac32=-\frac12 && \Rightarrow  &x^{\ast}[2]& = \frac12\cdot\left(\frac32 -\frac12\right)=\frac12\\
+u^{\ast}[2] & = -\frac12 && \Rightarrow  &x^{\ast}[3]& = \frac12\cdot\left(\frac12 - \frac12\right)=0.
+\end{align*}
 \end{exmp}
 \begin{exmp}
 Benutzt den selben Prozess wie \exmpref{exmp:kap_3_zeitdis_opt_1}. Hat aber keine Endwertbedingung, dafür Endwertkosten und zusätzliche
@@ -122,11 +166,126 @@ Steuergrößenbeschränkungen $-1\leq u[\kappa]\leq 1$ für $\kappa=0,1,2$ und d
 \begin{align*}
 	K\left(x[0];u[0],u[1],u[2]\right) & = \sum\limits_{\kappa=0}^2\left(x[\kappa]^2+u[\kappa]^2 \right) + x[3]^2.
 \end{align*}
-Für die Berechnung der optimalen Steuerfolge und Zustandstrajektorie wird im ersten Schritt die Rückwärtsrechnung durchgeführt.
+Für die Berechnung der optimalen Steuerfolge und Zustandstrajektorie wird als erstes die Rückwärtsrechnung schrittweise durchgeführt. 
+\begin{enumerate}[label=(S\arabic*)]
+  \item Mit $k=3$ ergibt sich
+\begin{align*}
+	V\left(x[2],2\right) & = \min\limits_{u[2]}\left\{c\left(x[2],u[2]\right) + K_3\left(f(x[2],u[2]) \right)\bigg| -1\leq u[2]\leq 1 \right\}\\
+	V\left(x[2],2\right) & = \min\limits_{u[2]}\bigg\{\underbrace{x[2]^2+u[2]^2+\left(\frac12\left(x[2]+u[2]\right) \right)^2}_{=:\nu_2} \bigg| -1\leq
+	u[2] \leq 1 \bigg\}\\
+	\frac{\d \nu_2}{\d u[2]} & = x[2]+5u[2]=0\quad \Rightarrow \quad u[2]=-\frac{x[2]}{5}\\
+	\left.\frac{\d^2 \nu_2}{\d u[2]^2}\right|_{u[2]} & = 5 > 0 \quad \Rightarrow\quad\text{Minimum!}\\
+	u^{\ast}[2] & = \left\{\begin{array}{rl}
+	1 & \text{für } x[2]\leq -5\\
+	-\frac{x[2]}{5} & \text{für } x[2]\in(-5,5)\\
+	-1 & \text{für } x[2]\geq 5
+	\end{array} \right.\\
+	V\left(x[2],2\right) & = \left\{\begin{array}{rl}
+	\frac54x[2]^2+\frac12x[2]+\frac54 & \text{für } x[2]\leq -5\\
+	\frac65x[2]^2 & \text{für } x[2]\in(-5,5)\\
+	\frac54x[2]^2-\frac12x[2]+\frac54 & \text{für }x[2]\geq 5
+	\end{array}
+	\right.
+\end{align*}
+	\item Mit $\kappa = k - 2 = 1$ ergibt sich
+\begin{align*}
+	V\left(x[1],1\right) & = \min\limits_{u[1]}\left\{c\left(x[1],u[1]\right) + K_2\left(f(x[1],u[1]) \right)\bigg| -1\leq u[1]\leq 1 \right\}\\
+	V\left(x[1],1\right) & = \left\{\begin{array}{l}
+	\min\limits_{u[1]}\bigg\{\underbrace{x[1]^2+u[1]^2+\frac54x[2]^2+\frac12x[2]+\frac54}_{=:\nu_{1.1}} \bigg| -1\leq u[1]\leq 1\bigg\}\\
+	\min\limits_{u[1]}\bigg\{\underbrace{x[1]^2+u[1]^2+\frac65x[2]^2}_{=:\nu_{1.2}} \bigg| -1\leq u[1]\leq 1\bigg\}\\
+	\min\limits_{u[1]}\bigg\{\underbrace{x[1]^2+u[1]^2+\frac54x[2]^2-\frac12x[2]+\frac54}_{=:\nu_{1.3}} \bigg| -1\leq u[1]\leq 1\bigg\}
+	\end{array}\right.\\
+	\nu_{1.1} & = x[1]^2+u[1]^2+\frac54x[2]^2+\frac12x[2]+\frac54\\
+	& = x[1]^2+u[1]^2+\frac54\left(\frac12\left(x[1]+u[1] \right) \right)^2+\frac12\left(\frac12\left(x[1]+u[1] \right) \right) +\frac54\\
+	\frac{\d \nu_{1.1}}{\d u[1]} & = \frac{21}{8}u[1] + \frac58x[1] + \frac14 =0\quad \Rightarrow \quad u[1]=-\frac{2}{21}-\frac{5}{21}x[1]\\
+	\left.\frac{\d^2 \nu_{1.1}}{\d u[1]^2}\right|_{u[1]} & = \frac{21}{8} > 0\quad\Rightarrow\text{Minimum!}\\
+	\nu_{1.2} & = x[1]^2+u[1]^2+\frac65x[2]^2\\
+	& = x[1]^2+u[1]^2+\frac65\left(\frac12\left(x[1]+u[1] \right) \right)^2\\
+	\frac{\d \nu_{1.2}}{\d u[1]} & = \frac{26}{10}u[1]+\frac{6}{10}x[1] =0\quad \Rightarrow \quad u[1]=-\frac{3}{13}x[1]\\
+	\left.\frac{\d^2 \nu_{1.2}}{\d u[1]^2}\right|_{u[1]} & = 26 > 0\quad\Rightarrow\text{Minimum!}\\
+	u^{\ast}[1] & = \left\{\begin{array}{rl}
+	1 & \text{für } x[1]\leq -\frac{13}{3}\\
+	-\frac{3}{13}x[1] & \text{für } x[1]\in\left(-\frac{13}{3},\frac{13}{3}\right)\\
+	-1 & \text{für } x[1]\geq \frac{13}{3}	
+	\end{array}
+	\right.\\
+	V\left(x[1],1\right) & = \left\{\begin{array}{rl}
+	 & \text{für } x[1]\leq -\frac{13}{3}\\
+	\frac{16}{13}x[1]^2 & \text{für } x[1]\in(-5,5)\\
+	 & \text{für }x[1]\geq \frac{13}{3}
+	\end{array}
+	\right.\\
+\end{align*}
+\end{enumerate}
+Mit den Ergebnissen der Rückwärtsrechnung kann mittels der Vorwärtsrechnung die optimale Steuerfolge und
+Zustandstrajektorie berechnet werden
+\begin{align*}
+u^{\ast}[0] & =  && \Rightarrow  &x^{\ast}[1]& = \\
+u^{\ast}[1] & =  && \Rightarrow  &x^{\ast}[2]& = \\
+u^{\ast}[2] & =  && \Rightarrow  &x^{\ast}[3]& = \\
+u^{\ast}[3] & =  && \Rightarrow & x^{\ast}[4] & = .
+\end{align*}
+
 \end{exmp}
 
 \subsection{Numerische Durchführung des Algorithmus der Dynamsichen Programmierung}
-Sei $x[\kappa+1] = f\left(x[\kappa],u[\kappa] \right)$ mit 
+Sei $x[\kappa+1] = f\left(x[\kappa],u[\kappa] \right)$ mit $x[\kappa]\in\mathbb{R}^1$, $u[\kappa]\in\mathbb{R}^1$ und das Kostenfunktional
+\begin{align*}
+	K\left(x[0];u[0],\ldots,u[\kappa-1] \right) & = \sum\limits_{k=0}^{\kappa-1}c\left(x[k],u[k] \right)+K_k([k]).
+\end{align*}
+Dann kann über eine diskrete Darstellung von $x[\kappa]$ in Form eines Gitters, wie in \figref{fig:kap_3_dyn_prog_xgitter} dargestellt, sowie von
+$u[\kappa]$ auf die Restkosten $V(x_i,\kappa)$ geschlossen werden, vgl. \tabref{tab:kap_3_dyn_prog_restkosten}. Mit den diskreten Restkosten kann dann
+auf die optimale Steuerfolge $u^{\ast}[x_i,\kappa]$ geschlossen werden, siehe \tabref{tab:kap_3_dyn_prog_optu}. Bei der Betrachtung von $x_1$ im
+Schritt $k-1$ werden die Restkosten mit der \textsc{NumPy}-Funktion \lstinline[columns=fixed]{interp} ausgewertet
+\begin{figure}[!htb]
+	\centering
+	\input{tikz/kap_3_dyn_prog_xgitter}
+	\caption{Darstellung der Diskretisierung von $x[\kappa]$ in Gitterform}
+	\label{fig:kap_3_dyn_prog_xgitter}
+\end{figure}
+\begin{align*}
+	V\left(x_1, k-1 \right) & = \min\left\{c\left(x_1,u_j \right)+
+	\text{\lstinline[columns=fixed]{interp}}\left(f(x_1,u_j),\left[x_1,\ldots,x_N\right],\left[K_k[x_1],\ldots,K_k[x_N] \right] \right) \right\}\\
+	& \rightarrow u^{\ast}(x_i,\kappa).
+\end{align*}
+Wenn $x_i$ im Schritt $\kappa$ mit $i=1,\ldots,N$ und $\kappa=k-1,\ldots,0$ betrachtet wird, folgt
+\begin{align*}
+	V\left(x_i,\kappa \right) & = \min\limits_{j=1,\ldots,N}\left\{c\left(x_i,u_j \right) + \text{\lstinline[columns=fixed]{interp}}\left(f(x_i,u_j), 
+	\left[x_1,\ldots,x_N \right],\left[V(x_1,\kappa+1),\ldots,V(x_N,\kappa+1) \right] \right) \right\}\\
+	& \rightarrow u^{\ast}(x_i,\kappa).
+\end{align*}
+\begin{table}[htb]
+\caption{Berechnung der diskretisierten Restkosten $V(x_i,\kappa)$}
+\centering
+\begin{tabular}{c|cccc}
+	\hline
+	
+\end{tabular}
+\label{tab:kap_3_dyn_prog_restkosten}
+\end{table}
+\begin{table}[htb]
+\caption{Berechnung der diskretisierten optimalen Steuerfolge $u^{\ast}(x_i,\kappa)$}
+\centering
+\begin{tabular}{c|ccc}
+	\hline
+	k 	& $A_k$		& $B_k$		& $F_k$	\\\hline
+	0	& 1.1688	& -0.0422	& 5.7838\\
+	1	& 1.1843	& -0.0461	& 5.7668\\
+	2	& 1.2030	& -0.0507	& 5.7470\\
+	3	& 1.2258	& -0.0564	& 5.7235\\
+	4	& 1.2545	& -0.0636	& 5.6953\\
+	5	& 1.2914	& -0.0728	& 5.6606\\
+	6	& 1.3409	& -0.0852	& 5.6170\\
+	7	& 1.4104	& -0.1026	& 5.5605\\
+	8	& 1.5151	& -0.1288	& 5.4845\\
+	9	& 1.6906	& -0.1726	& 5.3765\\
+	10	& 2.0421	& -0.2605	& 5.2107\\
+	11	& 3.0673	& -0.5168	& 4.9214\\
+	12	& 16.1787	& -3.7942	& 4.2611\\\hline
+\end{tabular}
+\label{tab:kap_3_dyn_prog_optu}
+\end{table}
+
 \begin{exmp}
 Der Prozess ist beschrieben durch
 \begin{align}
@@ -137,41 +296,47 @@ mit der Anfangsbedingung $x[0] = 4$ und dem zeithorizont $k=3$. Die Steuergröß
 \begin{align}
 	K\left(x[0];u[0],u[1],u[2] \right) & = \sum\limits_{\kappa = 0}^2\left(x[\kappa]^2+u[\kappa]^2 \right) + x[3]^2.
 \end{align}
-% TODO Python Script draus machen + Plots
 \begin{lstlisting}[style=PythonStyle, caption=Numerische Algorithmus der Dynamischen Programmierung, label=code:kap_3_sec_1_num_dp] 
-  	clear all
-	
-	# Rueckwaertsrechnung
-	x0=4; K=3
-	
-	uGitter=-1:0.1:1; xGitter=0:0.1:4;
-	nu=length(uGitter); nx=length(xGitter);
-	
-	V=zeros(nx,K+1); V(:,K+1)=xGitter(:).^2;
-	U=zeros(nx,K);
-	
-	for k=[K-1:-1:0]+1
-		for i=1:nx
-			for j=1:nu
-				xFolge=(xGitter(i)+uGitter(j))/2;
-				Kosten(j)=xGitter(i)^2+uGitter(j)^2\
-					+interpl(xGitter,V(:,k+1),xFolge,'linear',inf); #Kosten ausserhalb Gitter unendlich
-			end
-			[minval,minind]=min(Kosten);
-			V(i,k)=minval; U8i,k)=uGitter(minind)
-		end
-	end
-	
-	# Vorwaertsrechnung
-	x(1)=x0;
-	for k=[0:K-1]+1
-		u(k)=interpl(xGitter,U(:,k),x(k));
-		x(k+1)=(x(k)+u(k))/2;
-	end
-	
-	figure(1), surface(V)
-	figure(2), plot([0:K-1],u,'.')
-	figure(3), plot([0:K],x)
+import numpy as np
+
+# Rueckwaertsrechnung
+x0 = 4
+K = 3
+uGitter = np.arange(-1, 1.1, 0.1)
+xGitter = np.arange(0, 4.1, 0.1)
+nu = len(uGitter)
+nx = len(xGitter)
+
+V = np.zeros([nx, K+1])
+V[:, K] = xGitter**2
+U = np.zeros([nx, K])
+
+for k in np.arange(K, 0, -1)-1:
+    for i in range(nx):
+        Kosten = np.array([])
+        for j in range(nu):
+            xFolge = (xGitter[i] + uGitter[j])/2
+            tKosten = xGitter[i]**2 + uGitter[j]**2 +\
+                np.interp(xFolge,
+                          xGitter,
+                          V[:,k+1],
+                          np.inf,
+                          np.inf)
+            Kosten = np.append(Kosten, tKosten)
+        minval = np.min(Kosten)
+        minind = np.argmin(Kosten)
+        V[i][k] = minval
+        U[i][k] = uGitter[minind]
+
+# Vorwaertsrechnung
+x = np.array([x0])
+u = np.array([])
+for k in range(K):
+    u = np.append(u, np.interp(x[k], xGitter, U[:,k]))
+    x = np.append(x, (x[k] + u[k])/2.0)
+
+print u
+print x
 \end{lstlisting}  
 Im Algorithmus \ref{code:kap_3_sec_1_num_dp} entspricht $K\hat{=}k$, $nx=\hat{=}N$, $nu\hat{=}M$ und $k\hat{=}\kappa$ und dieser liefert die (im
 Rahmen der Diskretisierung) optimale Steuerfolge
