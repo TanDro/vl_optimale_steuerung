@@ -286,7 +286,7 @@ for k in np.arange(K, 0, -1)-1:
             tKosten = xGitter[i]**2 + uGitter[j]**2 +\
                 np.interp(xFolge,
                           xGitter,
-                          V[:,k+1],
+                          V[:, k+1],
                           np.inf,
                           np.inf)
             Kosten = np.append(Kosten, tKosten)
@@ -299,7 +299,7 @@ for k in np.arange(K, 0, -1)-1:
 x = np.array([x0])
 u = np.array([])
 for k in range(K):
-    u = np.append(u, np.interp(x[k], xGitter, U[:,k]))
+    u = np.append(u, np.interp(x[k], xGitter, U[:, k]))
     x = np.append(x, (x[k] + u[k])/2.0)
 
 print u
