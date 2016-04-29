@@ -38,6 +38,56 @@ und da $\tilde{x}$ (bis auf die Randwerte) beliebig muss
 gelten.
 
 \section{Formulierung des Optimierungsproblems und Lösung}
+Ausgehend vom Kostenfunktional
+\begin{align*}
+	J & = h\left(x(t_b),t_b \right) + \int\limits_{t_a}^{t_b}f_0\left(x(t),u(t),t \right)dt\rightarrow \min!
+\end{align*}
+kann der Prozess, die \ac{AB} und die \ac{EB} definiert werden\\
+\begin{tabular}{ll}
+Prozess: & $\dot{x}(t)=f\left(x(t),u(t),t \right)$\\
+\ac{AB}: & $x(t_a)=x_a$ mit gegebenen $t_a$ und $x_a\in\mathbb{R}^n$\\
+\ac{EB}: & mit $t_b$ frei und/oder $t_b$ gegeben:\\
+		 & Fall A: $z\left(x(t_b) \right)=0$ mit gegebenen $z:\mathbb{R}^n\rightarrow\mathbb{R}^m$\\
+		 & Fall B: $x(t_b)=x_b$ mit geg. $x_b\Leftrightarrow z(x(t_b)):=x(t_b)-x_b=0$\\
+		 & Fall C: $x(t_b)$ frei, d.h. $z\equiv 0$ 
+\end{tabular}
+$h$, $f_0$, $f$, $z$ sind stetig differenzierbar bezüglich aller Argumente. Es gibt keine Beschränkung von $u(t)$ und $x(t)$ für $t\in\left(t_a, t_b
+\right)$.\\
+Falls $t_b$ gegeben ist und Fall B besteht, so ist $h(x(t_b),t_b)$ fest und kann aus Kostenfunktional gestrichen werden.
+
+\subsection{Prinzip der Herleitung notwendiger Bedingungen}
+Die Einführung der Lagrange-Multiplikatoren liefert
+\begin{align*}
+	\bar{J} & = h\left(x(t_b),t_b \right)+\int\limits_{t_a}^{t_b}\left[f_0\left(x(t),u(t),t \right)+\Psi(t)^T\left(f(x(t),u(t),t)-\dot{x}(t) \right)
+	\right]dt + \lambda_a^T\left\{x_a - x(t_a) \right\} + \lambda_b^T z\left(x(t_b) \right)
+\end{align*}
+mit $\lambda_b\in\mathbb{R}^m$, $\lambda_a\in\mathbb{R}^n$.
+
+Die Motivation ist, dass 
+\begin{align*}
+	J & = \int F_0(x(t))dt \rightarrow \min
+\end{align*}
+bei $\underbrace{f\left(x(t), u(t) \right)-\dot{x}(t)=0 }_{h\left(x(t),u(t) \right)\in\mathbb{R}^n }$ dargestellt werden kann in diskreter Form als
+\begin{align*}
+	J_{diskret} & = \sum\limits_j f_0(x(t_j))\rightarrow \min 
+\end{align*}
+bei $\left. h\left(x(t_j),u(t_j) \right)\right|_{\forall j}=0$ bzw.
+\begin{align*}
+	L_{diskret} & = \sum\limits_j f_0(x(t_j)) + \sum\limits_j \underbrace{\Psi_j^T}_{=:\Psi(t_j)} h\left(x(t_j),u(t_j) \right).
+\end{align*}
+Dies kann wiederrum dargestellt werden in der Form
+\begin{align*}
+	\bar{J} & = \int\left(f_0(x(t)) \right) + \Psi(t)^T\left(f(x(t),u(t))-\dot{x}(t) \right).
+\end{align*}
+Es wird die Hamilton-Funktion definiert mit
+\begin{align*}
+	\Ham\left(x(t),u(t),\Psi(t),t \right) & = f_0\left(x(t),u(t),t \right) + \Psi(t)^T f\left(x(t),u(t),t \right)
+\end{align*}
+und erhalten 
+\begin{align}
+	\bar{J} & = h\left(x(t_b),t_b \right) + \int\limits_{t_a}^{t_b}\left[H\left(x(t),u(t),\Psi(t),t \right)-\Psi(t)^T\dot{x}(t) \right]dt
+	+\lambda_a^T\left\{x_a-x(t_a) \right\} + \lambda_b^T z\left(x(t_b\right).
+\end{align}
 
 \subsection{Prinzip der Herleitung notwendiger Bedingungen}
 
