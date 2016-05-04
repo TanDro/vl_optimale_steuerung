@@ -1,19 +1,18 @@
 \chapter{Klassische Verfahren zur optimalen Steuerung}
 \section{Grundproblem der Variationsrechnung}
-Aufgabe:
-\begin{itemize}
-  \item[] Finden einer stetig differenzierbaren Funktion $x:[t_0,t_e]\rightarrow\mathbb{R}$ mit den Randbedingungen $x(t_0)=x_0$, $x(t_e)=x_e$, so dass ein Gütefunktional
-  $J=\int\limits_{t_0}^{t_e}f(t,x,\dot{x}) dt$ minimal wird.
-\end{itemize}
-Vorgehensweise von Euler:
-\begin{itemize}
-  \item[] Angenommen man hätte eine optimale Lösung $x^{\ast}$ gefunden. Konstruiere eine einparametrige Schar von Vergleichskurven $x(t)=x^{\ast}+\epsilon\tilde{x}(t)$, wobei
-  $\epsilon\in(-\epsilon_0,+\epsilon_0)$ ein Parameter ($\epsilon>0$ gegeben) und $\tilde{x}$ eine gegebene, stetig differenzierbare Funktion mit $\tilde{x}(t_0)=0$, $\tilde{x}(t_e)=0$
-  ist.
-\end{itemize}
-TODO BILD\\
-Die Funktion $\delta x^{\ast}:= \epsilon\tilde{x}$ heisst Variation von $x^{\ast}$.\\
-Einsetzen in $J$ liefert 
+Die Aufgabe besteht im Auffinden einer stetig differenzierbaren Funktion $x:[t_0,t_e]\rightarrow\mathbb{R}$ mit den Randbedingungen $x(t_0)=x_0$, $x(t_e)=x_e$, so dass ein
+Gütefunktional $J=\int\limits_{t_0}^{t_e}f(t,x,\dot{x}) dt$ minimal wird.
+
+Mit der Vorgehensweise von Euler wird angenommen, man hätte eine optimale Lösung $x^{\ast}$ gefunden. Konstruiere eine einparametrige Schar von Vergleichskurven
+$x(t)=x^{\ast}+\epsilon\tilde{x}(t)$, wobei $\epsilon\in(-\epsilon_0,+\epsilon_0)$ ein Parameter ($\epsilon>0$ gegeben) und $\tilde{x}$ eine gegebene, stetig differenzierbare Funktion
+mit $\tilde{x}(t_0)=0$, $\tilde{x}(t_e)=0$ ist.
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Vorgehensweise von Euler}
+	\label{fig:kap_2_vorg_euler}
+\end{figure}
+Die Funktion $\delta x^{\ast}:= \epsilon\tilde{x}$ heisst Variation von $x^{\ast}$ und das einsetzen in $J$ liefert 
 \begin{align*}
 	F(\epsilon) & := \int\limits_{t_0}^{t_e}f(t,x^{\ast}(t)+\epsilon\tilde{x}(t),\dot{x}^{\ast}(t)+\epsilon\dot{\tilde{x}}(t))dt.
 \end{align*}
@@ -31,12 +30,11 @@ ergibt sich
 \begin{align*}
 	\int\limits_{t_0}^{t_e}\left[\frac{\d F}{\d x}-\frac{\td}{\td t}\frac{\d F}{\d\dot{x}} \right]\tilde{x}(t)dt & = 0
 \end{align*}
-und da $\tilde{x}$ (bis auf die Randwerte) beliebig muss 
+und da $\tilde{x}$ (bis auf die Randwerte) beliebig ist, muss 
 \begin{align}
 	\frac{\d F}{\d x}-\frac{\td}{\td t}\frac{\d F}{\d\dot{x}} & = 0
 \end{align}
 gelten.
-
 \section{Formulierung des Optimierungsproblems und Lösung}
 Ausgehend vom Kostenfunktional
 \begin{align*}
@@ -89,6 +87,7 @@ und erhalten
 	+\lambda_a^T\left\{x_a-x(t_a) \right\} + \lambda_b^T z\left(x(t_b\right).
 \end{align}
 
+
 \subsection{Prinzip der Herleitung notwendiger Bedingungen}
 
 \subsection{Notwendige Bedingungen für Optimallösung}
@@ -118,7 +117,7 @@ und erhalten
   \item Zur Lösung des nichtlinearen Gleichungssystems $\nabla_u \Ham =0$ unter der Verwendung des NEWTON-Verfahrens
 \end{itemize}
 
-\subsection{Anwebdung zur Umformung von Optimierungsproblemen am Beispiel des \NoCaseChange{\acl{LQR}}-Problems}
+\subsection{Anwendung zur Umformung von Optimierungsproblemen am Beispiel des \NoCaseChange{\acl{LQR}}-Problems}
 Minimiere das Gütefunktional
 \begin{align*}
 	J  & = \frac12 x^T(t_b)Gx(t_b)+\frac12\int\limits_{t_a}^{t_b}\left[x^T(t)Q(t)x(t)+u^TR(t)u(t)\right]dt
@@ -130,3 +129,4 @@ bei dem Prozess
 mit den gegebenen Werten $x(t_a)=x_a$, $t_a$, $x_a$, $t_b$, wobei der Zustandswert zur Endzeit $x(t_b)$ frei ist. Weiterhin sollen $G\ge 0$, $Q(t)\ge 0$ (semipositiv defintit), $R(t)>0$
 (positiv definit) und $Q(t)$, sowie $R(t)$ stetig differenzierbar sein.
 
+\section{Maximumprinzip von Pontojaju}
