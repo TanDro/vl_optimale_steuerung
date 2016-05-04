@@ -1,5 +1,6 @@
 \chapter{Klassische Verfahren zur optimalen Steuerung}
 \section{Grundproblem der Variationsrechnung}
+\label{sec:kap_2_grundproblem}
 Die Aufgabe besteht im Auffinden einer stetig differenzierbaren Funktion $x:[t_0,t_e]\rightarrow\mathbb{R}$ mit den Randbedingungen $x(t_0)=x_0$, $x(t_e)=x_e$, so dass ein
 Gütefunktional $J=\int\limits_{t_0}^{t_e}f(t,x,\dot{x}) dt$ minimal wird.
 
@@ -18,23 +19,55 @@ Die Funktion $\delta x^{\ast}:= \epsilon\tilde{x}$ heisst Variation von $x^{\ast
 \end{align*}
 Sei $f$ zweifach stetig differenzierbar. Die Funktion $F:(-\epsilon_0,+\epsilon_0)\rightarrow\mathbb{R}$ hat für $\epsilon=0$ ein Minimum, also muss gelten
 \begin{align*}
-	\left.\frac{\td F}{\td \epsilon}\right|_{\epsilon_0} & = \int\limits_{t_0}^{t_e}\left[\frac{\d f}{\d x}\tilde{x}(t)+\frac{\d f}{\d\dot{x}}\dot{\tilde{x}}(t)
-	\right]dt = 0.
+	\left.\frac{\td F}{\td \epsilon}\right|_{\epsilon_0} & = \int\limits_{t_0}^{t_e}\left[\frac{\td f}{\td x}\tilde{x}(t)+\frac{\d
+	f}{\td\dot{x}}\dot{\tilde{x}}(t) \right]dt = 0.
 \end{align*}
 Mit partieller Integration 
 \begin{align*}
-	\int\limits_{t_0}^{t_e}\underbrace{\frac{\d F}{\d \dot{x}}\dot{\tilde{x}}(t)}_{u\cdot v'}dt & = \bigg[\underbrace{\frac{\d
-	F}{\d\dot{x}}\tilde{x}}_{u\cdot v}\bigg]_{t=t_0}^{t=t_e}-\int\limits_{t_0}^{t_e} \underbrace{\frac{\td}{\td t}\frac{\d F}{\partial\dot{x}}\tilde{x}(t)}_{u'\cdot v}dt
+	\int\limits_{t_0}^{t_e}\underbrace{\frac{\td F}{\td \dot{x}}\dot{\tilde{x}}(t)}_{u\cdot v'}dt & = \bigg[\underbrace{\frac{\d
+	F}{\td\dot{x}}\tilde{x}}_{u\cdot v}\bigg]_{t=t_0}^{t=t_e}-\int\limits_{t_0}^{t_e} \underbrace{\frac{\td}{\td t}\frac{\td
+	F}{\partial\dot{x}}\tilde{x}(t)}_{u'\cdot v}dt
 \end{align*}
 ergibt sich
 \begin{align*}
-	\int\limits_{t_0}^{t_e}\left[\frac{\d F}{\d x}-\frac{\td}{\td t}\frac{\d F}{\d\dot{x}} \right]\tilde{x}(t)dt & = 0
+	\int\limits_{t_0}^{t_e}\left[\frac{\td F}{\td x}-\frac{\td}{\td t}\frac{\td F}{\td\dot{x}} \right]\tilde{x}(t)dt & = 0
 \end{align*}
 und da $\tilde{x}$ (bis auf die Randwerte) beliebig ist, muss 
 \begin{align}
-	\frac{\d F}{\d x}-\frac{\td}{\td t}\frac{\d F}{\d\dot{x}} & = 0
+	\frac{\td F}{\td x}-\frac{\td}{\td t}\frac{\td F}{\td\dot{x}} & = 0 \label{eqn:kap_2_euler_lag_dgl}
 \end{align}
 gelten.
+\begin{remark}{Fundamentallemma der Variationsrechnung}
+Sei $G:\left[a,b \right]\rightarrow\mathbb{R}^1$ stetig und gelte $\int\limits_a^b G(t)v(t)dt=0$ für alle stetig differenzierbaren Funktionen $v$ mit
+$v(a)=v(b)=0$. Dann gilt $G(t)=0\forall t\in\left[a,b \right]$.
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Darstellung Fundamentallemma der Variationsrechnung}
+	\label{fig:kap_2_fundlemma_var}
+\end{figure}
+\end{remark}
+Dies ist eine gewöhnliche Differentialgleichung 2. Ordnung mit der Lösung $x=x(t,c_1,c_2)$. Eine Anappsung an die Randbedingungen $x(t_0,c_1,c_2)=x_0$
+und $x(t_e,c_1,c_2)=x_e$ liefert $c_1$, $c_2$.
+\begin{exmp}
+Gegeben sind $P_0=(t_0,x_0)$ und $P_e=(t_e,x_e)$ in der Ebene. Gesucht ist die kürzeste Verbindung zwischen $P_0$ und $P_e$. Ein Bogenelement ist
+beschrieben durch 
+\begin{align*}
+	ds^2 & = dt^2 + dx^2 = \left(1+\dot{x}^2 \right)dt^2
+\end{align*}
+und zu minimierende Bogenlänge, der durch $s:t\in\left[t_0,t_e \right]\mapsto \begin{bmatrix}
+t\\ x(t)
+\end{bmatrix}$ parametrisieirte Kurve liefert
+\begin{align*}
+	J  & = \int\limits_{P_0}^{P_e}ds=\int\limits_{t_0}^{t_e}\underbrace{\sqrt{1+\dot{x}^2}}_{f(t,x,\dot{x})}dt.
+\end{align*}
+Wegen $f_x=0$, $f_{\dot{x}}=\frac{\dot{x}}{\sqrt{1+\dot{x}^2}}$ wird aus \eqnref{eqn:kap_2_euler_lag_dgl} 
+\begin{align*}
+	\frac{\td}{\td t}\frac{\dot{x}}{\sqrt{1+\dot{x}^2}} & = 0,
+\end{align*}
+also $\frac{\dot{x}}{\sqrt{q+\dot{x}^2}}=C$ mit der Integrationskonstante $C$. Wegen $\dot{x}=c\sqrt{\frac{1}{1-c^2}}$ gibt es $c_1$ und $c_2$, so
+dass $x(t)=c_1 t+c_2$. Anpassung an die \ac{RB} liefert Geradengleichung durch $P_0$ und $P_e$.
+\end{exmp}
 \section{Formulierung des Optimierungsproblems und Lösung}
 Ausgehend vom Kostenfunktional
 \begin{align*}
@@ -56,8 +89,9 @@ Falls $t_b$ gegeben ist und Fall B besteht, so ist $h(x(t_b),t_b)$ fest und kann
 \subsection{Prinzip der Herleitung notwendiger Bedingungen}
 Die Einführung der Lagrange-Multiplikatoren liefert
 \begin{align*}
-	\bar{J} & = h\left(x(t_b),t_b \right)+\int\limits_{t_a}^{t_b}\left[f_0\left(x(t),u(t),t \right)+\Psi(t)^T\left(f(x(t),u(t),t)-\dot{x}(t) \right)
-	\right]dt + \lambda_a^T\left\{x_a - x(t_a) \right\} + \lambda_b^T z\left(x(t_b) \right)
+	\bar{J} & = h\left(x(t_b),t_b \right)+\int\limits_{t_a}^{t_b}\left[f_0\left(x(t),u(t),t \right)+\psi(t)^T\left(f(x(t),u(t),t)-\dot{x}(t) \right)
+	\right]dt\\
+	& \quad + \lambda_a^T\left\{x_a - x(t_a) \right\} + \lambda_b^T z\left(x(t_b) \right)
 \end{align*}
 mit $\lambda_b\in\mathbb{R}^m$, $\lambda_a\in\mathbb{R}^n$.
 
@@ -71,24 +105,64 @@ bei $\underbrace{f\left(x(t), u(t) \right)-\dot{x}(t)=0 }_{h\left(x(t),u(t) \rig
 \end{align*}
 bei $\left. h\left(x(t_j),u(t_j) \right)\right|_{\forall j}=0$ bzw.
 \begin{align*}
-	L_{diskret} & = \sum\limits_j f_0(x(t_j)) + \sum\limits_j \underbrace{\Psi_j^T}_{=:\Psi(t_j)} h\left(x(t_j),u(t_j) \right).
+	L_{diskret} & = \sum\limits_j f_0(x(t_j)) + \sum\limits_j \underbrace{\psi_j^T}_{=:\psi(t_j)} h\left(x(t_j),u(t_j) \right).
 \end{align*}
 Dies kann wiederrum dargestellt werden in der Form
 \begin{align*}
-	\bar{J} & = \int\left(f_0(x(t)) \right) + \Psi(t)^T\left(f(x(t),u(t))-\dot{x}(t) \right).
+	\bar{J} & = \int\left(f_0(x(t)) \right) + \psi(t)^T\left(f(x(t),u(t))-\dot{x}(t) \right).
 \end{align*}
 Es wird die Hamilton-Funktion definiert mit
 \begin{align*}
-	\Ham\left(x(t),u(t),\Psi(t),t \right) & = f_0\left(x(t),u(t),t \right) + \Psi(t)^T f\left(x(t),u(t),t \right)
+	\Ham\left(x(t),u(t),\psi(t),t \right) & = f_0\left(x(t),u(t),t \right) + \psi(t)^T f\left(x(t),u(t),t \right)
 \end{align*}
 und erhalten 
 \begin{align}
-	\bar{J} & = h\left(x(t_b),t_b \right) + \int\limits_{t_a}^{t_b}\left[H\left(x(t),u(t),\Psi(t),t \right)-\Psi(t)^T\dot{x}(t) \right]dt
-	+\lambda_a^T\left\{x_a-x(t_a) \right\} + \lambda_b^T z\left(x(t_b\right).
+	\begin{split}\label{eqn:kap_2_lagrange_fun}
+		\bar{J} & = h\left(x(t_b),t_b \right) + \int\limits_{t_a}^{t_b}\left[H\left(x(t),u(t),\psi(t),t \right)-\psi(t)^T\dot{x}(t) \right]dt\\
+				& \quad +\lambda_a^T\left\{x_a-x(t_a) \right\} + \lambda_b^T z\left(x(t_b\right).
+	\end{split}
 \end{align}
-
-
-\subsection{Prinzip der Herleitung notwendiger Bedingungen}
+Angenommen wir hätten die optimale Lösung gefunden und wir betrachten die Variationen der Funktionen $u$, $x$, $\psi$ und damit auch $\dot{x}$ auf dem
+Intervall $\left(t_a, t_b \right)$, den Vektoren $x(t_a)$, $\lambda_a$, $x(t_b)$, $\lambda_b$ und der Zahl $t_b$, d.h.
+$\xi(t)=\xi^{\ast}(t)+\epsilon\tilde{\xi}(t)$ mit $\xi\in\left\{x(t_a),\lambda_a, x(t_b), \lambda_b, t_b\right\}$. Einsetzen in
+\eqnref{eqn:kap_2_lagrange_fun} liefert die Lagrange-Funktion
+\begin{align*}
+	\begin{split}
+		\bar{J} & = h\left(x^{\ast}\left(t_b^{\ast}+\epsilon\tilde{t}_b \right) +\epsilon\tilde{x}\left(t_b^{\ast}+\epsilon\tilde{t}_b \right),
+		t_b^{\ast}+\epsilon\tilde{t}_b \right)\\
+		& \quad + \int\limits_{t_a}^{t_b^{\ast}+\epsilon\tilde{t}_b}\left[\Ham\left(x^{\ast}(t)+\epsilon\tilde{x}(t), u^{\ast}(t)+\epsilon\tilde{u}(t),
+		\psi^{\ast}(t)+\epsilon\tilde{\psi}(t),t \right) \right.\\
+		& \left. \quad - \left(\psi^{\ast}(t)+\epsilon\tilde{\psi}(t) \right)^T\left(\dot{x}^{\ast}(t)+\epsilon\tilde{\dot{x}}(t) \right)\right]dt\\
+		& \quad + \left(\lambda_a^{\ast T}+\epsilon\tilde{\lambda}_a^T \right)\left\{x_a - \left(x^{\ast}(t_a)+\epsilon\tilde{x}(t_a)\right) \right\}\\
+		& \quad + \left(\lambda_b^{\ast T}+\epsilon\tilde{\lambda}_b^T \right)z\left(x^{\ast}\left(t_b^{\ast}+\epsilon\tilde{t}_b \right) +
+		\epsilon\tilde{x}\left(t_b^{\ast} + \epsilon\tilde{t}_b \right) \right).
+	\end{split}
+\end{align*}
+Man hat
+\begin{align*}
+	& \frac{\td h}{\td\epsilon}\left(x^{\ast}\left(t_b^{\ast}+\epsilon\tilde{t}_b^{\ast} \right) + \epsilon\tilde{x}\left(t_b^{\ast}+ \epsilon\tilde{t}_b
+	\right),t_b^{\ast} + \epsilon\tilde{t}_b \right)\\
+	=  & \frac{\d h}{\d x}(\ldots)\left(\dot{x}^{\ast}\left(t_b^{\ast}+\epsilon\tilde{t}_b \right)+\tilde{x}\left(t_b^{\ast}\right)+\epsilon\tilde{t}_b +
+	\epsilon\tilde{\dot{x}} \left(t_b^{\ast}+\epsilon\tilde{t}_b \right)\tilde{t}_b \right) + \frac{\d h}{\d t}(\ldots)\tilde{t}_b
+\end{align*}
+und damit
+\begin{align*}
+	& \left.\frac{\td h}{\td\epsilon}\left(x^{\ast}\left(t_b^{\ast}+\epsilon\tilde{t}_b \right) + \epsilon\tilde{x}\left(t_b^{\ast}+\epsilon\tilde{t}_b 
+	\right),t_b^{\ast}+\epsilon\tilde{t}_b \right)\right|_{\epsilon = 0}\\
+	= & \frac{\d h}{\d x}\left(x^{\ast}(t_b^{\ast}),t_b^{\ast} \right)\left(\dot{x}^{\ast}(t_b^{\ast})\tilde{t}_b + \tilde{x}(t_b^{\ast}) \right) +
+	\frac{\d h}{\d t}(\ldots)\tilde{t}_b\\
+	= & \frac{\d h}{\d x}\left(x^{\ast}(t_b^{\ast}),t_b^{\ast} \right)\dot{x}^{\ast}(t_b^{\ast})\tilde{t}_b + \underbrace{\frac{\d h}{\d
+	x}\left(x^{\ast}(t_b^{\ast}),t_b^{\ast} \right)\tilde{x}(t_b^{\ast}) }_{=:\left.\frac{\d h}{\d x}\right|_{t_b} \tilde{x}(t_b)}.
+\end{align*}
+Einsetzen in \eqnref{eqn:kap_2_lagrange_fun} liefert analog zu Abschnitt \secref{sec:kap_2_grundproblem} die Funktionen $F(\epsilon)$ und
+\begin{align*}
+	\left.\frac{\td F}{\td \epsilon}\right|_{\epsilon=0} & = \left.\frac{\d h}{\d x}\right|_{t_b}\tilde{x}(t_b) + \left[\frac{\d h}{\d x}\dot{x} +
+	\frac{\d h}{\d t}+\Ham - \psi^T\dot{x} \right]_{t_b}\tilde{t}_b\\ 
+	& \quad + \int\limits_{t_a}^{t_b}\left[\frac{\d\Ham}{\d
+	x}\tilde{x}+\frac{\d\Ham}{\d u}\tilde{u}+\frac{\d\Ham}{\d\psi}\tilde{\psi} - \tilde{\psi}^T\dot{x} - \psi^T\tilde{\dot{x}}\right]dt \\
+	& \quad + \tilde{\lambda}_a^T\left\{x_a-x(t_b) \right\} - \lambda_a^T\tilde{x}(t_a)+\tilde{\lambda}_b^T z(x(t_b)) \\
+	& \quad + \left.\lambda_b^T\frac{\d z}{\d x}\right|_{t_b}\tilde{x}(t_b)+\lambda_b^T\frac{\d z}{\d x}\dot{x}(t_b)\tilde{t}_b
+\end{align*}
 
 \subsection{Notwendige Bedingungen für Optimallösung}
 
@@ -97,22 +171,22 @@ und erhalten
   \item Zur Lösung der "`Endwertaufgabe"' $\dot{\psi}=\nabla_x \Ham$ mit gegeben Endwert $\psi(t_b)$ und unter der Annahme, dass $x(t)$ und $u(t)$ gegeben sind.\\
   		Wir setzen $t=t(\tau)=t_b+t_a-\tau$ und mit 
   		\begin{align*}
-  			\Psi(\tau) & := \psi(t(\tau)) = \psi(t_b+t_a-\tau)
+  			\psi(\tau) & := \psi(t(\tau)) = \psi(t_b+t_a-\tau)
   		\end{align*}
   		erhält man 
   		\begin{align*}
-  			\dot{\Psi}(\tau) & = \frac{d\psi(t(\tau))}{d\tau} = \left.\frac{d\psi(t)}{dt}\right|_{t=t(\tau)}\frac{dt}{d\tau}\\
+  			\dot{\psi}(\tau) & = \frac{d\psi(t(\tau))}{d\tau} = \left.\frac{d\psi(t)}{dt}\right|_{t=t(\tau)}\frac{dt}{d\tau}\\
   			& = \left.-\frac{d\psi(t)}{dt}\right|_{t=t(\tau)}=\left.-\dot{\psi}(t)\right|_{t=t(\tau)}\\
   			& = \left.\nabla_x \Ham(x(t),u(t),\psi(t),t)\right|_{t=\tau}
   		\end{align*}
   		TODO BILD\\
   		Damit ist die Anfangswertaufgabe 
   		\begin{align*}
-  			\dot{\Psi}(\tau) & = \nabla_x \Ham(x(t_b+t_a-\tau),u(t_b+t_a-\tau),\Psi(\tau),t_b+t_a-\tau)
+  			\dot{\psi}(\tau) & = \nabla_x \Ham(x(t_b+t_a-\tau),u(t_b+t_a-\tau),\psi(\tau),t_b+t_a-\tau)
   		\end{align*}
-  		mit dem \ac{AW} $\Psi(t_a)=\psi(t_b)$ zu lösen für $\tau\in[t_a,t_b]$ und es gilt
+  		mit dem \ac{AW} $\psi(t_a)=\psi(t_b)$ zu lösen für $\tau\in[t_a,t_b]$ und es gilt
   		\begin{align*}
-  		\psi(t) & = \Psi(t_b+t_a-\tau).
+  		\psi(t) & = \psi(t_b+t_a-\tau).
   		\end{align*}
   \item Zur Lösung des nichtlinearen Gleichungssystems $\nabla_u \Ham =0$ unter der Verwendung des NEWTON-Verfahrens
 \end{itemize}
