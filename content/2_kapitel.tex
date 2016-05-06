@@ -163,8 +163,66 @@ Einsetzen in \eqnref{eqn:kap_2_lagrange_fun} liefert analog zu Abschnitt \secref
 	& \quad + \tilde{\lambda}_a^T\left\{x_a-x(t_b) \right\} - \lambda_a^T\tilde{x}(t_a)+\tilde{\lambda}_b^T z(x(t_b)) \\
 	& \quad + \left.\lambda_b^T\frac{\d z}{\d x}\right|_{t_b}\tilde{x}(t_b)+\lambda_b^T\frac{\d z}{\d x}\dot{x}(t_b)\tilde{t}_b
 \end{align*}
+mit 
+\begin{align*}
+	\int\limits_{t_a}^{t_b}\psi^T\tilde{\dot{x}}dt & = \psi^T(t_b)\tilde{x}(t_b)-\psi^T(t_a)\tilde{x}(t_a)-\int\limits_{t_a}^{t_b}\dot{\psi}^T\tilde{x}dt
+\end{align*} 
+durch partielle Integration ergibt sich
+\begin{align*}
+\left.\frac{\td F}{\td \epsilon}\right|_{\epsilon=0} & = \textcolor{magenta}{\left[\frac{\d h}{\d t}+\Ham \right]_{t_b}\tilde{t}_b} + \int\limits_{t_a}^{t_b}\left[
+\textcolor{teal}{\left(\frac{\d\Ham}{\d x}+\dot{\psi}^T \right)\tilde{x}} + \textcolor{olive}{\frac{\d\Ham}{\d u}\tilde{u}} +
+\textcolor{lime}{\left(\frac{\d\Ham}{\d\psi}-\dot{x}^T \right)\tilde{\psi}} \right]dt\\
+& \quad + \textcolor{green}{\tilde{\lambda}_a^T\left\{x_a - x(t_a) \right\}} + \left(\psi^T(t_a) - \lambda_a^T \right)\tilde{x}(t_a) +
+\textcolor{darkgray}{\tilde{\lambda}_b^Tz(x(t_a))} \\
+& \quad + \textcolor{cyan}{ \left[\lambda_b^T\frac{\d z}{\d x}+\frac{\d h}{\d x}-\psi^T \right]_{t_b}\left(\tilde{x}(t_b)+\dot{x}(t_b)\tilde{t}_b \right)}\\
+& = 0
+\end{align*}
 
 \subsection{Notwendige Bedingungen für Optimallösung}
+Die Prozessgleichung wird definiert als
+\begin{align}
+	\textcolor{lime}{\dot{x}(t) = \nabla_{\psi}\Ham} & = f\left(x(t),u(t),t \right). \label{eqn:kap_2_prozessgleichung}
+\end{align}
+Die dazugehörige adjungierte Prozessgleichung\footnote{Es kann geschrieben werden \begin{align*}
+\frac{\d\Ham}{\d x} & = \frac{\d f_0}{\d x}+\psi^T\underbrace{\frac{\d f}{\d x}}_{\in\mathbb{R}^{n\times n}}\\
+\nabla_x\Ham & = \nabla_x f_0+\left[\frac{\d f}{\d x} \right]^T\psi
+\end{align*}} ist beschrieben durch
+\begin{align}
+	\textcolor{teal}{\dot{\psi}(t) = -\nabla_x\Ham } & = -\nabla_x f_0\left(x(t),u(t),t \right)-\left[\frac{\d f}{\d x}(x(t),u(t),t) \right]^T\psi(t) \label{eqn:kap_2_adj_prozessglg}
+\end{align}
+und die Steuerungsgleichung durch
+\begin{align}
+	\textcolor{olive}{\nabla_u\Ham\left(x(t),u(t),\psi{t},t \right)} & = 0. \label{eqn:kap_2_steuergleichung}
+\end{align}
+Dabei bilden Gleichung \eqnref{eqn:kap_2_prozessgleichung} und \eqnref{eqn:kap_2_adj_prozessglg} die kanonischen Differentialgleichungen und \eqnref{eqn:kap_2_prozessgleichung},
+\eqnref{eqn:kap_2_adj_prozessglg} und \eqnref{eqn:kap_2_steuergleichung} die sogenannten Hamilton-Gleichungen.\\
+\begin{tabular}{lll}
+\ac{AB} & \textcolor{green}{$x(t_a)=x_a$}\\
+\ac{EB} & Fall A: 	& \textcolor{darkgray}{$z(x(t_b))=0$} und die Transversalitätsbedingung\\
+		&			& \textcolor{cyan}{$\left[\frac{\d z}{\d x}(x(t_b)) \right]^T\lambda_b +\nabla_x
+h(x(t_b),t_b)-\psi(t_b)=0$} \\
+		& Fall B: 	& $x(t_b)=t_b$ mit bekannten $x_a$ und $x_b$\\
+		& Fall C: 	& $\nabla_x h(x(t_b),t_b)=\psi(t_b)$\\
+		&			& Fall $t_b$ frei ist, so muss zusätzlich $\Ham(x(t_b),u(t_b),\psi(t_b),t_b)=\textcolor{magenta}{-\frac{\d h}{\d t}(x(t_b),t_b)}$\\
+		&			& erfüllt sein.
+\end{tabular}
+
+\subsection{Grundsätzliche Vorgehensweise zur analytischen Bestimmung der Optimallösung}
+\begin{enumerate}[label=(S\arabic*)]
+  \item Umstellen der Steuerungsgleichung nach $u$ liefert 
+  \begin{align}
+  	u(t) & = \mathcal{U}\left(x(t),\psi(t),t \right).
+  \end{align}
+  Einsetzen in kanonsiche Differentialgleichung (Elimination von $u$ ergibt)
+  \begin{align}
+  	\dot{x} & = w(x,\psi,t). \label{eqn:kap_2_kan_dgl}
+  \end{align}
+  \item Bestimmen der allgemienen Lösung von \eqnref{eqn:kap_2_kan_dgl} mit dem Integrationsparameter $c\in\mathbb{R}^{2n}$
+  \begin{align}
+  	x & = x(t,c), & \psi=\psi(t,c)
+  \end{align}
+  \item Anpassung der Lösung an die Randbedingungen 
+\end{enumerate}
 
 \subsection{Numerische Lösung am Beispiel "`Fall C und fester Endzeit $t_b$"'}
 \begin{itemize}
