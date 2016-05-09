@@ -211,18 +211,118 @@ h(x(t_b),t_b)-\psi(t_b)=0$} \\
 \begin{enumerate}[label=(S\arabic*)]
   \item Umstellen der Steuerungsgleichung nach $u$ liefert 
   \begin{align}
-  	u(t) & = \mathcal{U}\left(x(t),\psi(t),t \right).
+  	u(t) & = \mathcal{U}\left(x(t),\psi(t),t \right). \label{eqn:kap_2_vor_optlsg_s1_u}
   \end{align}
   Einsetzen in kanonsiche Differentialgleichung (Elimination von $u$ ergibt)
   \begin{align}
-  	\dot{x} & = w(x,\psi,t). \label{eqn:kap_2_kan_dgl}
+  	\dot{x} & = w(x,\psi,t). \label{eqn:kap_2_vor_optlsg_s1_x}
   \end{align}
-  \item Bestimmen der allgemienen Lösung von \eqnref{eqn:kap_2_kan_dgl} mit dem Integrationsparameter $c\in\mathbb{R}^{2n}$
+  \item Bestimmen der allgemienen Lösung von \eqnref{eqn:kap_2_vor_optlsg_s1_x} mit dem Integrationsparameter $c\in\mathbb{R}^{2n}$
   \begin{align}
-  	x & = x(t,c), & \psi=\psi(t,c)
+  	x & = x(t,c), & \psi=\psi(t,c)	\label{eqn:kap_2_vor_optlsg_s2}
   \end{align}
-  \item Anpassung der Lösung an die Randbedingungen 
+  \item Anpassung der Lösung an die Randbedingungen\\
+  \begin{tabular}{ll}
+  Fall A	& $x(t_a,c)=x_a$, $z\left(x(t_b,c) \right)=0$,\\ 
+  			& $\left[\frac{\d z}{\d x}\left(x(t_b,c) \right) \right]^T\underbrace{\lambda_b}_{\in\mathbb{R}^m}+\nabla_x h\left(x(t_b,c),t_b
+  			\right)-\psi(t_b,c)=0$\\
+  Fall B	& $x(t_a,c)=x_a$, $x(t_b,c)=x_b$\\
+  Fall C	& $x(t_a,c)=x_a$, $\nabla_x h\left(x(t_b,c),t_b \right) = \psi(t_b,c)$\\
+  			& Falls $t_b$ frei ist: $\Ham\left(x(t_b,c),\mathcal{U}(x(t_b,c)),\psi(t_b,c),t_b \right)=\frac{\d h}{\d t}\left(x(t_b,c),t_b \right)$
+  \end{tabular}\\
+  Dabei $x_a$ als Variable mitführen, also ist $c=c(x_a)$. Falls $t_b$ frei ist, so gilt $t_b=t_b(x_a)$.
+  \item Einsetzen von $c(x_a)$ in \eqnref{eqn:kap_2_vor_optlsg_s2} ergibt die optimale (Zustands- und Kozustands-)Trajektorie 
+  \begin{align}
+  	x\left(t,c(x_a) \right) & =: x^{\ast}(t,x_a)	\label{eqn:kap_2_vor_optlsg_s4}
+  \end{align}
+  und 
+  \begin{align*}
+  	\psi\left(t,c(x_a) \right) & =: \psi^{\ast}(t,x_a).
+  \end{align*}
+  Eingesetzt in \eqnref{eqn:kap_2_vor_optlsg_s1_u} erhält man die optimale Steuertrajektorie
+  \begin{align}
+  	\mathcal{U}\left(x^{\ast}(t,x_a), \psi^{\ast}(t,x_a),t \right) & =: u^{\ast}(t,x_a).	\label{eqn:kap_2_vor_optlsg_s5}
+  \end{align}
+  \item Umstellen von \eqnref{eqn:kap_2_vor_optlsg_s4} nach $x_a$ und einsetzen in \eqnref{eqn:kap_2_vor_optlsg_s5} liefert das Regelgesetz
+  \begin{align*}
+  	u^{\ast}(t) & = K\left(x(t),t \right).
+  \end{align*}
 \end{enumerate}
+Die Schritte (S1) bis (S4) liefern die in \figref{fig:kap_2_vor_optlsg_s1s4} dargestellten Trajektrtorien und Schritt (S5) die in
+\figref{fig:kap_2_vor_optlsg_s5} dargestellte Trajektorie.
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Trajektorien der Schritte (S1) bis (S4)}
+	\label{fig:kap_2_vor_optlsg_s1s4}
+\end{figure}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Trajektorie des Schrittes (S5)}
+	\label{fig:kap_2_vor_optlsg_s5}
+\end{figure}
+\begin{exmp}\label{exmp:kap_2_vor_optlsg_1}
+Sei $\dot{x}=ax+bu$ mit $a,b\in\mathbb{R}^1$, $t_a=0$, $x(0)=x_a$ gegeben. Weiterhin ist $t_b$ gegeben und damit nicht frei. $x(t_b)=0$, d.h. es
+wird Fall B betrachtet mit dem "`energieoptimalen"' Kostenfunktional 
+\begin{align*}
+	J & = \frac12\int\limits_0^{t_b}u(t)^2dt.
+\end{align*}
+Wir haben
+\begin{align*}
+	\Ham & = \frac12 u^2 + \psi(ax+bu),\\
+	\dot{x} & = \nabla_{\psi}\Ham = ax+bu,\\
+	\dot{\psi} & = -\nabla_x\Ham = -a\dot \psi,\\
+	\nabla_u\Ham & = u+b\psi = 0.
+\end{align*}
+Damit ist 
+\begin{align}
+	u & = -b\psi.	\label{eqn:kap_2_vor_optlsg_u}
+\end{align}
+Im nächsten Schritt werden die kanonischen Differentialgleichungen gelöst. Die Lösung von 
+\begin{align*}
+	\dot{x} & = ax - b^2\psi\\
+	\dot{\psi} & = -a\cdot\psi
+\end{align*}
+liefert
+\begin{align}
+	x(t) & = x(0)e^{at}+\frac{b^2\psi(0)}{2a}\left(e^{-at}-e^{at} \right)	\label{eqn:kap_2_vor_optlsg_x}\\
+	\psi(t) & = \psi(0)e^{-at}.		\label{eqn:kap_2_vor_optlsg_psi}
+\end{align}
+In \eqnref{eqn:kap_2_vor_optlsg_x} wird $t=t_b$ zur Betrachtung des Endzeitpunktes $t_b$ gesetzt und $x(t_b)= 0$. Umstellen nach $\psi(0)$ liefert
+\begin{align}
+	\psi(0) & = -\frac{2a}{b^2}\frac{e^{at_b}}{e^{-at_b}-e^{at_b}}x(0).	\label{eqn:kap_2_vor_optlsg_psi0}
+\end{align}
+Eingesetzt in \eqnref{eqn:kap_2_vor_optlsg_x} erhält man
+\begin{align}
+	x^{\ast}(t,x(0)) & = x(0)\frac{e^{-a(t_b-t)}-e^{a(t_b-t)}}{e^{-at_b}-e^{at_b}}	\label{eqn:kap_2_vor_optlsg_xast}
+\end{align}
+und \eqnref{eqn:kap_2_vor_optlsg_u} wird mit \eqnref{eqn:kap_2_vor_optlsg_psi} und \eqnref{eqn:kap_2_vor_optlsg_psi0} zu
+\begin{align}
+\begin{split}\label{eqn:kap_2_vor_optlsg_uast}
+	u^{\ast}(t,x(0)) & = -b\psi(0)e^{at}\\
+	& = \frac{2a}{b}\frac{e^{a(t_b-t)}}{e^{-at_b}-e^{at_b}} x(0).
+\end{split}
+\end{align}
+\eqnref{eqn:kap_2_vor_optlsg_xast} umgestellt nach $x(0)$ und eingesetzt in \eqnref{eqn:kap_2_vor_optlsg_uast} liefert das Regelgesetz
+\begin{align}
+	u^{\ast}(t) & = k(t) x(t)
+\end{align}
+mit
+\begin{align*}
+	k(t) & = \frac{2a}{b}\frac{e^{a(t_b-t)}}{e^{-a(t_b-t)}-e^{a(t_b-t)}}.
+\end{align*}
+Der optimale Regler ist linear, zeitvariant und es gilt
+\begin{align*}
+	\lim\limits_{t\rightarrow t_b}\left|k(t)\right| & = \infty.
+\end{align*}
+Eine Verstäkrung gegen $\infty$ ist sinnig. Sie entsteht durch die harten Endbedingungen. Es wären weiche Endbedingungen sinnvoll, siehe
+\exmpref{exmp:kap_2_vor_optlsg_2}. Die Trajektorien von $u$, $x$ und $\psi$ sind in \figref{} dargestellt. Der Verlauf der Reglerverstärkung ist in
+\figref{} abgebildet. 
+\end{exmp}
+\begin{exmp}\label{exmp:kap_2_vor_optlsg_2}
+
+\end{exmp}
 
 \subsection{Numerische Lösung am Beispiel "`Fall C und fester Endzeit $t_b$"'}
 \begin{itemize}
