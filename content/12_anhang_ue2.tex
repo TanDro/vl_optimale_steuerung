@@ -8,8 +8,8 @@
 \begin{enumerate}
   \item Bestimmen Sie die optimale Steuerfunktion zu folgenden Problemen
   \begin{enumerate}
-    \item $J = \int\limits_0^1 u(t)^2dt\rightarrow\min$ bei $\dot{x}=u-c$ mit gegebenen KOnstanten $c>0$ sowie $x(0)=0$ und $x(1)=1$.
-    \item $J = \int\limits_0^{t_b} u(t)^2dt\rightarrow\min$ bei $\dot{x}=u-c$ mit gegebenen KOnstanten $c>0$ sowie $x(t_b)=0$ und $x(1)=1$, $t_b$ ist
+    \item $J = \int\limits_0^1 u(t)^2dt\rightarrow\min$ bei $\dot{x}=u-c$ mit gegebenen Konstanten $c>0$ sowie $x(0)=0$ und $x(1)=1$.
+    \item $J = \int\limits_0^{t_b} u(t)^2dt\rightarrow\min$ bei $\dot{x}=u-c$ mit gegebenen Konstanten $c>0$ sowie $x(t_b)=0$ und $x(1)=1$, $t_b$ ist
     frei.
   \end{enumerate}
   Diskutieren Sie für die beiden Probleme jeweils die Abhängigkeit der Lösung, d.h. von $u$ und $J$, vom Parameter $c$. Vergleichen Sie die Ergebnisse
@@ -30,3 +30,8 @@
   \end{enumerate}
 \end{enumerate}
 
+\subsection*{Vorgehensweise zur numerischen Bestimmung der Optimallösung}
+\addcontentsline{toc}{subsection}{Vorgehensweise zur numerischen Bestimmung der Optimallösung}
+\label{sec:uebung_num_best_opt_lsg}
+Implementieren Sie den Algorithmus und testen Sie ihn am \exmpref{exmp:kap_2_vor_optlsg_2}. Beachten Sie, dass eine
+sinvolle Wahl von $\alpha$ für ein Kovergenzverhalten notwendig ist.
