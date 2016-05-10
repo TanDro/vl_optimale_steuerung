@@ -2,7 +2,31 @@
 \addcontentsline{toc}{section}{Übungen Kapitel 2} 
 \label{sec:uebung_kapitel_2}
 
-\subsection*{Aufgabe 1}
-\addcontentsline{toc}{subsection}{Aufgabe 1} 
-
+\subsection*{Vorgehensweise zur analytischen Bestimmung der Optimallösung}
+\addcontentsline{toc}{subsection}{Vorgehensweise zur analytischen Bestimmung der Optimallösung}
+\label{sec:uebung_anal_best_opt_lsg}
+\begin{enumerate}
+  \item Bestimmen Sie die optimale Steuerfunktion zu folgenden Problemen
+  \begin{enumerate}
+    \item $J = \int\limits_0^1 u(t)^2dt\rightarrow\min$ bei $\dot{x}=u-c$ mit gegebenen KOnstanten $c>0$ sowie $x(0)=0$ und $x(1)=1$.
+    \item $J = \int\limits_0^{t_b} u(t)^2dt\rightarrow\min$ bei $\dot{x}=u-c$ mit gegebenen KOnstanten $c>0$ sowie $x(t_b)=0$ und $x(1)=1$, $t_b$ ist
+    frei.
+  \end{enumerate}
+  Diskutieren Sie für die beiden Probleme jeweils die Abhängigkeit der Lösung, d.h. von $u$ und $J$, vom Parameter $c$. Vergleichen Sie die Ergebnisse
+  der Lösung der beiden Probleme miteinander. 
+  \item Bestimmen Sie eine optimale Steuerfunktion für die Aufgabenstellung
+  \begin{align*}
+  	J & = \int\limits_0^1 u_1(t)^2+u_2(t)^2 dt\rightarrow\min
+  \end{align*} 
+  bei
+  \begin{align*}
+  	\dot{x}_1 & = u_1,\ \dot{x}_2=u_2,\ \dot{x}_3=x_1,\ \dot{x}_4=x_2\\
+  	x_3(1)-x_4(1) & = 0
+  \end{align*}
+  für die Anfangszustände
+  \begin{enumerate}
+    \item $x_1(0) = x_2(0)=x_3(0)=x_4(0)=0$,
+    \item $x_1(0) = 2,\ x_2(0)=0,\ x_3(0)=1,\ x_4(0)=0$.
+  \end{enumerate}
+\end{enumerate}
 
