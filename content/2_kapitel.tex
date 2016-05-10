@@ -573,3 +573,62 @@ mit der Endbedingung $x(t_b)$ liefert. Das Regelgesetz kann zu
 formuliert werden, was eine lineare zeitvariante Zustandsrückführung darstellt.
 
 \section{Maximumprinzip von Pontojaju}
+Die Aufgabe ist das Kostenfunktional
+\begin{align*}
+	J & = h\left(x(t_b),t_b \right) + \int\limits_{t_a}^{t_b} f_0(x(t),u(t),t)dt\rightarrow\min
+\end{align*}
+für den Prozess
+\begin{align*}
+	\dot{x}(t) & = f\left( x(t),u(t),t \right),
+\end{align*}
+mit $u:[t_a,t_b]\rightarrow \Omega\subset\mathbb{R}^p$ mit dem zulässigen Bereich $\Omega$, der zeitvariant, abgeschlossen und konvex ist.\\
+Die \ac{AB} seien gegeben mit gegebenen $t_a$, $x_a$ mit $x(t_a)=x_a$.\\
+Die \ac{EB} seien gegeben mit gegebenen oder freien $t_b$ und $z(x(t_b))=0$ mit $z:\mathbb{R}^n\rightarrow\mathbb{R}^m$, d.h. es wird Fall A
+betrachtet.\\
+$h$, $f_0$, $f$ und $z$ seinen stetig differenzierbar bezüglich aller Argumente. Es ist keine Beschreibung für $x(t)$ für $t\in[t_a,t_b]$ gegeben.
+
+\begin{defi}
+Die Lösung des Steuerungsproblems heisst singulär, falls
+\begin{enumerate}[label=(\Roman*)]
+  \item $\lambda_0=0$ oder
+  \item $H\neq H(u)$ für $t\in[t_1,t_2]\subseteq[t_a,t_b]$ mit $t_1<t_2$, d.h. es gibt ein Intervall mit Lösungen größer Null auf dem $H$ keine
+  explizite Funktion der Steuergröße ist.
+\end{enumerate}
+\end{defi}
+
+\begin{remark}[Zum Fall (I)]
+
+\end{remark}
+
+\begin{exmp}
+Minimiere $J = \int\limits_0^1 u(t)dt$ für den Prozess $\dot{x}=u(t)^2$ unter der \ac{NB} $x(0)=x(1)=0$. Offenbar erfüllt nur $u\equiv 0$ die \ac{NB}
+und ist daher optimal. Mit der Hamilton-Funktion
+\begin{align*}
+	\Ham\left(x,u,\psi,\lambda_0,t \right) & = \lambda_0u + \psi u^2
+\end{align*}
+gilt
+\begin{align*}
+	0 & = \Ham_u = \lambda_0 2\psi u
+\end{align*}
+und
+\begin{align*}
+	\dot{\psi}& = -\Ham_x=0.
+\end{align*} 
+Damit ist $\psi=const$ und damit ein unbeschränktes Problem. Falls $\psi = 0$, so gilt auch $\lambda_0=0$. Angenommen $\psi\neq 0$, so ist
+$u=-\frac{\lambda_0}{2\psi}$. Falls $\lambda_0\neq 0$ ist, so wäre $x(1)>0$, d.h. diese $u$ wäre nicht zulässig. Also muss $\lambda_0=0$ gelten.
+\end{exmp}
+
+
+\begin{remark}[Zum Fall (II)]
+
+\end{remark}
+
+\begin{exmp}[Zeitoptimale Steuerung eines Doppelintegrators]
+
+\end{exmp}
+\begin{exmp}[Verbrauchsoptimale Steuerung eines Doppelintegrators]
+
+\end{exmp}
+\begin{exmp}[Anwendung des Satz von Feldbaum]
+
+\end{exmp}
