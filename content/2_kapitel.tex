@@ -317,37 +317,198 @@ Der optimale Regler ist linear, zeitvariant und es gilt
 	\lim\limits_{t\rightarrow t_b}\left|k(t)\right| & = \infty.
 \end{align*}
 Eine Verstäkrung gegen $\infty$ ist sinnig. Sie entsteht durch die harten Endbedingungen. Es wären weiche Endbedingungen sinnvoll, siehe
-\exmpref{exmp:kap_2_vor_optlsg_2}. Die Trajektorien von $u$, $x$ und $\psi$ sind in \figref{} dargestellt. Der Verlauf der Reglerverstärkung ist in
-\figref{} abgebildet. 
+\exmpref{exmp:kap_2_vor_optlsg_2}. Die Trajektorien von $u$, $x$ und $\psi$ sind in \figref{fig:kap_2_vor_optlsg_exmp_1} dargestellt. Der Verlauf der
+Reglerverstärkung ist in \figref{fig:kap_2_vor_optlsg_exmp_2_k} abgebildet. 
 \end{exmp}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Trajektories von \exmpref{exmp:kap_2_vor_optlsg_1} mit festem Endzustand}
+	\label{fig:kap_2_vor_optlsg_exmp_1}
+\end{figure}
 \begin{exmp}\label{exmp:kap_2_vor_optlsg_2}
+Sei $\dot{x}=ax+bu$ mit $a,b\in\mathbb{R}^1$, $t_a=0$, $x(0)=x_a$ gegeben. $t_b$ wird als frei angenommen und das Kostenfunktional als
+\begin{align*}
+	J & = \frac12 Sy(t_b)^2 + \frac12\int\limits_0^{t_b}u(t)^2dt.
+\end{align*}
+Das heisst, es wird Fall C betrachtet. So ist anstelle von $x(t_b)=0$ die Randbedinung $Sx(t_b)=\psi(t_b)$ zu erfüllen. Darin müssen Gleichung
+\eqnref{eqn:kap_2_vor_optlsg_x} und \eqnref{eqn:kap_2_vor_optlsg_psi} an der Stelle $t=t_b$ eingesetzt und nach $\psi(0)$ umgestellt werden. Damit
+erhält man $x^{\ast}\left(t,x(0) \right)$, $\psi^{\ast}\left(t,x(0) \right)$ und $u^{\ast}\left(t,x(0) \right)$, sowie das Regelgesetz
+\begin{align*}
+	u^{\ast}(t) & = k(t) x(t)
+\end{align*}
+mit
+\begin{align*}
+	k(t) & = \frac{-2a S}{b\left(S-\left(S-\frac{2a}{b^2} \right)e^{-2a(t_b-t)} \right)}
+\end{align*}
+für den gilt, dass $k(t_b)=-bS$ gilt.
 
+Für $t_b\rightarrow\infty$ gilt für jedes $t$ in beiden Fällen
+\begin{align*}
+	k(t) & = \left\{\begin{array}{cl}
+	0 & \text{für} a < 0\\
+	unbestimmt & \text{für} a = 0\\
+	-\frac{2a}{b} & \text{für} a > 0
+	\end{array}\right. .
+\end{align*}
+Der Prozess ist bei $a<0$ stabil und damit ist kein Stellaufwand notwendig. Wenn der Prozess instabil ist, $a > 0$, konvergiert der Zustand gegen
+$\infty$. Wenn der Prozess integrales Verhalten aufweist, $a=0$, ist kein Minimum vorhanden.
 \end{exmp}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Trajektories von \exmpref{exmp:kap_2_vor_optlsg_2} mit Gewichtung des Endzustandes}
+	\label{fig:kap_2_vor_optlsg_exmp_2}
+\end{figure}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Reglerverstärkungen von \exmpref{exmp:kap_2_vor_optlsg_1} und \exmpref{exmp:kap_2_vor_optlsg_2}}
+	\label{fig:kap_2_vor_optlsg_exmp_2_k}
+\end{figure}
+Es sind zwei Übungen unter \picref{sec:uebung_anal_best_opt_lsg}{Vorgehensweise zur analytischen Bestimmung der Optimallösung} im Anhang zu finden.
 
 \subsection{Numerische Lösung am Beispiel "`Fall C und fester Endzeit $t_b$"'}
-\begin{itemize}
-  \item Zur Lösung der "`Endwertaufgabe"' $\dot{\psi}=\nabla_x \Ham$ mit gegeben Endwert $\psi(t_b)$ und unter der Annahme, dass $x(t)$ und $u(t)$ gegeben sind.\\
-  		Wir setzen $t=t(\tau)=t_b+t_a-\tau$ und mit 
-  		\begin{align*}
-  			\psi(\tau) & := \psi(t(\tau)) = \psi(t_b+t_a-\tau)
-  		\end{align*}
-  		erhält man 
-  		\begin{align*}
-  			\dot{\psi}(\tau) & = \frac{d\psi(t(\tau))}{d\tau} = \left.\frac{d\psi(t)}{dt}\right|_{t=t(\tau)}\frac{dt}{d\tau}\\
-  			& = \left.-\frac{d\psi(t)}{dt}\right|_{t=t(\tau)}=\left.-\dot{\psi}(t)\right|_{t=t(\tau)}\\
-  			& = \left.\nabla_x \Ham(x(t),u(t),\psi(t),t)\right|_{t=\tau}
-  		\end{align*}
-  		TODO BILD\\
-  		Damit ist die Anfangswertaufgabe 
-  		\begin{align*}
-  			\dot{\psi}(\tau) & = \nabla_x \Ham(x(t_b+t_a-\tau),u(t_b+t_a-\tau),\psi(\tau),t_b+t_a-\tau)
-  		\end{align*}
-  		mit dem \ac{AW} $\psi(t_a)=\psi(t_b)$ zu lösen für $\tau\in[t_a,t_b]$ und es gilt
-  		\begin{align*}
-  		\psi(t) & = \psi(t_b+t_a-\tau).
-  		\end{align*}
-  \item Zur Lösung des nichtlinearen Gleichungssystems $\nabla_u \Ham =0$ unter der Verwendung des NEWTON-Verfahrens
-\end{itemize}
+Zur Lösung der "`Endwertaufgabe"' $\dot{\psi}=\nabla_x \Ham$ mit gegeben Endwert $\psi(t_b)$ und unter der Annahme, dass $x(t)$ und $u(t)$ gegeben
+sind. Wir setzen $t=t(\tau)=t_b+t_a-\tau$, vgl. \figref{fig:kap_2_fallc_tbfest_ttau} und mit 
+\begin{align*}
+	\Psi(\tau) & := \psi(t(\tau)) = \psi(t_b+t_a-\tau)
+\end{align*}
+erhält man 
+\begin{align*}
+	\dot{\Psi}(\tau) & = \frac{d\psi(t(\tau))}{d\tau} = \left.\frac{d\psi(t)}{dt}\right|_{t=t(\tau)}\frac{dt}{d\tau}\\
+	& = \left.-\frac{d\psi(t)}{dt}\right|_{t=t(\tau)}=\left.-\dot{\psi}(t)\right|_{t=t(\tau)}\\
+	& = \left.\nabla_x \Ham(x(t),u(t),\psi(t),t)\right|_{t=\tau}
+\end{align*}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Darstellung der linearen Funktion $t=t(\tau)$}
+	\label{fig:kap_2_fallc_tbfest_ttau}
+\end{figure}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Entwicklung von $\psi$ in Abhängigkeit von $t$ und $\tau$}
+	\label{fig:kap_2_fallc_tbfest_psi}
+\end{figure}
+Damit ist die Anfangswertaufgabe 
+\begin{align*}
+	\dot{\Psi}(\tau) & = \nabla_x \Ham(x(t_b+t_a-\tau),u(t_b+t_a-\tau),\psi(\tau),t_b+t_a-\tau)
+\end{align*}
+mit dem \ac{AW} $\Psi(t_a)=\psi(t_b)$ zu lösen für $\tau\in[t_a,t_b]$ und es gilt
+\begin{align*}
+	\psi(t) & = \psi(t_b+t_a-\tau).
+\end{align*}
+
+Zur Lösung des nichtlinearen Gleichungssystems $\nabla_u \Ham =0$ kann das \textsc{Newton}-Verfahren verwendet werden. Bekannt ist, dass für eine
+differenzierbare Funktion $f:\mathbb{R}^1\rightarrow\mathbb{R}^1$ gilt
+\begin{align*}
+	f(x) & = f(\bar{x})+f'(\bar{x})(x-\bar{x})+\mathcal{O}(x-\bar{x}),
+\end{align*}
+wobei $\mathcal{O}(h)$ für eine beliebeige Funktion $g:\mathbb{R}^1\rightarrow\mathbb{R}^1$ mit $\lim\limits_{h\rightarrow 0}\frac{g(h)}{h}=0$
+steht.\\
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Darstellung \textsc{Newton}-Verfahren}
+	\label{fig:kap_2_fallc_newton}
+\end{figure}
+$x=\bar{x}-\frac{f(x)}{f'(x)}$ liefert die iterative Vorschrift
+\begin{align*}
+	x^{k+1} & = x^k - \alpha\frac{f\left(x^k\right)}{f'\left(x^k \right)}
+\end{align*}
+mit $\alpha\in(0,1]$. Falls $\alpha\in(0,1)$ gilt, spricht man von einem gedämpften \textsc{Newton}-Verfahren. Allgemein für differenzierbare
+Funktionen $F:\mathbb{R}^n\rightarrow\mathbb{R}^n$ kann geschrieben werden:\\
+Löse $F(x)=0$ mittels
+\begin{align*}
+	x^{k+1} & = x^k - \alpha F'\left(x^k\right)^{-1}F(k)
+\end{align*}
+mit der Jacobimatrix $F'\left(x^k\right)$ an der Stelle $x^k$.
+
+Bei der Anwendung des Verfahrens auf 
+\begin{align*}
+ \nabla_x\Ham\left(x(t),u(t),\psi(t),t \right) & = 0
+\end{align*}
+ergibt sich die Iterationsvorschrift zu
+\begin{align*}
+	u^{k+1}(t) & ) u^{k}(t) -\alpha\nabla_{uu}\Ham\left(x(t),u^k(t),\psi(t),t \right)^{-1}\nabla_u\Ham\left(x(t),u^k(t),\psi(t),t \right)
+\end{align*}
+Für ein gegebenes $x(t)$ und $\psi(t)$ ist die Vorschrift für alle $t$ abzuarbeiten.\\
+Ein Algorithmus zur Bestimmung von $u$ kann wie folgt dargestellt werden.
+\begin{enumerate}[label=(S\arabic*)]
+  \item Setze einen Startwert $u(t)$, $t\in[t_a,t_b]$.
+  \item Löse \ac{AWA} $\dot{x}=f\left(x(t),u(t),t \right)$ mit $x(t_a)=x_a$ und liefert $x(t)$, $t\in[t_a,t_b]$.
+  \item Löse \ac{AWA}
+  \begin{align*}
+  	\dot{\Psi}(\tau) & = \nabla_x\Ham\left(x(t_b+t_a-\tau),u(t_b+t_a-\tau),\psi(\tau),t_b+t_a-\tau \right)\\
+  	\Psi(t_a) & = \nabla_xh\left(x(t_b),t_b \right)
+  \end{align*}
+  mit $\tau\in[t_a,t_b]$ und liefert $\psi(t)=\Psi\left(t_b + t_a -\tau\right)$, $t\in[t_a,t_b]$.
+  \item Aktualisiere 
+  \begin{align*}
+  	u(t) & \leftarrow u(t)-\underbrace{\alpha\nabla_{uu}\Ham\left(x(t),u(t),\psi(t),t \right)^{-1}\nabla_u\Ham\left(x(t),u(t),\psi(t),t \right)
+  	}_{\Delta u}
+  \end{align*} 
+  mit $t\in[t_a,t_b]$.
+  \item Falls Abbruchbedingung, bspw. $\|\Delta u\|$ klein oder $\|\Delta J\|$ klein, erfüllt ist, dann Stopp, andernfalls gehe zu (S2).
+\end{enumerate}
+\begin{exmp}
+Es wird der vorgestellten Algorithmus in Form von Pseudocode auf das Beispiel \exmpref{exmp:kap_2_vor_optlsg_2} angewendet. Der Prozess ist
+beschrieben durch
+\begin{align*}
+	\dot{x} & = ax + bu
+\end{align*}
+mit gegebenen $x(t_a)=x_a$ und $t_b$ und dem Kostenfunktional
+\begin{align*}
+	J & = \frac12 Sx(t_b)^2 + \frac12\int\limits_{t_a}^{t_b}u(t)^2dt. 
+\end{align*}
+\begin{enumerate}[label=(S\arabic*)]
+  \item Setze Startwert für die zeitdiskretisierte Steuerfunktion $\begin{bmatrix}
+  u(t_a)\\ \vdots\\ t(t_b)
+  \end{bmatrix}$ in diskreten Zeitpunkten $\begin{bmatrix}
+  t_a\\ \vdots\\ t_b
+  \end{bmatrix}$ mit geeigneter Diskretisierung.
+  \item Prozesssimulation\footnote{\textsc{Matlab}: $\text{\lstinline[columns=fixed]{lsim}}(\dot{x}=ax+bu,\begin{bmatrix}
+  u(t_a)\\ \vdots\\u(t_b)
+  \end{bmatrix},\begin{bmatrix}
+  t_a\\ \vdots\\ t_b
+  \end{bmatrix},x_a)$} mit gegebenen \ac{AW} $\begin{bmatrix}
+  x(t_a)\\ \vdots\\x(t_b)
+  \end{bmatrix}$ und Steuerfunktion.
+  \item "`Rückwärtssimulation"'\footnote{\textsc{Matlab}: $\text{\lstinline[columns=fixed]{exp}}(a(\begin{bmatrix}
+  t_a\\ \vdots\\ t_b
+  \end{bmatrix} - t_a))Sx(t_b)$} der adjungierten Prozessgleichung
+  $\begin{bmatrix} \psi(t_a)\\ \vdots\\ \psi(t_b)
+  \end{bmatrix}$ aus 
+  \begin{align*}
+  	\Ham & = \frac12 u^2 + \psi\left(ax+bu\right)\\
+  	\nabla_x\Ham & = a\psi\\
+  	\dot{\Psi}(\tau) & = a\Psi(\tau)\\
+  	\Psi(t_a) & = Sx(t_b), & \tau\in[t_a,t_b]\\
+  	\Psi(\tau) & = e^{a(\tau -t_a)}Sx(t_b).
+  \end{align*}
+  $t$ läuft von $t_b$ nach $t_a$ und $\tau$ läuft von $t_a$ nach $t_b$.
+  \item Aktualisierung der Steuerfunktion
+  \begin{align*}
+  	\begin{bmatrix}
+  u(t_a)\\ \vdots\\ u(t_b)
+  \end{bmatrix} & \leftarrow \begin{bmatrix}
+  u(t_a)\\ \vdots\\ u(t_b)
+  \end{bmatrix} - \alpha\left(\begin{bmatrix}
+  u(t_a)\\ \vdots\\ u(t_b)
+  \end{bmatrix} + \begin{bmatrix}
+  \psi(t_a)\\ \vdots\\ \psi(t_b)
+  \end{bmatrix}b \right)
+  \end{align*}
+  aus $\nabla_u\Ham = u+\psi b$, $\nabla_{uu}=1$ und
+  \begin{align*}
+  	u(t) & \leftarrow u(t) - \alpha\left(u(t) + \psi(t)b \right).
+  \end{align*}
+  \item Falls Abbruchbedingung erfüllt ist, dann Stopp, andernfalls gehe zu (S2).
+\end{enumerate}
+\end{exmp}
+Es ist eine Übung unter \picref{sec:uebung_num_best_opt_lsg}{Vorgehensweise zur numerischen Bestimmung der Optimallösung} im Anhang zu finden.
 
 \subsection{Anwendung zur Umformung von Optimierungsproblemen am Beispiel des \NoCaseChange{\acl{LQR}}-Problems}
 Minimiere das Gütefunktional
@@ -358,7 +519,57 @@ bei dem Prozess
 \begin{align*}
 	\dot{x}(t) & = A(t)x(t)+B(t)u(t)
 \end{align*}
-mit den gegebenen Werten $x(t_a)=x_a$, $t_a$, $x_a$, $t_b$, wobei der Zustandswert zur Endzeit $x(t_b)$ frei ist. Weiterhin sollen $G\ge 0$, $Q(t)\ge 0$ (semipositiv defintit), $R(t)>0$
-(positiv definit) und $Q(t)$, sowie $R(t)$ stetig differenzierbar sein.
+mit den gegebenen Werten $x(t_a)=x_a$, $t_a$, $x_a$ und $t_b$, wobei der Zustandswert zur Endzeit $x(t_b)$ frei ist. Weiterhin sollen $G\ge 0$,
+$Q(t)\ge 0$ (semipositiv defintit), $R(t)>0$ (positiv definit)\footnote{WEnn $R(t)$ smidefinit wäre, würde es $u$ geben, die keine Kosten erzeugen.}
+und $Q(t)$, sowie $R(t)$ stetig differenzierbar sein. Der Ausgang wird berechnet mit
+\begin{align*}
+	y & = C x
+\end{align*}
+mit der Wichtung von $y$
+\begin{align*}
+	y^T W y & = x^T\underbrace{c^TWc}_{Q(t)}x.
+\end{align*}
+Es wird die Hamilton-Funktion gebildet
+\begin{align*}
+	\Ham & = \frac12\left(x^T(t) Q(t)x(t)+u^T(t)R(t)u(t)+\psi^T(t)\left(A(t)x(t)+B(t)u(t) \right) \right).
+\end{align*}
+Damit kann die kanonische Differentialgleichung und die \ac{RB}en angeben werden
+\begin{align*}
+	\dot{x}(t) & = \nabla_{\psi}\Ham = A(t)x(t)+B(t)u(t),\\
+	\dot{\psi}(t) & = -\nabla_x\Ham = -\left(Q(t)x(t) + A^T(t)\psi(t) \right),\\
+	x(t_a) & = x_a, \\
+	\psi(t_b) & = \nabla_x h=G x(t_b).
+\end{align*}
+Die Steuerungsgleichung 
+\begin{align*}
+	\nabla_u\Ham & = R(t) u(t) + B^T(t)\psi(t)=0
+\end{align*}
+liefert
+\begin{align*}
+	u(t) & = -R^{-1}(t)B^T(t)\psi(t).
+\end{align*}
+Wir haben ein lineares homogenes Differentialgleichungssystem und $\psi(t_b)$ ist linear von $x(t_b)$ abhängig. Dies motiviert zu dem Ansatz
+\begin{align*}
+	\psi(t) & = X(t)x(t), & \forall t\in[t_a,t_b].
+\end{align*}
+Dann gilt für jedes $x(t)$
+\begin{align*}
+	\dot{\psi}(t) & = \dot{X}x + X\dot{x}\\
+	& = \dot{X}x + X\left(Ax-BR^{-1}B^TXx \right)\\
+	& = -Qx-A^TXx
+\end{align*}
+was auf
+\begin{align*}
+	\left(\dot{X} + X\left(A-BR^{-1}B^TX \right) + Q +A^TX \right)x & = 0.
+\end{align*}
+führt, was wiederrum die Matrix-Ricatti-Differentialgleichung
+\begin{align*}
+	\dot{X} & = -A^TX -XA + XBR^{-1}B^TX -Q
+\end{align*}
+mit der Endbedingung $x(t_b)$ liefert. Das Regelgesetz kann zu
+\begin{align*}
+	u(t) & = \underbrace{-R^{-1}(t)B(t)X(t)}_{=:k(t)}x(t)
+\end{align*}
+formuliert werden, was eine lineare zeitvariante Zustandsrückführung darstellt.
 
 \section{Maximumprinzip von Pontojaju}
