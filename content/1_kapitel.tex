@@ -86,7 +86,7 @@ ist $\overline{x}$ eine lokale Extremstelle von $f$ unter den \ac{GNB}. So gibt 
 gilt.\footnote{Hinweis: Dimension von $h$ ist $n$ für linear unabhängige $h_1,\ldots,h_m$. Für $h_1,\ldots,h_m$
 muss gelten $m\le n$. Meist ist sogar $m<n$, da sich sonst alle $h_1,\ldots,h_m$ in genau einem Punkt schneiden würden. Eine Optimierung wäre dann sinnlos.}
 \end{satz}
-\textbf{Technik zum Auflisten von Extremstellen}:
+\subsection{Technik zum Auflisten von Extremstellen}
 \begin{enumerate}
   \item Definiere Langrange-Funktion $F(x,\lambda_1,\ldots,\lambda_m):=f(x)+\sum\limits_{i=1}^m\lambda_i\nabla h_i(x)$.
   \item Kanidaten für lokale Extremstelle unter den Lösungen von\\ $F'(x,\lambda_1,\ldots,\lambda_m)=0$ suchen:
@@ -249,8 +249,7 @@ $L(x,u)=f(x)+\sum\limits_{i=1}^{m}u_ig_i(x)$: Lagrange-Funktion zur Aufgabe $\mi
 	\end{bmatrix},\ i=1,\ldots,m
 	\end{align*}
 \end{satz}
-\textbf{Geometrische Interpretation der Kuhn-Tucker-Bedingungen}\\
-
+\subsection{Geometrische Interpretation der Kuhn-Tucker-Bedingungen}
 \begin{figure}[!htb]
 	\centering
 	\input{tikz/kap_1_optstelle_leer}
@@ -343,7 +342,7 @@ Wegen $f(0,0)=0$, $f(1,0)=-1$ ist $x=\begin{pmatrix} 1 & 0 \end{pmatrix}^T$ die 
 \end{figure}
 \end{exmp}
 
-\textit{Konvexe Optimierungsprobleme}:\\
+\subsection{Konvexe Optimierungsprobleme}
 $M\subset\mathbb{R}^n$ konvex $\Leftrightarrow \left[x_1,x_2\in M\Rightarrow \lambda x_1+(1-\lambda)x_2\in M\forall\lambda\in[0,1]\right]$
 \begin{figure}[!htb]
 	\centering
@@ -434,6 +433,28 @@ gilt:
 \end{itemize}
 \end{satz}
 Es ist eine Übung unter \picref{sec:uebung_kapitel_1_ktb}{Kuhn-Tucker-Bedingung} im Anhang zu finden.
+
+Sei $f:\mathbb{R}^n\rightarrow\mathbb{R}^1$ stetig differenzierbar und $G\subset\mathbb{R}^n$ abgeschlossen und konvex. Dann ist $x^{\ast}\in G$ eine
+lokale Minimalstelle von $f$ auf $G$, d.h.
+\begin{align*}
+	\left.\frac{\td}{\td \epsilon}f\left(x^{\ast}+\epsilon\tilde{x} \right)\right|_{\epsilon=0}& \geq 0\quad \forall \tilde{x}\in dZ(G,x^{\ast}).\\
+\end{align*}
+Es gilt für die Menge der für $x^{\ast}$ zulässigen Richtungen $Z(G,x^{\ast})$
+\begin{align*}
+	Z(G,x^{\ast}) & := \left\{s\in\mathbb{R}^n|\exists\bar{\alpha}>0:x^{\ast}+\alpha s\in G\forall\alpha\in[0,\bar{\alpha}] \right\}.
+\end{align*}
+$d Z(G,x{\ast})$ heißt Tangentialkegel von $G$ in $x^{\ast}$ und ist in Abbildung \figref{fig:kap_1_tangentialkegel} dargestellt.
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Darstellung des Tangentialkegels von $G$ in $x^{\ast}$}
+	\label{fig:kap_1_tangentialkegel}
+\end{figure}
+Ein Spezialfall stellt $x^{\ast}\in\Inter G\Rightarrow Z(G,x^{\ast})=\mathbb{R}^n$ dar. Es gilt, dass $x^{\ast}$ die lokale Minimalstelle von $f$
+auf $G$ ist
+\begin{align*}
+	\left.\frac{\td}{\td \epsilon}f\left(x^{\ast}+\epsilon\tilde{x} \right)\right|_{\epsilon=0} & = 0.
+\end{align*}
 
 \section{Anwendungen auf quadratische Optimierungsaufgaben}
 \textbf{Aufgabe}
