@@ -87,6 +87,7 @@ $h$, $f_0$, $f$, $z$ sind stetig differenzierbar bezüglich aller Argumente. Es 
 Falls $t_b$ gegeben ist und Fall B besteht, so ist $h(x(t_b),t_b)$ fest und kann aus Kostenfunktional gestrichen werden.
 
 \subsection{Prinzip der Herleitung notwendiger Bedingungen}
+\label{sec:kap_2_pr_herl_not_bed}
 Die Einführung der Lagrange-Multiplikatoren liefert
 \begin{align*}
 	\bar{J} & = h\left(x(t_b),t_b \right)+\int\limits_{t_a}^{t_b}\left[f_0\left(x(t),u(t),t \right)+\psi(t)^T\left(f(x(t),u(t),t)-\dot{x}(t) \right)
@@ -572,7 +573,7 @@ mit der Endbedingung $x(t_b)$ liefert. Das Regelgesetz kann zu
 \end{align*}
 formuliert werden, was eine lineare zeitvariante Zustandsrückführung darstellt.
 
-\section{Maximumprinzip von Pontojaju}
+\section{Maximumprinzip von Pontryagin}
 Die Aufgabe ist das Kostenfunktional
 \begin{align*}
 	J & = h\left(x(t_b),t_b \right) + \int\limits_{t_a}^{t_b} f_0(x(t),u(t),t)dt\rightarrow\min
@@ -581,11 +582,76 @@ für den Prozess
 \begin{align*}
 	\dot{x}(t) & = f\left( x(t),u(t),t \right),
 \end{align*}
-mit $u:[t_a,t_b]\rightarrow \Omega\subset\mathbb{R}^p$ mit dem zulässigen Bereich $\Omega$, der zeitvariant, abgeschlossen und konvex ist.\\
+mit $u:[t_a,t_b]\rightarrow \Omega\subset\mathbb{R}^p$ mit dem zulässigen Bereich $\Omega$, der zeitvariant, abgeschlossen und konvex ist, zu
+minimieren.\\
 Die \ac{AB} seien gegeben mit gegebenen $t_a$, $x_a$ mit $x(t_a)=x_a$.\\
 Die \ac{EB} seien gegeben mit gegebenen oder freien $t_b$ und $z(x(t_b))=0$ mit $z:\mathbb{R}^n\rightarrow\mathbb{R}^m$, d.h. es wird Fall A
 betrachtet.\\
 $h$, $f_0$, $f$ und $z$ seinen stetig differenzierbar bezüglich aller Argumente. Es ist keine Beschreibung für $x(t)$ für $t\in[t_a,t_b]$ gegeben.
+
+\subsection{Prinzip der Herleitung der notwendigen Bedingungen}
+Es wird der Lagrange-Multiplikator
+\begin{align*}
+	\bar{J} & = \lambda_0 h\left(x(t_b),t_b \right) + \int\limits_{t_a}^{t_b}\left[\lambda_0 f_0(x(t),u(t),t) + \dot{\psi}^T(t)\left(f(x(t),u(t),t) -
+	\dot{x}(t) \right) \right]dt\\
+	&\quad + \lambda_a^T\left\{x_a - x(t_a) \right\} + \lambda_b^T z(x(t_b))
+\end{align*}
+eingeführt. Weiter wird die Hamilton-Funktion $\Ham:\mathbb{R}^n\times\Omega\times\mathbb{R}^n\times\{0,1\}\times[t_a,t_b]\rightarrow\mathbb{R}^1$
+\begin{align*}
+	\Ham \left(x(t),u(t),\psi(t),\lambda_0,t \right) & = \lambda_0 f_0\left(x(t),u(t),t \right) + \psi^T(t)f\left(x(t),u(t),t \right). 
+\end{align*}
+definiert. Analog zu \secref{sec:kap_2_pr_herl_not_bed} werden die Variationen $\zeta(t)=\zeta^{\ast}(t)+\epsilon\tilde{\zeta}(t)$ mit
+$\zeta\in\{x,u,\psi \}$ und $\zeta=\zeta^{\ast}+\epsilon\tilde{\zeta}$ mit $\zeta\in\{x(t_a),\lambda_a, x(t_b), \lambda_b, t_b\}$ eingeführt. Aufgrund
+der Beschränkung $u(t)\in\Omega$ erfolgt die Herleitung der notwendigen Variantionen für die Extremstellen aus $\left.\frac{\td F}{\td
+\epsilon}\right|_{\epsilon=0}\geq 0$, anstelle von $\left.\frac{\td F}{\td \epsilon}\right|_{\epsilon=0} = 0$. Aus 
+\begin{align*}
+	\left.\frac{\td F}{\td \epsilon}\right|_{\epsilon=0} & = \left[\lambda_0\frac{\d h}{\d t}+\Ham \right]_{t_b}\tilde{t}_b +
+	\int\limits_{t_a}^{t_b}\left[\left(\frac{\d \Ham}{\d x}+\dot{\psi}^T \right)\tilde{x} + \frac{\d \Ham}{\d u}\tilde{u} + \left(\frac{\d \Ham}{\d \psi}
+	-\dot{x}^T \right)\tilde{\psi}\right]dt\\
+	& \quad + \ldots \geq 0
+\end{align*}
+erhält man speziell für $\tilde{u}\neq 0$, $\tilde{x}=0$, $\tilde{\psi}=0$, $\ldots$ die notwendige Bedingung $\int\limits_{t_a}^{t_b}\frac{\d\Ham}{\d
+u}\tilde{u}\geq 0$ für alle zulässigen Variationen und hieraus kann man folgern
+\begin{align*}
+0 & \leq \frac{\d \Ham}{\d u}\left(x^{\ast}(t), u^{\ast}(t), \psi^{\ast}(t),\lambda_0^{\ast},t \right)\tilde{u}(t)
+\end{align*}
+mit $\forall \tilde{u}(t)\in dZ(\Omega,u^{\ast}(t))$ und $\forall t\in[t_a,t_b]$. Dies ist eine notwendige Bedingung für ein (lokales) Minimum von
+\begin{align*}
+	u(t)\in\Omega & \mapsto \Ham\left(x^{\ast}(t), u(t), \psi^{\ast}(t),\lambda_0^{\ast},t \right) .
+\end{align*}
+Die übrigen Variationen sind unbeschränkte Variationen und führen auf die gleichen notwendigen Bedingungen wie in \secref{sec:kap_2_pr_herl_not_bed}.
+\begin{satz}[Pontryaginschs Minimumprinzip]
+Falls $u^{\ast}:[t_a,t_b]\rightarrow\Omega$ optimal ist, so gibt es einen Vektor $\begin{bmatrix}
+\lambda_0^{\ast}\\ \psi^{\ast}(t_b)
+\end{bmatrix}\neq 0\in\mathbb{R}^{n+1}$ mit $\lambda_0^{\ast}=\left\{\begin{array}{cl}
+1 & \text{im regulären Fall}\\
+0 & \text{im singulären Fall}
+\end{array} \right.$, so dass
+\begin{enumerate}[label=(\arabic*)]
+  \item gilt
+  \begin{align*}
+  	\dot{x}^{\ast}(t) & = \left.\nabla_{\psi}\Ham\right|_{\ast} = f\left(x^{\ast}(t),u^{\ast}(t),t \right),\\
+  	\dot{\psi}^{\ast}(t) & = \left.-\nabla_x\Ham\right|_{\ast}=-\lambda_0^{\ast}\nabla_xf_0\left(x^{\ast}(t),u^{\ast}(t),t \right)-\left[\frac{\d
+  	f}{\d x}\left(x^{\ast}(t),u^{\ast}(t),t \right) \right]^T\psi^{\ast}(t),\\
+  	x^{\ast}(t_a) & = x_a,\\
+  	z(x^{\ast}(t_a)) & = 0,\\
+  	\psi^{\ast}(t_b) & = \lambda_0^{\ast}\nabla_xh\left(x^{\ast}(t_b),t_b \right)+\left[\frac{\d z}{\d x}\left(x^{\ast}(t_b) \right)
+  	\right]^T\lambda_b.
+  \end{align*}
+  \item gilt
+  \begin{align}
+  	\Ham\left(x^{\ast}(t),u^{\ast}(t),\psi^{\ast}(t),\lambda_0^{\ast},t \right) & \leq
+  	\Ham\left(x^{\ast}(t),u(t),\psi^{\ast}(t),\lambda_0^{\ast},t \right)	\label{eqn:kap_2_Pontryagin_min}
+  \end{align}
+  mit $\forall u\in\Omega$ und $\forall t\in[t_a,t_b]$, d.h. die Funkeion
+  $u\in\Omega\mapsto\Ham\left(x^{\ast}(t),u^{\ast}(t),\psi^{\ast}(t),\lambda_0^{\ast},t \right)$ hat an der Stelle $u^{\ast}(t)$ ein globales Minimum.
+  \item gilt falls $t_b$ frei ist, so muss zusätzlich gelten
+  \begin{align*}
+  	\Ham\left(x^{\ast}(t_b),u^{\ast}(t_b),\psi^{\ast}(t_b),\lambda_0^{\ast},t_b \right) & = -\lambda_0^{\ast}\frac{\d h}{\d t}\left(x^{\ast}(t_b),t_b
+  	\right)
+  \end{align*}
+\end{enumerate}
+\end{satz}
 
 \begin{defi}
 Die Lösung des Steuerungsproblems heisst singulär, falls
@@ -597,7 +663,8 @@ Die Lösung des Steuerungsproblems heisst singulär, falls
 \end{defi}
 
 \begin{remark}[Zum Fall (I)]
-
+Im Fal $\lambda_0=0$ ist die Zielfunktion für die Lösung nicht relevant, da die optimale Lösung bereits durch die \ac{NB} festgelegt ist. Das heisst,
+der geforderte Endzustand liegt auf dem Rand der Menge aller Zustandsvektoren, die durch die Zeitpunkte $t_b$ erreichtbar sind. 
 \end{remark}
 
 \begin{exmp}
@@ -618,17 +685,287 @@ Damit ist $\psi=const$ und damit ein unbeschränktes Problem. Falls $\psi = 0$, 
 $u=-\frac{\lambda_0}{2\psi}$. Falls $\lambda_0\neq 0$ ist, so wäre $x(1)>0$, d.h. diese $u$ wäre nicht zulässig. Also muss $\lambda_0=0$ gelten.
 \end{exmp}
 
-
 \begin{remark}[Zum Fall (II)]
-
+Meist trifft dieser Fall auf, wenn $\Ham$ eine affine Funktion ist, d.h. 
+\begin{align*}
+	\Ham & = g\left(x(t),\psi(t),\lambda_0,t \right) + \mu\left(x(t),\psi(t),\lambda_0,t \right)u(t)
+\end{align*}
+ist und $\mu\left(x^{\ast}(t),\psi^{\ast}(t),\lambda_0^{\ast}(t),t \right)$ für alle $t\in[t_1,t_2]$ verschwindet. Jedes zulässige $u(t)$ ist genau
+dann eine Lösung von \eqnref{eqn:kap_2_Pontryagin_min}. Die optimale Lösung muss "`anderweitig"' gefunden werden, z.B. aus $\mu\equiv 0$ auf
+$[t_1,t_2]$ folgt $\dot{\mu}\equiv 0$, $\ddot{\mu}\equiv 0$, $\ldots$. Es wird solange differenziert, bis $u$ explizit auftaucht, d.h. 
+\begin{align*}
+	\dot{\mu} & = \frac{\d \mu}{\d x}\dot{x}+\frac{\d \mu}{\d \psi}\dot{\psi}+\frac{\d\mu}{\d t} = 0
+\end{align*}
+liefert die Bedingungen für $u$, ansonsten kann $\dot{\mu}=0$ versucht werden.
 \end{remark}
 
-\begin{exmp}[Zeitoptimale Steuerung eines Doppelintegrators]
-
+\begin{exmp}[Zeitoptimale Steuerung eines Doppelintegrators]\label{exmp:kap_2_zeitopt_dint}
+Der Prozess 
+\begin{align*}
+	\dot{x}(t) & = \begin{bmatrix}
+	0 &  1\\ 0 & 0
+	\end{bmatrix}x(t) + \begin{bmatrix}
+	0\\ 1
+	\end{bmatrix}u(t)
+\end{align*}
+mit dem gegebenen Anfangszustand $x_0=\begin{bmatrix}
+s_a\\ v_a
+\end{bmatrix}$ soll durch die Steuerungfunktion $u:[0,t_b]\rightarrow \Omega= [-a_{max},a_{max}]$ mit $a_{max}>0$ so in den Endzustand
+$x(t_b)=\begin{bmatrix}
+s_b\\ v_b
+\end{bmatrix}$ überführt werden, dass $J =\int\limits_0^{t_b}dt=t_b$ minimiert wird\footnote{Integration von $f_0(x,u,t)=1$ oder von $h(x(t_b),t_b)$
+führt beides zum selben Ergebnis.}. Es wird die Hamilton Funktion
+\begin{align*}
+	\Ham & = \lambda_0 + \psi_1(t)x_2(t) + \psi_2(t)u(t)
+\end{align*}
+gebildet. Nach Pontryagin muss ein Vektor 
+\begin{align}
+	\begin{bmatrix}
+	\lambda_0^{\ast}\\ \psi_1^{\ast}(t_b)\\ \psi_2^{\ast}(t_b)
+	\end{bmatrix} & \neq 0 \in\mathbb{R}^3	\label{eqn:kap_2_bsp_1_vektor_pont}
+\end{align}
+existieren, so dass folgenden Bedingungen erfüllt sind
+\begin{enumerate}[label=(\alph*)]
+  \item $\dot{x}_1^{\ast}(t)=x_2^{\ast}(t)$, $\dot{x}_2^{\ast}(t)=u^{\ast}(t)$, $\dot{\psi}_1^{\ast}(t)=\left.-\frac{\d \Ham}{\d
+  x_1}\right|_{\ast}=0$, $\dot{\psi}_2^{\ast}(t)=\left.-\frac{\d \Ham}{\d x_2}\right|_{\ast}=-\psi_1^{\ast}(t)$, $x_1^{\ast}(0)=s_a$,
+  $x_2^{\ast}(0)=v_a$, $x_1^{\ast}(t_b)=s_b$, $x_2^{\ast}(t_b)=v_b$,
+  \item $\psi_2^{\ast}(t)u^{\ast}(t)\leq\psi_2^{\ast}(t)u$ mit $\forall u\in\Omega$ und $\forall t\in[0,t_b]$,
+  \item $\Ham(t_b)= \lambda_0^{\ast}+\psi_1^{\ast}(t_b)x_2^{\ast}(t_b)+\psi_2^{\ast}(t_b)u^{\ast}(t_b)=0$.
+\end{enumerate}
+(b) liefert 
+\begin{align*}
+u^{\ast}(t) & = \left\{\begin{array}{cl}
+a_{max} & \text{für }\psi_2^{\ast}(t) < 0\\
+u\in[-a_{max},a_{max}] & \text{für }\psi_2^{\ast}(t) = 0\\
+-a_{max} & \text{für }\psi_2^{\ast}(t) > 0
+\end{array} \right.
+\end{align*}. In den Zeitpunkten für die $\psi_2^{\ast}(t)=0$ gilt, minimiert jedes $u(t)\in\Omega$ die Hamilton-Funktion. Es ist kein
+singuläres Problem, da $\psi_2^{\ast}$ nur isolierte Nullstellen und genauer in $[0,t_b]$ sogar nur höchstens eine Nullstelle
+existiert.\begin{proof}
+Da $\dot{\psi}_1(t)=0$ ist $\psi_1^{\ast}(t)=c_1^{\ast}$ konstant und wegen $\dot{\psi}_2^{\ast}(t)=-\psi_1^{\ast}(t)$ ist
+$\psi_2^{\ast}=-c_1^{\ast}t+c_2^{\ast}$. Angenommen es ist $\psi_2^{\ast}=0$ für $t\in[t_1,t_2]$ mit $t_2>t_1$. Dann ist $c_1^{\ast}=c_2^{\ast}=0$ und
+damit $\psi_1^{\ast}(t)=\psi_2^{\ast}(t)=0$ für $t\in[0,t_b]$ und wegen (c) wäre $\lambda_0^{\ast}=0$. Damit wird es zu
+\eqnref{eqn:kap_2_bsp_1_vektor_pont}.
+\end{proof}
+Änderung von Werten der Steuergrößen auf abzählbar viele Punkte beieinflusst die der Prozessgleichung nicht, da können wir 
+\begin{align*}
+	u(t) & = -a_{max}\sgn\left(\psi_2^{\ast}(t) \right) = \left\{\begin{array}{cl}
+	a_{max} & \text{für }\psi_2^{\ast}(t) < 0\\
+	0 & \text{für }\psi_2^{\ast}(t) = 0\\
+	-a_{max} & \text{für }\psi_2^{\ast}(t) > 0
+	\end{array} \right.
+\end{align*}
+setzen. Da $\psi_2^{\ast}(t)$ höchstens eine Nullstelle besitzt, ist $u^{\ast}(t)$ stückweise konstant und hat höchstens einen Sattelpunkt
+(Strukturaussage, vgl. \figref{fig:kap_2_bsp_1_uast_pont}). $\psi_2$ heisst Schaltfunktion.
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Verlauf von $u^{\ast}(t)$}
+	\label{fig:kap_2_bsp_1_uast_pont}
+\end{figure}
+Damit hat man drei freie Parameter $c_1$, $c_2$ und $t_b$ bzw. $u(0)$, $t_s$ und $t_b$ zur Anpassung an die Randbedingungen. Für ein konstantes
+$u^{\ast}\equiv a$ erhält man für $t\geq \tau$ die Zustandstrajektorie
+\begin{align*}
+	x_2^{\ast}(t)&=x_2^{\ast}(\tau)+a(t-\tau)
+\end{align*} und für
+\begin{align*}
+	x_1^{\ast}(t)&=x_1^{\ast}(\tau)+x_2^{\ast}(\tau)(t-\tau)+\frac{a}{2}(t-\tau)^2
+\end{align*} 
+oder in der implizierten Form 
+\begin{align*}
+	x_1^{\ast}(t)-x_1^{\ast}(\tau) & = \frac{x_2^{\ast}(\tau)}{a}\left(x_2^{\ast}(t)-x_2^{\ast}(\tau) \right) +
+	\frac{1}{2a}\left(x_2^{\ast}(t)-x_2^{\ast}(\tau) \right)^2.
+\end{align*}
+Dies sind Parabeln durch $(x_1^{\ast}(\tau),x_2^{\ast}(\tau))$ mit der Achse gleich der $x_1$-Achse, offen nach rechts für $a>0$ und offen nach links
+für $a<0$, vgl. \figref{fig:kap_2_bsp_1_zustands_pont}.
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Darstellung der Zustandstrajektorien für konstantes $u^{\ast}\equiv a$}
+	\label{fig:kap_2_bsp_1_zustands_pont}
+\end{figure}
+Man erhält, wie in Abbildung \figref{fig:kap_2_bsp_1_zustands_u_pont} dargestellt,
+\begin{align*}
+	u^{\ast} & = \left\{\begin{array}{cl}
+	+a_{max} & \text{falls $x(t)$ auf grün oder links von grün oder links von rot}\\
+	-a_{max} & sonst
+	\end{array} \right. .
+\end{align*}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Darstellung der Zustandstrajektorien für zeitoptimale Regelung eines Doppelintegrators}
+	\label{fig:kap_2_bsp_1_zustands_u_pont}
+\end{figure}
 \end{exmp}
 \begin{exmp}[Verbrauchsoptimale Steuerung eines Doppelintegrators]
+Der Prozess
+\begin{align*}
+	\dot{x}(t) & = \begin{bmatrix}
+	0 & 1 \\ 0 & 0
+	\end{bmatrix}x(t) + \begin{bmatrix}
+	0\\ 1
+	\end{bmatrix}u(t)
+\end{align*}
+mit gegebenen Anfangszustand $x_0=\begin{bmatrix}
+s_a\\ v_a
+\end{bmatrix}$ soll durch die Steuerfunktion $u:[0,t_b]\rightarrow\Omega=[-a_{max},a_{max}]$ mit $a_{max}>0$ in den Endzustand $x(t_b)=\begin{bmatrix}
+s_b\\ v_b
+\end{bmatrix}$ überführt werden, so dass $J=\int\limits_0^{t_b}|u(t)|dt$ mit vorgebenen $t_b$ minimiert wird. Es wird die Hamilton-Funktion
+\begin{align*}
+	\Ham & = \lambda_0|u(t)|+\psi_1(t)x_2(t)+\psi_2(t)u(t)
+\end{align*}
+gebildet. Nach Pontryagin muss ein Vektor 
+\begin{align*}
+	\begin{bmatrix}
+	\lambda_0^{\ast}\\ \psi_1^{\ast}(t_b)\\ \psi_2^{\ast}(t_b)
+	\end{bmatrix} & \neq 0 \in\mathbb{R}^3
+\end{align*}
+existieren, so dass folgenden Bedingungen erfüllt sind
+\begin{enumerate}[label=(\alph*)]
+  \item $\dot{x}_1^{\ast}(t)=x_2^{\ast}(t)$, $\dot{x}_2^{\ast}(t)=u^{\ast}(t)$, $\dot{\psi}_1^{\ast}(t)=\left.-\frac{\d \Ham}{\d
+  x_1}\right|_{\ast}=0$, $\dot{\psi}_2^{\ast}(t)=\left.-\frac{\d \Ham}{\d x_2}\right|_{\ast}=-\psi_1^{\ast}(t)$, $x_1^{\ast}(0)=s_a$,
+  $x_2^{\ast}(0)=v_a$, $x_1^{\ast}(t_b)=s_b$, $x_2^{\ast}(t_b)=v_b$,
+  \item $\lambda_0^{\ast}\left|u^{\ast}(t) \right|+\psi_2^{\ast}(t)u^{\ast}(t)\leq \lambda_0^{\ast}\left|u
+  \right|+\psi_2^{\ast}(t)u $ mit $\forall u\in\Omega$ und $\forall t\in[0,t_b]$,
+  \item entfällt, da $t_b$ fest vorgegeben ist.
+\end{enumerate}
+Wie in \exmpref{exmp:kap_2_zeitopt_dint} ist $\psi_2^{\ast}(t)=-c_1^{\ast}t+c_2^{\ast}$ eine affine Funktion.\\ 
+Für $\lambda_0^{\ast}=0$, entspricht dem singulären Fall, liefert (b) analog zu \exmpref{exmp:kap_2_zeitopt_dint}, d.h. $\psi_2\equiv 0$ ist
+ausgeschlossen, die optimale Steuerfunktion
+\begin{align*}
+	u^{\ast}(t) & = \left\{\begin{array}{cl}
+	a_{max} & \text{für }\psi_2^{\ast}(t) < 0\\
+	0 & \text{für }\psi_2^{\ast}(t) = 0\\
+	-a_{max} & \text{für }\psi_2^{\ast}(t) > 0
+	\end{array} \right. .
+\end{align*}
+$\psi_2$ ist eine affine Funktion mit höchstens einer Nullstelle.
 
+Für $\lambda_0=1$ ist $\min\limits_{u\in[-a_{max},a_{max}]}|u|+\psi_2 u$ zu lösen.
+\begin{enumerate}
+  \item Für $u\in[0,a_{max}]$ erhalten wir die Zielfunktion $(1+\psi_2)u$ und
+  \begin{align*}
+  	u^{\ast}(t) & = \left\{\begin{array}{cl}
+  	0 & \text{für }\psi_2^{\ast}(t) > -1\\
+	u\in[0,a_{max}] & \text{für }\psi_2^{\ast}(t) = -1\\
+	a_{max} & \text{für }\psi_2^{\ast}(t) < -1
+  	\end{array} \right. .
+  \end{align*}
+  \item Für $u\in[-a_{max},0]$ erhalten wir die Zielfunktion $(\psi_2-1)u$ und
+  \begin{align*}
+  u^{\ast}(t) & = \left\{\begin{array}{cl}
+  	-a_{max} & \text{für }\psi_2^{\ast}(t) > 1\\
+	u\in[-a_{max},0] & \text{für }\psi_2^{\ast}(t) = 1\\
+	0 & \text{für }\psi_2^{\ast}(t) < 1
+  \end{array} \right. .
+  \end{align*}
+\end{enumerate}
+Also ist 
+\begin{align}
+u^{\ast}(t) & = \left\{\begin{array}{cl}
+a_{max} & \text{für }\psi_2^{\ast}(t) < -1\\
+u\in[0,a_{max}] & \text{für }\psi_2^{\ast}(t) = -1\\
+0 & \text{für }\psi_2^{\ast}(t) \in(-1,1)\\
+u\in[-a_{max},0] & \text{für }\psi_2^{\ast}(t) = 1\\
+-a_{max} & \text{für }\psi_2^{\ast}(t) > 1
+\end{array} \right. . \label{eqn:kap_2_verbrau_opt_u}
+\end{align}
+$\psi_2(t)$ ist eine affine Funktion. $c_1=0$ ist möglich. Die Ergebnisse können wie folgt interpretiert werden
+\begin{itemize}
+  \item Der Fall $\lambda_0^{\ast}=0$, singulärer Fall, tritt nur auf, wenn das vorgegebene $t_b$ gleich dem Minimalwert $t_{b,min}$ des zeitoptimalen
+  Problems ist, d.h. die Lösung ist allein durch die \ac{NB} bestimmt.  
+  \item Im Fall $\lambda_0^{\ast}=1$ gibt es spezielle Situationen falls $c_1^{\ast}=0$ ist. Insbesondere kann $\psi_2^{\ast}\equiv 1$ oder
+  $\psi_2^{\ast}\equiv -1$ notwendig sein, nämlich falls der Endzustand allein mit entweder $u^{\ast}(t)\in[0,a_{max}]$ oder mit
+  $u^{\ast}(t)\in[-a_{max},0]$ erreichbar ist. Dann gibt es unendlich viele optimale Lösungen.\\
+  Am Beispiel mit konkreten Werten für $t_b=3$, $a_{max}=1$, $v_a=1$, $s_a=0$, $v_b=0$ und $s_b=\frac32$ ist der Endwert allein durch Abbremsen
+  erreichbar. In diesem Fall sind Trajektorien bei denen beschleunigt wird nicht optimal. Wir betrachten also nur Trajektorien die in
+  \eqnref{eqn:kap_2_verbrau_opt_u} in den Zeilen 3 bis 5 auftauchen. Würde man $c_1^{\ast}=0$ nicht betrachten und damit $\psi_2^{\ast}\equiv
+  1$ ausschliessen, so würde $v(t_b)=0$ lediglich von den Trajektorien (1) und (2) aus \figref{fig:kap_2_verbrau_opt_trajs} erfüllt. Diese erfüllen
+  aber $s(t_b)=s_b$ nicht und sind daher nicht zulässig.\\
+  Lässt man $c_1^{\ast}=0$ und damit $\psi_2^{\ast}\equiv 1$ zu, so wird auch Trajektorie (3) aus \figref{fig:kap_2_verbrau_opt_trajs} zugelassen.
+  Diese erfüllt die \ac{RB} und minimiert die Zielfunktion, d.h. es ist eine optimale Lösung. WEiter stellt man fest, dass jede Trajektorie, welche die \ac{RB} erfüllt und für die
+  $u(t)=[-a_{max},0]$ gilt, ist optimal, wie bspw. Trajektorie (4) in \figref{fig:kap_2_verbrau_opt_trajs}.
+  \begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Mögliche Zustandstrajektorien für $u^{\ast}(t)$}
+	\label{fig:kap_2_verbrau_opt_trajs}
+  \end{figure}
+  \item Im "`Normalfall"' ist $t_b>t_{b,min}$, d.h. $\lambda_0^{\ast}=1$, und $c_1^{\ast}\neq 0$ und damit ist
+  \begin{align*}
+  	u^{\ast}(t) & = \left\{\begin{array}{cl}
+  	a_{max}		& \text{für }\psi_2^{\ast}(t) <-1\\
+  	0			& \text{für }\psi_2^{\ast}(t) \in(-1,1)\\
+  	-a_{max}	& \text{für }\psi_2^{\ast}(t) >1
+  	\end{array} \right. .
+  \end{align*}
+  Es tritt maximal eine Umschaltung von $-a_{max}$ nach $0$ und von $0$ nach $a_{max}$ auf bzw. andersherum. Die Zustandstrajektorie besteht aus
+  maximal zwei Parabelabschnitten und dazwischen einer Strecke parallel zur $x_1$-Achse, vgl. \figref{fig:kap_2_bsp_2_zustands_u_pont}.
+\end{itemize}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Darstellung der Zustandstrajektorien für verbrauchsoptimale Regelung eines Doppelintegrators}
+	\label{fig:kap_2_bsp_2_zustands_u_pont}
+\end{figure}
 \end{exmp}
+\begin{remark}
+Weitere Beispiele sind mit Zustandsbeshränkung sind im \cite{geering2007optimal} zu finden.
+\end{remark}
 \begin{exmp}[Anwendung des Satz von Feldbaum]
-
+Sei $\dot{x}=Ax+bu$ steuerbar, stabil mit ausschliesslich reellen Eigenwerte und der Eingang beschränkt mit
+$u(t)\in\left[\underline{u},\overline{u}\right]\subset\mathbb{R}^1$ und mit $x(t)\in\mathbb{R}^n$. Dann hat eine zeitoptimale Steuerung zur
+Überführung von $x_a$ nach $x_b$, sofern diese existiert, die Form $u^{\ast}(t)\in\{\underline{u},\overline{u}\}$, $t\in[t_a,t_b]$, mit maximal $n-1$
+Umschaltpunkten. \\
+Seien vereinfachend $t_a=0$, symmetrische Steuergrößenbeschränkung $\underline{u}=-u_{max}$, $\overline{u}=u_{max}>0$ und $A$ habe ausschliesslich
+einfache Eigenwerte. Es gelten
+\begin{align*}
+	x(t) & = e^{At}x_a+\int\limits_0^t e^{A(t-\tau)}bu(\tau)d\tau
+\end{align*}
+und
+\begin{align*}
+	u(t) & = (-1)^{i-1}\alpha u_{max}
+\end{align*}
+mit $i=1,\ldots,n$, $t\in[t_{i-1},t_i]$, $\alpha\in\{-1,1\}$, $t_0=t_a$ und $t_n=t_b$. Dann ist
+\begin{align*}
+	x(t_b) & = x_b = e^{At_n}x_a + \alpha u_{max}\sum\limits_{i=1}^{n}(-1)^{i-1}\int\limits_{t_{i-1}}^{t_i}e^{A(t_n-\tau)}bd\tau
+\end{align*}
+und
+\begin{align*}
+	e^{-At_n}x_b-x_a & = \alpha u_{max}\sum\limits_{i=1}^n(-1)^{i-1}\underbrace{\int\limits_{t_{i-1}}^{t_i}e^{-A\tau}bd\tau }_{=w(t_i)-w(t_{i-1})}.
+\end{align*}
+Mit 
+\begin{align*}
+	A & = V\Lambda V^{-1},\\
+	e^{At} & = V e^{\Lambda} V^{-1}= V\begin{bmatrix}
+	e^{\lambda_1 t}	& 			&\\
+					& \ddots 	&\\
+					&			& e^{\lambda_n t}
+	\end{bmatrix}V^{-1},\\
+	\int\limits_{a}^{b}e^{A\tau}d\tau & = V\int\limits_a^b e^{\Lambda \tau}\d\tau = V\begin{bmatrix}
+	\int\limits_a^b e^{\lambda_1 \tau}d\tau	& 			&\\
+					& \ddots 	&\\
+					&			& \int\limits_a^b e^{\lambda_n \tau}d\tau
+	\end{bmatrix}V^{-1},\\
+	\int\limits_a^b e^{\lambda_k \tau}d\tau & = \frac{1}{\lambda_k}\left(e^{\lambda_k b}-e^{\lambda_k a} \right)
+\end{align*}
+für $k=1,\ldots,n$ lässt sich die Stannfunktion $w(.)$ darstellen.\\
+Man erhält das nichtlineare Gleichungssystem
+\begin{align*}
+	\frac{1}{\alpha u_{max}}\left(e^{-At_n}x_b-x_a \right) & = -w(0) + 2 w(t_1) - 2 w(t_2) + \ldots +(-1)^{n-1}w(t_n)
+\end{align*}
+mit $n$ Gleichungen und $n$ Unbekannten $t_1,\ldots,t_n$. Das Gleichungssystem hat entweder für $\alpha = 1$ oder für $\alpha = -1$ eine Lösung.
+\begin{remark}
+Verfahren ist auf Systeme mit $u(t)\in\mathbb{R}^n$ erweiterbar. Für instabile $A$ muss es keine zulässige Trajektorie geben. Allerdings muss es auch
+nicht für stabile $A$ eine zulässige Trajektorie geben, bspw. $a=-1$, $b=1$, $u(t)\in[-1,1]$ und $x_b=2$.\\
+Numerische Berechnung weniger Schaltzeitpunkte, z.B. \textsc{Newton}-Verfahren, ist unter anderem effizienter als Zeitdiskretisierung des Problems und
+der direkten numerischen Lösung.
+\end{remark}
+\begin{figure}[htb]
+	\centering
+	\input{tikz/dummy}
+	\caption{Beispielhafter Verlauf von $u(t)$ für $\alpha=1$}
+	\label{fig:kap_2_bsp_2_zustands_u_pont}
+\end{figure}
 \end{exmp}
