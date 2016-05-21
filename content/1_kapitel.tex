@@ -233,10 +233,10 @@ Abbildung \ref{fig:kap_1_beispiel_extremstelle} stellt die Niveaulinien der Ausg
 
 \begin{defi}
 Sei $D\in\mathbb{R}^n$ offen, $f:D\rightarrow\mathbb{R},g_1,\ldots,g_m:D\rightarrow\mathbb{R},\overline{x}\in D$ heisst (lokale bzw. globale) Extremstelle von $f$ unter der \ac{UNB}
-$g_1(x)\le 0,\ldots,g_m(x)\le 0$, wenn $\overline{x}$ (lokale oder globale) Extremstelle von $f$ auf $G:=\left\{x\in D|\ g_1(x)\le 0,\ldots,g_m(x)\le 0\right\}$.
+$g_1(x)\le 0,\ldots,g_m(x)\le 0$, wenn $\overline{x}$ (lokale oder globale) Extremstelle von $f$ auf $G:=\left\{x\in D|\ g_1(x)\le 0,\ldots,g_m(x)\le 0\right\}$ ist.
 \end{defi}
 \begin{defi}
-$I_0(x):=\left\{ i\in\left\{ 1,\ldots,m \right\}|\ g_i(x)=0 \right\}$: Indexmenge der für $x\in G$ aktiven Restriktionen (für $x\in\int G$ gilt $I_0(x)\in\emptyset$)
+$I_0(x):=\left\{ i\in\left\{ 1,\ldots,m \right\}|\ g_i(x)=0 \right\}$: Indexmenge der für $x\in G$ aktiven Restriktionen (für $x\in int G$ gilt $I_0(x)\in\emptyset$, int ... im Inneren von)
 \end{defi}
 $L(x,u)=f(x)+\sum\limits_{i=1}^{m}u_ig_i(x)$: Lagrange-Funktion zur Aufgabe $\min\limits_{x\in G}f(x)$
 \begin{satz}\label{satz:4}
@@ -304,10 +304,12 @@ Minimumstelle: $(0,0)$
 \end{remark}
 Für die Aufgabe $\min f(x)$ bei $g_i(x)\le 0$ ($i=1,\ldots,m$), $h_j(x)=0$ ($j=1,\ldots,p$) mit stetig differenzierbaren $f$, $g_i$, $h_j$ lautet die \ac{KTB}:
 \begin{align}
-	\nabla_x L(x,u,\lambda) & = \nabla f(x)+\sum\limits_{i=1}^m u_ig_i(x)+\sum\limits_{j=1}^p\lambda_j h_j(x) \label{eq:kap_1_ktp}\\
+	\nabla_x L(x,u,\lambda) & = \nabla f(x)+\sum\limits_{i=1}^m u_ig_i(x)+\sum\limits_{j=1}^p\lambda_j h_j(x) = 0 \label{eq:kap_1_ktp}\\
 	& h(x) = 0,\ u\ge 0,\ g(x)\le 0,\ u_ig_i(x)=0\ (i=1,\ldots,m) \notag
 \end{align}
-Ein Punkt $L(x,u,\lambda)$ der Gleichung \eqnref{eq:kap_1_ktp} erfüllt, heisst \ac{KTP}.
+Ein Punkt $L(x,u,\lambda) \in \mathbb{R}^n x \mathbb{R}^m x \mathbb{R}^p$ der Gleichung \eqnref{eq:kap_1_ktp} erfüllt, heisst \ac{KTP}.
+
+Es gilt: $\bar{x}$ lokale Minimusstelle von f unter den \ac{NB} $g_i(x) \le 0 (i=1,...,m)$, $h_j(x) = 0 (j=1,...,p)$ und $\nabla g_i(\bar{x}) i \in I_0 (\bar{x})$ linear unabhängig $\Rightarrow \exists \bar{u} \in \mathbb{R}^m \exists \bar{\lambda} \in \mathbb{R}^p: (\bar{x}, \bar{u}, \bar{\lambda})$ erfüllt \ref{eq:kap_1_ktp}.
 \begin{exmp}
 Gesucht ist die optimale Lösung der Aufgabe $f(x)=-x^2_1+x_2^2\rightarrow\min$ bei $(x_1+1)(x_2+2)\le 4$ mit $x_1\ge 0$, $x_2\ge 0$.\\
 Mit 
@@ -330,7 +332,7 @@ und
 Die $5$ nichtlinearen Gleichungen $\nabla_x L(x,u)=0$, $u_ig_i(x)=0$ mit $i=1,2,3$ haben die reelen Lösungen:
 \begin{itemize}
 	\item $u_1=0$, $u_2=0$, $u_3=0$, $x_1=0$, $x_2=0$
-	\item $u_1=-4$, $u_2=16$, $u_3=0$, $x_1=1$, $x_2=2$ erfällt wegen Nichterfüllen der Ungleichung 
+	\item $u_1=-4$, $u_2=-16$, $u_3=0$, $x_1=1$, $x_2=2$ entfällt wegen Nichterfüllen der Ungleichung 
 	\item $u_1=1$, $u_2=0$, $u_3=2$, $x_1=1$, $x_2=0$
 \end{itemize}
 Wegen $f(0,0)=0$, $f(1,0)=-1$ ist $x=\begin{pmatrix} 1 & 0 \end{pmatrix}^T$ die gesuchte Minimumstelle.
@@ -420,7 +422,7 @@ Für die Aufgabe $\min\limits_{x\in G}f(x)$ mit $G:=\left\{ x\in\mathbb{R}^n|\ g
 gilt:
 \begin{itemize}
   \item $x^{\ast}$ ist Lösung und $\exists\tilde{x}\in\mathbb{R}^n:g_i(\tilde{x})<0$ ($i=1,\ldots,m$) (Slater Bedingung)\\
-  $Rightarrow \exists u^{\ast}\in\mathbb{R}^m:(x^{\ast},u^{\ast})$ ist \ac{KTB}
+  $\Rightarrow \exists u^{\ast}\in\mathbb{R}^m:(x^{\ast},u^{\ast})$ ist \ac{KTB}
   \item $(x^{\ast},u^{\ast})$ sind \ac{KTP} $\Rightarrow x^{\ast}$ ist Lösung für alle
   \item Falls alle $g_i$ linear, d.h. $G=\left\{x\in\mathbb{R}^n:Ax\le b \right\}$ mit $A\in\mathbb{R}^{m\times n}$, $b\in\mathbb{R}^m$, so gilt
   \begin{align*}
@@ -459,19 +461,20 @@ auf $G$ ist
 \section{Anwendungen auf quadratische Optimierungsaufgaben}
 \textbf{Aufgabe}
 \begin{itemize}
-	\item[] $\min\limits_{x\in\mathbb{R}^n} \frac12 x^TQx+q^Tx$ bei $Ax\le b$, $Q>0$
+	\item[] $\min\limits_{x\in\mathbb{R}^n} \frac12 x^TQx+q^Tx$ bei $Ax\le b$, $Q\ge0$
 	\item[] mit $Q\in\mathbb{R}^{n\times n}$, $q\in\mathbb{R}^n$, $A\in\mathbb{R}^{m\times n}$, $b\in\mathbb{R}^m$ (convex) 
 \end{itemize}
 \subsection{Vorbereitungen}
 \begin{enumerate}[label=(\arabic*)]
-  \item $\min\limits_{x\in\mathbb{R}^n}f(x)$ mit $f(x)=\frac12 x^TQx+q^Tx$ und wegen $H f(x)=Q\ge 0$ ist $f$ convex auf $\mathbb{R}^n$. Damit gilt $x^{\ast}$ ist Lösung
-  $\Leftrightarrow x^{\ast}$ erfüllt \ac{KTB} $\Leftrightarrow\nabla f(x^{\ast})=0$. Somit erhällt man die Lösung von (1-TODO) durch Lösen des linearen Gleichungssystems
+  \item $\min\limits_{x\in\mathbb{R}^n}f(x)$ mit $f(x)=\frac12 x^TQx+q^Tx, \mathbb{R}^n$ convex und wegen $H f(x)=Q\ge 0$ ist $f$ convex auf $\mathbb{R}^n$. Damit gilt $x^{\ast}$ ist Lösung
+  $\Leftrightarrow{\text{Satz \ref{satz:5}}} x^{\ast}$ erfüllt \ac{KTB} $\Leftrightarrow\nabla f(x^{\ast})=0$. Somit erhält man die Lösung von (1-TODO) durch Lösen des linearen Gleichungssystems
   \begin{align*}
   	\nabla f(x) & = Qx+q =0
   \end{align*} 
-  \textit{Beachte}: Lösung muss nicht existieren.
+  \textit{Beachte}: Lösung muss nicht existieren, z.B. $Q = 0, q = 1$ und muss nicht eindeutig sein, z.B. $Q = \begin{bmatrix}
+  1	& 0\\ 0	& 0 \end{bmatrix}, q = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$.
   \item $\min\limits_{x\in\mathbb{R}^n}\frac12 x^TQx+q^Tx$ bei $Cx=d$ mit $C\in\mathbb{R}^{p\times n}$, $d\in\mathbb{R}^p$. Analog zu (1): $x^{\ast}$ ist Lösung
-  $\xLeftrightarrow{\text{Satz \ref{satz:5}}}\exists\lambda^{\ast}\in\mathbb{R}^p:(x^{\ast},\lambda^{\ast})$ ist \ac{KTB}. Mit $L(x,\lambda)=\frac12
+  $\xLeftrightarrow{\text{Satz \ref{satz:5}}}\exists\lambda^{\ast}\in\mathbb{R}^p:(x^{\ast},\lambda^{\ast})$ erfüllt \ac{KTB}. Mit $L(x,\lambda)=\frac12
   x^TQx+q^Tx+\lambda^T(Cx-d)$ liefert
   \begin{align*}
   \nabla L(x,\lambda) & = \begin{bmatrix}
@@ -482,7 +485,7 @@ auf $G$ ist
   unter den \ac{KTB} $\nabla_xL(x,\lambda)=0$ und $h(x)=0$ liefert das lineare Gleichungssystem
   \begin{align*}
   \begin{bmatrix}
-  Q	& c^T\\ C	& 0 
+  Q	& C^T\\ C	& 0 
   \end{bmatrix}\begin{bmatrix}
   x\\ \lambda
   \end{bmatrix} & = \begin{bmatrix}
@@ -550,21 +553,21 @@ Sei $\left\{a_i|\ i\in I_a(x) \right\}$ linear unabhängig $\forall x\in G$.\\
   \end{enumerate}
   \item Bestimme $y^k:=\argmin f(y)$\footnote{Bemerkung: $x^{\star}=\argmin f(x) \leftrightarrow x^{\star}\ldots$ Minimumstelle von $f$} bei $y\in
   M(I_k)$.\\
-  		Setze $\alpha_k=\max\left\{\alpha\in[0,1]:x^k+\alpha(y^k-x^k)\in G\right\}$, $x^{k+1}=x^k+\alpha(y^k-x^k)$, $I_{k+1}:=I_a(x^{k+1})$ und gehe mit
+  		Setze $\alpha_k=\max\left\{\alpha_k\in[0,1]:x^k+\alpha(y^k-x^k)\in G\right\}$, $x^{k+1}=x^k+\alpha(y^k-x^k)$, $I_{k+1}:=I_a(x^{k+1})$ und gehe mit
   		$k\rightarrow k+1$ zu (S2)
 \end{enumerate}
 \begin{remark}[zu (S3)]
   Die im Punkt $x^k$ inaktive UNBen sind $a_j^Tx^k\le b_j$, $j\notin I_k$.
-  Wir bestimmen das maximale $\beta > 0$ derart, dass $\beta(y^k-x^k)+x^k$ noch zulässig ist, d.h. $a_j^T(\beta(y^k-x^k)+x^k)\le b_j$.
+  Wir bestimmen das maximale $\beta > 0$ derart, dass $\beta(y^k-x^k)+x^k$ noch zulässig ist, d.h. $a_j^T(\beta(y^k-x^k)+x^k)\le b_j \forall j$.
   Dies ist wegen $a_j^Tx^k\le b_j$ und $\beta a_j^T(y^k-x^k)\le b_j-a_j^Tx^k$ stets für diejenigen $j$ erfüllt, für die $a_j^T(y^k-x^k)\le 0$ gilt. 
   Also ergibt sich das gesuchte \begin{align*}
-  \beta & = \min\left\{\left.\ gfrac{b_j-a_j^Tx^k}{a_j^T(y^k-x^k)}\right|\ j\notin J_k\text{ mit } a_j^T(y^k-x^k)>0 \right\}.
+  \beta & = \min\left\{\left.\gfrac{b_j-a_j^Tx^k}{a_j^T(y^k-x^k)}\right|\ j\notin J_k\text{ mit } a_j^T(y^k-x^k)>0 \right\}.
   \end{align*}
   (S3) berechnet $\alpha_k=\min\left\{1,\beta\right\}$.
 \end{remark}
 \begin{remark}[zum Algorithmus]\hspace{1mm}
 \begin{itemize}
-  \item Die Voraussetzungen ``$C>0$'' und ``$\left\{a_i|\ i\in I_a(x)\right\}$ linear unabhängig $\forall k\in G$'' sichern die eindeutige Lösbarkeit des linearen Gleichungssystems in
+  \item Die Voraussetzungen ``$Q>0$'' und ``$\left\{a_i|\ i\in I_a(x)\right\}$ linear unabhängig $\forall k\in G$'' sichern die eindeutige Lösbarkeit des linearen Gleichungssystems in
   (S2) und (S3)
   \item Alle Iterationen $x^k$ sind zulässig. In der Praxis gilt bei jedem Durchlauf von (S3): $f(x^{k+1})<f(x^k)$. Der Algorithmus ist endlich (gutartiger, schneller Algorithmus).
 \end{itemize}
@@ -574,7 +577,7 @@ Zur Aufgabe
 \begin{align}
 	f(x) & =\frac12 x^TQx+q^Tx\rightarrow\min\limits_{x\in\mathbb{R}^n} \text{ bei } Ax\le b \label{eq:startpkt_1}
 \end{align} 
-bildet Aufgabe 
+bildet die Aufgabe 
 \begin{align}
 	y & \rightarrow\min\limits_{\substack{x\in\mathbb{R}^n\\y\in\mathbb{R}^1}} \text{ bei } Ax\le b+\mathds{1}_m y,\ 0\le y \label{eq:startpkt_2}\\
 	& \text{mit: } \mathds{1}_m\ldots \text{ Einheitsmatrix} \notag\\
@@ -586,15 +589,15 @@ Zulässiger Startwert:
   \item[] $x^0$ beliebig und $y^0:=\max\left([0;\ Ax^0-b]\right)$
   \item[] $\begin{bmatrix}\overline{x}\\ \overline{y} \end{bmatrix}$ sei Lösung der linearen Optimierungsaufgabe \eqnref{eq:startpkt_3}.
   \item[] Falls $\overline{y}=0$, so gilt 
-  $A\overline{x}\le b$, d.h. $\overline{x}$ ist zulässig von \eqnref{eq:startpkt_1}.
+  $A\overline{x}\le b$, d.h. $\overline{x}$ ist zulässiger Punkt von \eqnref{eq:startpkt_1}.
 \end{itemize}
 Es ist eine Übung unter \picref{sec:uebung_finden_startwert}{Finden eines zulässigen Startwertes für den Aktiven Mengen Algorithmus} im Anhang zu finden.
 
 
 \subsubsection{Erweiterungen des Algorithmus}
 \begin{itemize}
-  \item Falls $Q=0$, d.h. $f(x)=q^Tx\rightarrow\min$ bei $Ax\le b$, so liegt eine Aufgabe der linearen Optimierung vor. In (S3) wir dann $\alpha_k:=\max\left\{ \alpha\ge 0: x^k+\alpha
-  s^k\in G \right\}$ wobei $s^k$ der auf $M(I_k)$ projizierte negative Gradient $-\nabla f(x^k)=-q$ ist.
+  \item Falls $Q=0$, d.h. $f(x)=q^Tx\rightarrow\min$ bei $Ax\le b$, so liegt eine Aufgabe der linearen Optimierung vor. In (S3) wird dann $\alpha_k:=\max\left\{ \alpha\ge 0: x^k+\alpha
+  s^k\in G \right\}$ gesetzt, wobei $s^k$ der auf $M(I_k)$ projizierte negative Gradient $-\nabla f(x^k)=-q$ ist.
   \item Treten UNB und GNB gleichzeitig auf, d.h. $f(x)=\frac12 x^TQx+q^Tx\rightarrow\min$ bei $Ax\le b$ und $Cx=d$ so werden die GNB wie aktive UNB behandelt.
 \end{itemize}
 Es ist eine Übung unter \picref{sec:uebung_erweiterung_algo}{Erweiterung des Aktiven Mengen Algorithmus} im Anhang zu finden.
