@@ -466,8 +466,13 @@ auf $G$ ist
 \end{itemize}
 \subsection{Vorbereitungen}
 \begin{enumerate}[label=(\arabic*)]
-  \item $\min\limits_{x\in\mathbb{R}^n}f(x)$ mit $f(x)=\frac12 x^TQx+q^Tx,\; \mathbb{R}^n$ convex und wegen $H f(x)=Q\ge 0$ ist $f$ convex auf $\mathbb{R}^n$. Damit gilt $x^{\ast}$ ist Lösung
-  $\xLeftrightarrow{\text{Satz \ref{satz:5}}} x^{\ast}$ erfüllt \ac{KTB} $\Leftrightarrow\nabla f(x^{\ast})=0$. Somit erhält man die Lösung von (1-TODO) durch Lösen des linearen Gleichungssystems
+  \item $\min\limits_{x\in\mathbb{R}^n}f(x)$ mit 
+  \begin{align}
+  	f(x)=\frac12 x^TQx+q^Tx,\; \mathbb{R}^n		\label{eqn:kap_1_quadprog_vor_1}
+  \end{align}
+  convex und wegen $H f(x)=Q\ge 0$ ist $f$ convex auf $\mathbb{R}^n$. Damit gilt $x^{\ast}$ ist Lösung
+  $\xLeftrightarrow{\text{Satz \ref{satz:5}}} x^{\ast}$ erfüllt \ac{KTB} $\Leftrightarrow\nabla f(x^{\ast})=0$. Somit erhält man die Lösung von \eqnref{eqn:kap_1_quadprog_vor_1} durch
+  Lösen des linearen Gleichungssystems
   \begin{align*}
   	\nabla f(x) & = Qx+q =0
   \end{align*} 
@@ -580,7 +585,7 @@ Zur Aufgabe
 bildet die Aufgabe 
 \begin{align}
 	y & \rightarrow\min\limits_{\substack{x\in\mathbb{R}^n\\y\in\mathbb{R}^1}} \text{ bei } Ax\le b+\mathds{1}_m y,\ 0\le y \label{eq:startpkt_2}\\
-	& \text{mit: } \mathds{1}_m\ldots \text{ Einheitsmatrix} \notag\\
+	& \text{mit: } \mathds{1}_m\ldots \text{ Einsvektor} \notag\\
 	\Leftrightarrow \begin{bmatrix} 0 & \ldots & 0 & 1 \end{bmatrix}\begin{bmatrix} x\\y \end{bmatrix} & \rightarrow\min  \text{ bei } \begin{bmatrix} A & -\mathds{1}_m\\0 & -1
 	\end{bmatrix}\begin{bmatrix} x\\y \end{bmatrix}\le \begin{bmatrix} b\\0 \end{bmatrix} \label{eq:startpkt_3}
 \end{align}
