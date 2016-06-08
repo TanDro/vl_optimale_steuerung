@@ -5,7 +5,7 @@ Die Aufgabe besteht im Auffinden einer stetig differenzierbaren Funktion $x:[t_0
 Gütefunktional $J=\int\limits_{t_0}^{t_e}f(t,x,\dot{x}) dt$ minimal wird.
 
 Mit der Vorgehensweise von Euler wird angenommen, man hätte eine optimale Lösung $x^{\ast}$ gefunden. Konstruiere eine einparametrige Schar von Vergleichskurven
-$x(t)=x^{\ast}+\epsilon\tilde{x}(t)$, wobei $\epsilon\in(-\epsilon_0,+\epsilon_0)$ ein Parameter ($\epsilon>0$ gegeben) und $\tilde{x}$ eine gegebene, stetig differenzierbare Funktion
+$x(t)=x^{\ast}(t)+\epsilon\tilde{x}(t)$, wobei $\epsilon\in(-\epsilon_0,+\epsilon_0)$ ein Parameter ($\epsilon_0>0$ gegeben) und $\tilde{x}$ eine gegebene, stetig differenzierbare Funktion
 mit $\tilde{x}(t_0)=0$, $\tilde{x}(t_e)=0$ ist.
 \begin{figure}[htb]
 	\centering
@@ -13,31 +13,32 @@ mit $\tilde{x}(t_0)=0$, $\tilde{x}(t_e)=0$ ist.
 	\caption{Vorgehensweise von Euler}
 	\label{fig:kap_2_vorg_euler}
 \end{figure}
-Die Funktion $\delta x^{\ast}:= \epsilon\tilde{x}$ heisst Variation von $x^{\ast}$ und das einsetzen in $J$ liefert 
+Die Funktion $\delta x^{\ast}:= \epsilon\tilde{x}$ heißt Variation von $x^{\ast}$ und das Einsetzen in $J$ liefert 
 \begin{align*}
 	F(\epsilon) & := \int\limits_{t_0}^{t_e}f(t,x^{\ast}(t)+\epsilon\tilde{x}(t),\dot{x}^{\ast}(t)+\epsilon\dot{\tilde{x}}(t))dt.
 \end{align*}
-Sei $f$ zweifach stetig differenzierbar. Die Funktion $F:(-\epsilon_0,+\epsilon_0)\rightarrow\mathbb{R}$ hat für $\epsilon=0$ ein Minimum, also muss gelten
+Sei $f$ zweifach stetig partiell differenzierbar. Die Funktion $F:(-\epsilon_0,+\epsilon_0)\rightarrow\mathbb{R}$ hat für $\epsilon=0$ ein Minimum, also muss gelten
 \begin{align*}
-	\left.\frac{\td F}{\td \epsilon}\right|_{\epsilon_0} & = \int\limits_{t_0}^{t_e}\left[\frac{\td f}{\td x}\tilde{x}(t)+\frac{\d
+	\left.\frac{\td F}{\td \epsilon}\right|_{\epsilon=0} & = \int\limits_{t_0}^{t_e}\left[\frac{\td f}{\td x}\tilde{x}(t)+\frac{\d
 	f}{\td\dot{x}}\dot{\tilde{x}}(t) \right]dt = 0.
 \end{align*}
 Mit partieller Integration 
 \begin{align*}
-	\int\limits_{t_0}^{t_e}\underbrace{\frac{\td F}{\td \dot{x}}\dot{\tilde{x}}(t)}_{u\cdot v'}dt & = \bigg[\underbrace{\frac{\d
-	F}{\td\dot{x}}\tilde{x}}_{u\cdot v}\bigg]_{t=t_0}^{t=t_e}-\int\limits_{t_0}^{t_e} \underbrace{\frac{\td}{\td t}\frac{\td
+	\int\limits_{t_0}^{t_e}\underbrace{\frac{\d F}{\d \dot{x}}\dot{\tilde{x}}(t)}_{u\cdot v'}dt & = \bigg[\underbrace{\frac{\d
+	F}{\d\dot{x}}\tilde{x}(t)}_{u\cdot v}\bigg]_{t=t_0}^{t=t_e}-\int\limits_{t_0}^{t_e} \underbrace{\frac{\td}{\td t}\frac{\d
 	F}{\partial\dot{x}}\tilde{x}(t)}_{u'\cdot v}dt
 \end{align*}
 ergibt sich
 \begin{align*}
-	\int\limits_{t_0}^{t_e}\left[\frac{\td F}{\td x}-\frac{\td}{\td t}\frac{\td F}{\td\dot{x}} \right]\tilde{x}(t)dt & = 0
+	\int\limits_{t_0}^{t_e}\left[\frac{\d F}{\d x}-\frac{\td}{\td t}\frac{\d F}{\d\dot{x}} \right]\tilde{x}(t)dt & = 0
 \end{align*}
 und da $\tilde{x}$ (bis auf die Randwerte) beliebig ist, muss 
 \begin{align}
-	\frac{\td F}{\td x}-\frac{\td}{\td t}\frac{\td F}{\td\dot{x}} & = 0 \label{eqn:kap_2_euler_lag_dgl}
+	\frac{\d F}{\d x}-\frac{\td}{\td t}\frac{\d F}{\d\dot{x}} & = 0 \label{eqn:kap_2_euler_lag_dgl}
 \end{align}
 gelten.
 \begin{remark}{Fundamentallemma der Variationsrechnung}
+
 Sei $G:\left[a,b \right]\rightarrow\mathbb{R}^1$ stetig und gelte $\int\limits_a^b G(t)v(t)dt=0$ für alle stetig differenzierbaren Funktionen $v$ mit
 $v(a)=v(b)=0$. Dann gilt $G(t)=0\forall t\in\left[a,b \right]$.
 \begin{figure}[htb]
@@ -47,7 +48,7 @@ $v(a)=v(b)=0$. Dann gilt $G(t)=0\forall t\in\left[a,b \right]$.
 	\label{fig:kap_2_fundlemma_var}
 \end{figure}
 \end{remark}
-Dies ist eine gewöhnliche Differentialgleichung 2. Ordnung mit der Lösung $x=x(t,c_1,c_2)$. Eine Anappsung an die Randbedingungen $x(t_0,c_1,c_2)=x_0$
+Dies ist eine gewöhnliche Differentialgleichung 2. Ordnung mit der Lösung $x=x(t,c_1,c_2)$. Eine Anpassung an die Randbedingungen $x(t_0,c_1,c_2)=x_0$
 und $x(t_e,c_1,c_2)=x_e$ liefert $c_1$, $c_2$.
 \begin{exmp}
 Gegeben sind $P_0=(t_0,x_0)$ und $P_e=(t_e,x_e)$ in der Ebene. Gesucht ist die kürzeste Verbindung zwischen $P_0$ und $P_e$. Ein Bogenelement ist
@@ -55,9 +56,9 @@ beschrieben durch
 \begin{align*}
 	ds^2 & = dt^2 + dx^2 = \left(1+\dot{x}^2 \right)dt^2
 \end{align*}
-und zu minimierende Bogenlänge, der durch $s:t\in\left[t_0,t_e \right]\mapsto \begin{bmatrix}
+und zu minimierende Bogenlänge der durch $s:t\in\left[t_0,t_e \right]\mapsto \begin{bmatrix}
 t\\ x(t)
-\end{bmatrix}$ parametrisieirte Kurve liefert
+\end{bmatrix}$ parametrisierte Kurve liefert
 \begin{align*}
 	J  & = \int\limits_{P_0}^{P_e}ds=\int\limits_{t_0}^{t_e}\underbrace{\sqrt{1+\dot{x}^2}}_{f(t,x,\dot{x})}dt.
 \end{align*}
@@ -65,10 +66,10 @@ Wegen $f_x=0$, $f_{\dot{x}}=\frac{\dot{x}}{\sqrt{1+\dot{x}^2}}$ wird aus \eqnref
 \begin{align*}
 	\frac{\td}{\td t}\frac{\dot{x}}{\sqrt{1+\dot{x}^2}} & = 0,
 \end{align*}
-also $\frac{\dot{x}}{\sqrt{q+\dot{x}^2}}=C$ mit der Integrationskonstante $C$. Wegen $\dot{x}=c\sqrt{\frac{1}{1-c^2}}$ gibt es $c_1$ und $c_2$, so
+also $\frac{\dot{x}}{\sqrt{1+\dot{x}^2}}=C$ mit der Integrationskonstante $C$. Wegen $\dot{x}=c\sqrt{\frac{1}{1-c^2}}$ gibt es $c_1$ und $c_2$, so
 dass $x(t)=c_1 t+c_2$. Anpassung an die \ac{RB} liefert Geradengleichung durch $P_0$ und $P_e$.
 \end{exmp}
-\section{Formulierung des Optimierungsproblems und Lösung}
+\section{Formulierung des Optimalsteuerproblems und Lösung}
 Ausgehend vom Kostenfunktional
 \begin{align*}
 	J & = h\left(x(t_b),t_b \right) + \int\limits_{t_a}^{t_b}f_0\left(x(t),u(t),t \right)dt\rightarrow \min!
@@ -82,7 +83,8 @@ Prozess: & $\dot{x}(t)=f\left(x(t),u(t),t \right)$\\
 		 & Fall B: $x(t_b)=x_b$ mit geg. $x_b\Leftrightarrow z(x(t_b)):=x(t_b)-x_b=0$\\
 		 & Fall C: $x(t_b)$ frei, d.h. $z\equiv 0$ 
 \end{tabular}
-$h$, $f_0$, $f$, $z$ sind stetig differenzierbar bezüglich aller Argumente. Es gibt keine Beschränkung von $u(t)$ und $x(t)$ für $t\in\left(t_a, t_b
+
+$h$, $f_0$, $f$, $z$ seien stetig differenzierbar bezüglich aller Argumente. Es gibt keine Beschränkung von $u(t)$ für $t\in \lbrack t_a, t_b \rbrack$ und $x(t)$ für $t\in\left(t_a, t_b
 \right)$.\\
 Falls $t_b$ gegeben ist und Fall B besteht, so ist $h(x(t_b),t_b)$ fest und kann aus Kostenfunktional gestrichen werden.
 
@@ -98,19 +100,19 @@ mit $\lambda_b\in\mathbb{R}^m$, $\lambda_a\in\mathbb{R}^n$.
 
 Die Motivation ist, dass 
 \begin{align*}
-	J & = \int F_0(x(t))dt \rightarrow \min
+	J & = \int F_0(x(t),u(t))dt \rightarrow \min
 \end{align*}
-bei $\underbrace{f\left(x(t), u(t) \right)-\dot{x}(t)=0 }_{h\left(x(t),u(t) \right)\in\mathbb{R}^n }$ dargestellt werden kann in diskreter Form als
+bei $\underbrace{f\left(x(t), u(t) \right)-\dot{x}(t) }_{h\left(x(t),u(t) \right)\in\mathbb{R}^n }=0$ dargestellt werden kann in diskreter Form als
 \begin{align*}
-	J_{diskret} & = \sum\limits_j f_0(x(t_j))\rightarrow \min 
+	J_{diskret} & = \sum\limits_j f_0(x(t_j),u(t_j))\rightarrow \min 
 \end{align*}
-bei $\left. h\left(x(t_j),u(t_j) \right)\right|_{\forall j}=0$ bzw.
+angenähert werden bei $\left. h\left(x(t_j),u(t_j) \right)\right|_{\forall j}=0$ bzw.
 \begin{align*}
-	L_{diskret} & = \sum\limits_j f_0(x(t_j)) + \sum\limits_j \underbrace{\psi_j^T}_{=:\psi(t_j)} h\left(x(t_j),u(t_j) \right).
+	\bar{J}_{diskret} & = \sum\limits_j f_0(x(t_j),u(t_j)) + \sum\limits_j \underbrace{\psi_j^T}_{=:\psi(t_j)} h\left(x(t_j),u(t_j) \right).
 \end{align*}
-Dies kann wiederrum dargestellt werden in der Form
+Dies kann wiederum dargestellt werden in der Form
 \begin{align*}
-	\bar{J} & = \int\left(f_0(x(t)) \right) + \psi(t)^T\left(f(x(t),u(t))-\dot{x}(t) \right).
+	\bar{J} & = \int\left(f_0(x(t),u(t)) \right) + \psi(t)^T\left(h(x(t),u(t))-\dot{x}(t) \right).
 \end{align*}
 Es wird die Hamilton-Funktion definiert mit
 \begin{align*}
@@ -120,12 +122,12 @@ und erhalten
 \begin{align}
 	\begin{split}\label{eqn:kap_2_lagrange_fun}
 		\bar{J} & = h\left(x(t_b),t_b \right) + \int\limits_{t_a}^{t_b}\left[H\left(x(t),u(t),\psi(t),t \right)-\psi(t)^T\dot{x}(t) \right]dt\\
-				& \quad +\lambda_a^T\left\{x_a-x(t_a) \right\} + \lambda_b^T z\left(x(t_b\right).
+				& \quad +\lambda_a^T\left\{x_a-x(t_a) \right\} + \lambda_b^T z\left(x(t_b)\right).
 	\end{split}
 \end{align}
 Angenommen wir hätten die optimale Lösung gefunden und wir betrachten die Variationen der Funktionen $u$, $x$, $\psi$ und damit auch $\dot{x}$ auf dem
-Intervall $\left(t_a, t_b \right)$, den Vektoren $x(t_a)$, $\lambda_a$, $x(t_b)$, $\lambda_b$ und der Zahl $t_b$, d.h.
-$\xi(t)=\xi^{\ast}(t)+\epsilon\tilde{\xi}(t)$ mit $\xi\in\left\{x(t_a),\lambda_a, x(t_b), \lambda_b, t_b\right\}$. Einsetzen in
+Intervall $\left(t_a, t_b \right)$ der Vektoren $x(t_a)$, $\lambda_a$, $x(t_b)$, $\lambda_b$ und der Zahl $t_b$, d.h.
+$\xi(t)=\xi^{\ast}(t)+\epsilon\tilde{\xi}(t)$ mit $\xi\in \left\{u,x,\psi\right\}$ und $\rho=\rho^{\ast} + \epsilon \tilde{\rho}$ mit $\rho \in \left\{x(t_a),\lambda_a, x(t_b), \lambda_b, t_b\right\}$. Einsetzen in
 \eqnref{eqn:kap_2_lagrange_fun} liefert die Lagrange-Funktion
 \begin{align*}
 	\begin{split}
@@ -160,13 +162,13 @@ Einsetzen in \eqnref{eqn:kap_2_lagrange_fun} liefert analog zu Abschnitt \secref
 	\left.\frac{\td F}{\td \epsilon}\right|_{\epsilon=0} & = \left.\frac{\d h}{\d x}\right|_{t_b}\tilde{x}(t_b) + \left[\frac{\d h}{\d x}\dot{x} +
 	\frac{\d h}{\d t}+\Ham - \psi^T\dot{x} \right]_{t_b}\tilde{t}_b\\ 
 	& \quad + \int\limits_{t_a}^{t_b}\left[\frac{\d\Ham}{\d
-	x}\tilde{x}+\frac{\d\Ham}{\d u}\tilde{u}+\frac{\d\Ham}{\d\psi}\tilde{\psi} - \tilde{\psi}^T\dot{x} - \psi^T\tilde{\dot{x}}\right]dt \\
+	x}\tilde{x}+\frac{\d\Ham}{\d u}\tilde{u}+\frac{\d\Ham}{\d\psi}\tilde{\psi} - \tilde{\psi}^T\dot{x} - \psi^T\dot{\tilde{x}}\right]dt \\
 	& \quad + \tilde{\lambda}_a^T\left\{x_a-x(t_b) \right\} - \lambda_a^T\tilde{x}(t_a)+\tilde{\lambda}_b^T z(x(t_b)) \\
 	& \quad + \left.\lambda_b^T\frac{\d z}{\d x}\right|_{t_b}\tilde{x}(t_b)+\lambda_b^T\frac{\d z}{\d x}\dot{x}(t_b)\tilde{t}_b
 \end{align*}
 mit 
 \begin{align*}
-	\int\limits_{t_a}^{t_b}\psi^T\tilde{\dot{x}}dt & = \psi^T(t_b)\tilde{x}(t_b)-\psi^T(t_a)\tilde{x}(t_a)-\int\limits_{t_a}^{t_b}\dot{\psi}^T\tilde{x}dt
+	\int\limits_{t_a}^{t_b}\psi^T\dot{\tilde{x}}dt & = \psi^T(t_b)\tilde{x}(t_b)-\psi^T(t_a)\tilde{x}(t_a)-\int\limits_{t_a}^{t_b}\dot{\psi}^T\tilde{x}dt
 \end{align*} 
 durch partielle Integration ergibt sich
 \begin{align*}
@@ -193,7 +195,7 @@ Die dazugehörige adjungierte Prozessgleichung\footnote{Es kann geschrieben werd
 \end{align}
 und die Steuerungsgleichung durch
 \begin{align}
-	\textcolor{olive}{\nabla_u\Ham\left(x(t),u(t),\psi{t},t \right)} & = 0. \label{eqn:kap_2_steuergleichung}
+	\textcolor{olive}{\nabla_u\Ham\left(x(t),u(t),\psi(t),t \right)} & = 0. \label{eqn:kap_2_steuergleichung}
 \end{align}
 Dabei bilden Gleichung \eqnref{eqn:kap_2_prozessgleichung} und \eqnref{eqn:kap_2_adj_prozessglg} die kanonischen Differentialgleichungen und \eqnref{eqn:kap_2_prozessgleichung},
 \eqnref{eqn:kap_2_adj_prozessglg} und \eqnref{eqn:kap_2_steuergleichung} die sogenannten Hamilton-Gleichungen.\\
@@ -204,7 +206,7 @@ Dabei bilden Gleichung \eqnref{eqn:kap_2_prozessgleichung} und \eqnref{eqn:kap_2
 h(x(t_b),t_b)-\psi(t_b)=0$} \\
 		& Fall B: 	& $x(t_b)=t_b$ mit bekannten $x_a$ und $x_b$\\
 		& Fall C: 	& $\nabla_x h(x(t_b),t_b)=\psi(t_b)$\\
-		&			& Fall $t_b$ frei ist, so muss zusätzlich $\Ham(x(t_b),u(t_b),\psi(t_b),t_b)=\textcolor{magenta}{-\frac{\d h}{\d t}(x(t_b),t_b)}$\\
+		&			& Falls $t_b$ frei ist, so muss zusätzlich $\Ham(x(t_b),u(t_b),\psi(t_b),t_b)=\textcolor{magenta}{-\frac{\d h}{\d t}(x(t_b),t_b)}$\\
 		&			& erfüllt sein.
 \end{tabular}
 
@@ -214,11 +216,12 @@ h(x(t_b),t_b)-\psi(t_b)=0$} \\
   \begin{align}
   	u(t) & = \mathcal{U}\left(x(t),\psi(t),t \right). \label{eqn:kap_2_vor_optlsg_s1_u}
   \end{align}
-  Einsetzen in kanonsiche Differentialgleichung (Elimination von $u$ ergibt)
+  Einsetzen in kanonsiche Differentialgleichung (Elimination von $u$) ergibt
   \begin{align}
-  	\dot{x} & = w(x,\psi,t). \label{eqn:kap_2_vor_optlsg_s1_x}
+  	\dot{x} & = w(x(t),\psi(t),t). \label{eqn:kap_2_vor_optlsg_s1_x}\\
+  	\dot{\psi} &= v(x(t),\psi(t),t)
   \end{align}
-  \item Bestimmen der allgemienen Lösung von \eqnref{eqn:kap_2_vor_optlsg_s1_x} mit dem Integrationsparameter $c\in\mathbb{R}^{2n}$
+  \item Bestimmen der allgemeinen Lösung von \eqnref{eqn:kap_2_vor_optlsg_s1_x} mit dem Integrationsparameter $c\in\mathbb{R}^{2n}$
   \begin{align}
   	x & = x(t,c), & \psi=\psi(t,c)	\label{eqn:kap_2_vor_optlsg_s2}
   \end{align}
@@ -229,10 +232,10 @@ h(x(t_b),t_b)-\psi(t_b)=0$} \\
   			\right)-\psi(t_b,c)=0$\\
   Fall B	& $x(t_a,c)=x_a$, $x(t_b,c)=x_b$\\
   Fall C	& $x(t_a,c)=x_a$, $\nabla_x h\left(x(t_b,c),t_b \right) = \psi(t_b,c)$\\
-  			& Falls $t_b$ frei ist: $\Ham\left(x(t_b,c),\mathcal{U}(x(t_b,c)),\psi(t_b,c),t_b \right)=\frac{\d h}{\d t}\left(x(t_b,c),t_b \right)$
+  			& Falls $t_b$ frei ist: $\Ham\left(x(t_b,c)),\mathcal{U}(x(t_b,c),\psi(t_b,c),t_b),\psi(t_b,c),t_b \right)=-\frac{\d h}{\d t}\left(x(t_b,c),t_b \right)$
   \end{tabular}\\
   Dabei $x_a$ als Variable mitführen, also ist $c=c(x_a)$. Falls $t_b$ frei ist, so gilt $t_b=t_b(x_a)$.
-  \item Einsetzen von $c(x_a)$ in \eqnref{eqn:kap_2_vor_optlsg_s2} ergibt die optimale (Zustands- und Kozustands-)Trajektorie 
+  \item Einsetzen von $c(x_a)$ in \eqnref{eqn:kap_2_vor_optlsg_s2} ergibt die optimale (Zustands- bzw. Kozustands-) Trajektorie 
   \begin{align}
   	x\left(t,c(x_a) \right) & =: x^{\ast}(t,x_a)	\label{eqn:kap_2_vor_optlsg_s4}
   \end{align}
@@ -244,7 +247,7 @@ h(x(t_b),t_b)-\psi(t_b)=0$} \\
   \begin{align}
   	\mathcal{U}\left(x^{\ast}(t,x_a), \psi^{\ast}(t,x_a),t \right) & =: u^{\ast}(t,x_a).	\label{eqn:kap_2_vor_optlsg_s5}
   \end{align}
-  \item Umstellen von \eqnref{eqn:kap_2_vor_optlsg_s4} nach $x_a$ und einsetzen in \eqnref{eqn:kap_2_vor_optlsg_s5} liefert das Regelgesetz
+  \item Umstellen von \eqnref{eqn:kap_2_vor_optlsg_s4} nach $x_a$ und Einsetzen in \eqnref{eqn:kap_2_vor_optlsg_s5} liefert das Regelgesetz
   \begin{align*}
   	u^{\ast}(t) & = K\left(x(t),t \right).
   \end{align*}
@@ -273,7 +276,7 @@ Wir haben
 \begin{align*}
 	\Ham & = \frac12 u^2 + \psi(ax+bu),\\
 	\dot{x} & = \nabla_{\psi}\Ham = ax+bu,\\
-	\dot{\psi} & = -\nabla_x\Ham = -a\dot \psi,\\
+	\dot{\psi} & = -\nabla_x\Ham = -a \psi,\\
 	\nabla_u\Ham & = u+b\psi = 0.
 \end{align*}
 Damit ist 
@@ -324,15 +327,15 @@ Reglerverstärkung ist in \figref{fig:kap_2_vor_optlsg_exmp_2_k} abgebildet.
 \begin{figure}[htb]
 	\centering
 	\input{tikz/dummy}
-	\caption{Trajektories von \exmpref{exmp:kap_2_vor_optlsg_1} mit festem Endzustand}
+	\caption{Trajektorien von \exmpref{exmp:kap_2_vor_optlsg_1} mit festem Endzustand}
 	\label{fig:kap_2_vor_optlsg_exmp_1}
 \end{figure}
 \begin{exmp}\label{exmp:kap_2_vor_optlsg_2}
 Sei $\dot{x}=ax+bu$ mit $a,b\in\mathbb{R}^1$, $t_a=0$, $x(0)=x_a$ gegeben. $t_b$ wird als frei angenommen und das Kostenfunktional als
 \begin{align*}
-	J & = \frac12 Sy(t_b)^2 + \frac12\int\limits_0^{t_b}u(t)^2dt.
+	J & = \frac12 Sx(t_b)^2 + \frac12\int\limits_0^{t_b}u(t)^2dt.
 \end{align*}
-Das heisst, es wird Fall C betrachtet. So ist anstelle von $x(t_b)=0$ die Randbedinung $Sx(t_b)=\psi(t_b)$ zu erfüllen. Darin müssen Gleichung
+Das heißt, es wird Fall C betrachtet. So ist anstelle von $x(t_b)=0$ die Randbedingung $Sx(t_b)=\psi(t_b)$ zu erfüllen. Darin müssen Gleichung
 \eqnref{eqn:kap_2_vor_optlsg_x} und \eqnref{eqn:kap_2_vor_optlsg_psi} an der Stelle $t=t_b$ eingesetzt und nach $\psi(0)$ umgestellt werden. Damit
 erhält man $x^{\ast}\left(t,x(0) \right)$, $\psi^{\ast}\left(t,x(0) \right)$ und $u^{\ast}\left(t,x(0) \right)$, sowie das Regelgesetz
 \begin{align*}
@@ -347,9 +350,9 @@ für den gilt, dass $k(t_b)=-bS$ gilt.
 Für $t_b\rightarrow\infty$ gilt für jedes $t$ in beiden Fällen
 \begin{align*}
 	k(t) & = \left\{\begin{array}{cl}
-	0 & \text{für} a < 0\\
-	unbestimmt & \text{für} a = 0\\
-	-\frac{2a}{b} & \text{für} a > 0
+	0 & \text{für } a < 0\\
+	unbestimmt & \text{für } a = 0\\
+	-\frac{2a}{b} & \text{für } a > 0
 	\end{array}\right. .
 \end{align*}
 Der Prozess ist bei $a<0$ stabil und damit ist kein Stellaufwand notwendig. Wenn der Prozess instabil ist, $a > 0$, konvergiert der Zustand gegen
@@ -358,7 +361,7 @@ $\infty$. Wenn der Prozess integrales Verhalten aufweist, $a=0$, ist kein Minimu
 \begin{figure}[htb]
 	\centering
 	\input{tikz/dummy}
-	\caption{Trajektories von \exmpref{exmp:kap_2_vor_optlsg_2} mit Gewichtung des Endzustandes}
+	\caption{Trajektorien von \exmpref{exmp:kap_2_vor_optlsg_2} mit Gewichtung des Endzustandes}
 	\label{fig:kap_2_vor_optlsg_exmp_2}
 \end{figure}
 \begin{figure}[htb]
@@ -369,7 +372,7 @@ $\infty$. Wenn der Prozess integrales Verhalten aufweist, $a=0$, ist kein Minimu
 \end{figure}
 Es sind zwei Übungen unter \picref{sec:uebung_anal_best_opt_lsg}{Vorgehensweise zur analytischen Bestimmung der Optimallösung} im Anhang zu finden.
 
-\subsection{Numerische Lösung am Beispiel "`Fall C und fester Endzeit $t_b$"'}
+\subsection{Numerische Lösung am Beispiel "`Fall C und feste Endzeit $t_b$"'}
 Zur Lösung der "`Endwertaufgabe"' $\dot{\psi}=\nabla_x \Ham$ mit gegeben Endwert $\psi(t_b)$ und unter der Annahme, dass $x(t)$ und $u(t)$ gegeben
 sind. Wir setzen $t=t(\tau)=t_b+t_a-\tau$, vgl. \figref{fig:kap_2_fallc_tbfest_ttau} und mit 
 \begin{align*}
@@ -379,7 +382,7 @@ erhält man
 \begin{align*}
 	\dot{\Psi}(\tau) & = \frac{d\psi(t(\tau))}{d\tau} = \left.\frac{d\psi(t)}{dt}\right|_{t=t(\tau)}\frac{dt}{d\tau}\\
 	& = \left.-\frac{d\psi(t)}{dt}\right|_{t=t(\tau)}=\left.-\dot{\psi}(t)\right|_{t=t(\tau)}\\
-	& = \left.\nabla_x \Ham(x(t),u(t),\psi(t),t)\right|_{t=\tau}
+	& = \left.\nabla_x \Ham(x(t),u(t),\psi(t),t)\right|_{t=t(\tau)}
 \end{align*}
 \begin{figure}[htb]
 	\centering
@@ -399,7 +402,7 @@ Damit ist die Anfangswertaufgabe
 \end{align*}
 mit dem \ac{AW} $\Psi(t_a)=\psi(t_b)$ zu lösen für $\tau\in[t_a,t_b]$ und es gilt
 \begin{align*}
-	\psi(t) & = \psi(t_b+t_a-\tau).
+	\psi(t) & = \Psi(t_b+t_a-\tau).
 \end{align*}
 
 Zur Lösung des nichtlinearen Gleichungssystems $\nabla_u \Ham =0$ kann das \textsc{Newton}-Verfahren verwendet werden. Bekannt ist, dass für eine
@@ -423,7 +426,7 @@ mit $\alpha\in(0,1]$. Falls $\alpha\in(0,1)$ gilt, spricht man von einem gedämp
 Funktionen $F:\mathbb{R}^n\rightarrow\mathbb{R}^n$ kann geschrieben werden:\\
 Löse $F(x)=0$ mittels
 \begin{align*}
-	x^{k+1} & = x^k - \alpha F'\left(x^k\right)^{-1}F(k)
+	x^{k+1} & = x^k - \alpha F'\left(x^k\right)^{-1}F(x^k)
 \end{align*}
 mit der Jacobimatrix $F'\left(x^k\right)$ an der Stelle $x^k$.
 
@@ -433,26 +436,26 @@ Bei der Anwendung des Verfahrens auf
 \end{align*}
 ergibt sich die Iterationsvorschrift zu
 \begin{align*}
-	u^{k+1}(t) & ) u^{k}(t) -\alpha\nabla_{uu}\Ham\left(x(t),u^k(t),\psi(t),t \right)^{-1}\nabla_u\Ham\left(x(t),u^k(t),\psi(t),t \right)
+	u^{k+1}(t) & = u^{k}(t) -\alpha\nabla_{uu}\Ham\left(x(t),u^k(t),\psi(t),t \right)^{-1}\nabla_u\Ham\left(x(t),u^k(t),\psi(t),t \right)
 \end{align*}
 Für ein gegebenes $x(t)$ und $\psi(t)$ ist die Vorschrift für alle $t$ abzuarbeiten.\\
 Ein Algorithmus zur Bestimmung von $u$ kann wie folgt dargestellt werden.
 \begin{enumerate}[label=(S\arabic*)]
   \item Setze einen Startwert $u(t)$, $t\in[t_a,t_b]$.
-  \item Löse \ac{AWA} $\dot{x}=f\left(x(t),u(t),t \right)$ mit $x(t_a)=x_a$ und liefert $x(t)$, $t\in[t_a,t_b]$.
-  \item Löse \ac{AWA}
+  \item Lösung der \ac{AWA} $\dot{x}=f\left(x(t),u(t),t \right)$ mit $x(t_a)=x_a$ liefert $x(t)$, $t\in[t_a,t_b]$.
+  \item Lösung der \ac{AWA}
   \begin{align*}
-  	\dot{\Psi}(\tau) & = \nabla_x\Ham\left(x(t_b+t_a-\tau),u(t_b+t_a-\tau),\psi(\tau),t_b+t_a-\tau \right)\\
-  	\Psi(t_a) & = \nabla_xh\left(x(t_b),t_b \right)
+  	\dot{\Psi}(\tau) & = \nabla_x\Ham\left(x(t_b+t_a-\tau),u(t_b+t_a-\tau),\Psi(\tau),t_b+t_a-\tau \right)\\
+  	\Psi(t_a) & = \nabla_xh\left(x(t_b),t_b \right) = \psi(t_b)
   \end{align*}
-  mit $\tau\in[t_a,t_b]$ und liefert $\psi(t)=\Psi\left(t_b + t_a -\tau\right)$, $t\in[t_a,t_b]$.
+  mit $\tau\in[t_a,t_b]$ liefert $\psi(t)=\Psi\left(t_b + t_a -t\right)$, $t\in[t_a,t_b]$.
   \item Aktualisiere 
   \begin{align*}
   	u(t) & \leftarrow u(t)-\underbrace{\alpha\nabla_{uu}\Ham\left(x(t),u(t),\psi(t),t \right)^{-1}\nabla_u\Ham\left(x(t),u(t),\psi(t),t \right)
   	}_{\Delta u}
   \end{align*} 
   mit $t\in[t_a,t_b]$.
-  \item Falls Abbruchbedingung, bspw. $\|\Delta u\|$ klein oder $\|\Delta J\|$ klein, erfüllt ist, dann Stopp, andernfalls gehe zu (S2).
+  \item Falls Abbruchbedingung, bspw. $\|\Delta u\|$ klein und $|\Delta J|$ klein, erfüllt ist, dann Stopp, andernfalls gehe zu (S2).
 \end{enumerate}
 \begin{exmp}
 Es wird der vorgestellten Algorithmus in Form von Pseudocode auf das Beispiel \exmpref{exmp:kap_2_vor_optlsg_2} angewendet. Der Prozess ist
@@ -480,7 +483,7 @@ mit gegebenen $x(t_a)=x_a$ und $t_b$ und dem Kostenfunktional
   \item "`Rückwärtssimulation"'\footnote{\textsc{Matlab}: $\text{\lstinline[columns=fixed]{exp}}(a(\begin{bmatrix}
   t_a\\ \vdots\\ t_b
   \end{bmatrix} - t_a))Sx(t_b)$} der adjungierten Prozessgleichung
-  $\begin{bmatrix} \psi(t_a)\\ \vdots\\ \psi(t_b)
+  $\begin{bmatrix} \psi(t_b)\\ \vdots\\ \psi(t_a)
   \end{bmatrix}$ aus 
   \begin{align*}
   	\Ham & = \frac12 u^2 + \psi\left(ax+bu\right)\\
@@ -514,21 +517,21 @@ Es ist eine Übung unter \picref{sec:uebung_num_best_opt_lsg}{Vorgehensweise zur
 \subsection{Anwendung zur Umformung von Optimierungsproblemen am Beispiel des \NoCaseChange{\acl{LQR}}-Problems}
 Minimiere das Gütefunktional
 \begin{align*}
-	J  & = \frac12 x^T(t_b)Gx(t_b)+\frac12\int\limits_{t_a}^{t_b}\left[x^T(t)Q(t)x(t)+u^TR(t)u(t)\right]dt
+	J  & = \frac12 x^T(t_b)Gx(t_b)+\frac12\int\limits_{t_a}^{t_b}\left[x^T(t)Q(t)x(t)+u^T(t)R(t)u(t)\right]dt
 \end{align*}
 bei dem Prozess 
 \begin{align*}
 	\dot{x}(t) & = A(t)x(t)+B(t)u(t)
 \end{align*}
-mit den gegebenen Werten $x(t_a)=x_a$, $t_a$, $x_a$ und $t_b$, wobei der Zustandswert zur Endzeit $x(t_b)$ frei ist. Weiterhin sollen $G\ge 0$,
-$Q(t)\ge 0$ (semipositiv defintit), $R(t)>0$ (positiv definit)\footnote{WEnn $R(t)$ smidefinit wäre, würde es $u$ geben, die keine Kosten erzeugen.}
+mit den gegebenen Werten $x(t_a)=x_a$, $t_a$ und $t_b$, wobei der Zustandswert zur Endzeit $x(t_b)$ frei ist. Weiterhin sollen $G\ge 0$,
+$Q(t)\ge 0$ (positiv semidefintit), $R(t)>0$ (positiv definit)\footnote{Wenn $R(t)$ semidefinit wäre, würde es $u$ geben, die keine Kosten erzeugen.}
 und $Q(t)$, sowie $R(t)$ stetig differenzierbar sein. Der Ausgang wird berechnet mit
 \begin{align*}
 	y & = C x
 \end{align*}
 mit der Wichtung von $y$
 \begin{align*}
-	y^T W y & = x^T\underbrace{c^TWc}_{Q(t)}x.
+	y^T W y & = x^T\underbrace{C^TWC}_{Q(t)}x.
 \end{align*}
 Es wird die Hamilton-Funktion gebildet
 \begin{align*}
