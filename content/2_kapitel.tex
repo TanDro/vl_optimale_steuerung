@@ -127,7 +127,7 @@ und erhalten
 \end{align}
 Angenommen wir hätten die optimale Lösung gefunden und wir betrachten die Variationen der Funktionen $u$, $x$, $\psi$ und damit auch $\dot{x}$ auf dem
 Intervall $\left(t_a, t_b \right)$ der Vektoren $x(t_a)$, $\lambda_a$, $x(t_b)$, $\lambda_b$ und der Zahl $t_b$, d.h.
-$\xi(t)=\xi^{\ast}(t)+\epsilon\tilde{\xi}(t)$ mit $\xi\in \left\{u,x,\psi\right\}$ und $\rho=\rho^{\ast} + \epsilon \tilde{\rho}$ mit $\rho \in \left\{x(t_a),\lambda_a, x(t_b), \lambda_b, t_b\right\}$. Einsetzen in
+$\xi(t)=\xi^{\ast}(t)+\epsilon\tilde{\xi}(t)$ mit $\xi\in \left\{u,x,\psi\right\}$ und $\zeta=\zeta^{\ast} + \epsilon \tilde{\zeta}$ mit $\zeta \in \left\{x(t_a),\lambda_a, x(t_b), \lambda_b, t_b\right\}$. Einsetzen in
 \eqnref{eqn:kap_2_lagrange_fun} liefert die Lagrange-Funktion
 \begin{align*}
 	\begin{split}
@@ -304,7 +304,7 @@ Eingesetzt in \eqnref{eqn:kap_2_vor_optlsg_x} erhält man
 und \eqnref{eqn:kap_2_vor_optlsg_u} wird mit \eqnref{eqn:kap_2_vor_optlsg_psi} und \eqnref{eqn:kap_2_vor_optlsg_psi0} zu
 \begin{align}
 \begin{split}\label{eqn:kap_2_vor_optlsg_uast}
-	u^{\ast}(t,x(0)) & = -b\psi(0)e^{at}\\
+	u^{\ast}(t,x(0)) & = -b\psi(0)e^{-at}\\
 	& = \frac{2a}{b}\frac{e^{a(t_b-t)}}{e^{-at_b}-e^{at_b}} x(0).
 \end{split}
 \end{align}
@@ -535,7 +535,7 @@ mit der Wichtung von $y$
 \end{align*}
 Es wird die Hamilton-Funktion gebildet
 \begin{align*}
-	\Ham & = \frac12\left(x^T(t) Q(t)x(t)+u^T(t)R(t)u(t)+\psi^T(t)\left(A(t)x(t)+B(t)u(t) \right) \right).
+	\Ham & = \frac12\left(x^T(t) Q(t)x(t)+u^T(t)R(t)u(t) \right)+\psi^T(t)\left(A(t)x(t)+B(t)u(t) \right).
 \end{align*}
 Damit kann die kanonische Differentialgleichung und die \ac{RB}en angeben werden
 \begin{align*}
@@ -566,7 +566,7 @@ was auf
 \begin{align*}
 	\left(\dot{X} + X\left(A-BR^{-1}B^TX \right) + Q +A^TX \right)x & = 0.
 \end{align*}
-führt, was wiederrum die Matrix-Ricatti-Differentialgleichung
+führt, was wiederum die Matrix-Ricatti-Differentialgleichung
 \begin{align*}
 	\dot{X} & = -A^TX -XA + XBR^{-1}B^TX -Q
 \end{align*}
@@ -577,6 +577,29 @@ mit der Endbedingung $x(t_b)$ liefert. Das Regelgesetz kann zu
 formuliert werden, was eine lineare zeitvariante Zustandsrückführung darstellt.
 
 \section{Maximumprinzip von Pontryagin}
+\subsection{Vorbereitung}
+Sei $f$: $\mathbb{R}^n \rightarrow \mathbb{R}^1$ stetig diffbar, $x^{\ast}$, $\tilde{x}\in \mathbb{R}^n$, $\epsilon > 0$. Es gilt 
+\begin{align*}
+\left. \frac{d}{d\epsilon}f(x^{\ast} + \epsilon \tilde{x})\right|_{\epsilon=0} &= f'(x^{\ast})\tilde{x} \\
+&= \nabla f(x^{\ast})^T \tilde{x}
+\end{align*}
+Sei $G \subset \mathbb{R}^n$ abgeschlossen und konvex. Dann ist $x^{\ast} \in G$ lokale Minimalstelle von $f$ auf $G$ $\Rightarrow$
+\begin{align*}
+\left. \frac{d}{d\epsilon}f(x^{\ast} + \epsilon \tilde{x})\right|_{\epsilon=0} \ge \: 0 \forall \tilde{x} \in cl Z(G,x^{\ast}) \\
+Z(G,x^{\ast}) \coloneqq \{s \in \mathbb{R}^n | \exists \bar{\alpha}>0: x^{\ast} + as \in G \: \forall \alpha \in [0, \bar{\alpha}]\}:
+\end{align*}
+Menge der für $x^{\ast}\in G$ zulässigen Richtungen. $cl Z(G,x^{\ast})$ heißt Tangentialkegel von $G$ in $x^{\ast}$, cl ... closure $\rightarrow$ Randpunkte. 
+
+Speziell: 
+\begin{align*}
+x^{\ast} \in int G \Rightarrow Z(G,x^{\ast}) = \mathbb{R}^n
+\end{align*}
+und es gilt $x^{\ast} \in int G$ lokale Minimalstelle von $f$ auf $g$ $\Rightarrow$
+\begin{align*}
+\left. \frac{d}{d\epsilon}f(x^{\ast} + \epsilon \tilde{x})\right|_{\epsilon=0} = 0 \: \forall \tilde{x} \in \mathbb{R}^n \\
+\Rightarrow \nabla f(x^{\ast}) = 0
+\end{align*}
+
 Die Aufgabe ist das Kostenfunktional
 \begin{align*}
 	J & = h\left(x(t_b),t_b \right) + \int\limits_{t_a}^{t_b} f_0(x(t),u(t),t)dt\rightarrow\min
@@ -585,17 +608,17 @@ für den Prozess
 \begin{align*}
 	\dot{x}(t) & = f\left( x(t),u(t),t \right),
 \end{align*}
-mit $u:[t_a,t_b]\rightarrow \Omega\subset\mathbb{R}^p$ mit dem zulässigen Bereich $\Omega$, der zeitvariant, abgeschlossen und konvex ist, zu
+mit $u:[t_a,t_b]\rightarrow \Omega\supset\mathbb{R}^p$ mit dem zulässigen Bereich $\Omega$, der zeitinvariant, abgeschlossen und konvex ist, zu
 minimieren.\\
 Die \ac{AB} seien gegeben mit gegebenen $t_a$, $x_a$ mit $x(t_a)=x_a$.\\
 Die \ac{EB} seien gegeben mit gegebenen oder freien $t_b$ und $z(x(t_b))=0$ mit $z:\mathbb{R}^n\rightarrow\mathbb{R}^m$, d.h. es wird Fall A
 betrachtet.\\
-$h$, $f_0$, $f$ und $z$ seinen stetig differenzierbar bezüglich aller Argumente. Es ist keine Beschreibung für $x(t)$ für $t\in[t_a,t_b]$ gegeben.
+$h$, $f_0$, $f$ und $z$ seien stetig differenzierbar bezüglich aller Argumente. Es ist keine Beschreibung für $x(t)$ für $t\in[t_a,t_b]$ gegeben.
 
 \subsection{Prinzip der Herleitung der notwendigen Bedingungen}
 Es wird der Lagrange-Multiplikator
 \begin{align*}
-	\bar{J} & = \lambda_0 h\left(x(t_b),t_b \right) + \int\limits_{t_a}^{t_b}\left[\lambda_0 f_0(x(t),u(t),t) + \dot{\psi}^T(t)\left(f(x(t),u(t),t) -
+	\bar{J} & = \lambda_0 h\left(x(t_b),t_b \right) + \int\limits_{t_a}^{t_b}\left[\lambda_0 f_0(x(t),u(t),t) + \psi^T(t)\left(f(x(t),u(t),t) -
 	\dot{x}(t) \right) \right]dt\\
 	&\quad + \lambda_a^T\left\{x_a - x(t_a) \right\} + \lambda_b^T z(x(t_b))
 \end{align*}
@@ -603,9 +626,9 @@ eingeführt. Weiter wird die Hamilton-Funktion $\Ham:\mathbb{R}^n\times\Omega\ti
 \begin{align*}
 	\Ham \left(x(t),u(t),\psi(t),\lambda_0,t \right) & = \lambda_0 f_0\left(x(t),u(t),t \right) + \psi^T(t)f\left(x(t),u(t),t \right). 
 \end{align*}
-definiert. Analog zu \secref{sec:kap_2_pr_herl_not_bed} werden die Variationen $\zeta(t)=\zeta^{\ast}(t)+\epsilon\tilde{\zeta}(t)$ mit
-$\zeta\in\{x,u,\psi \}$ und $\zeta=\zeta^{\ast}+\epsilon\tilde{\zeta}$ mit $\zeta\in\{x(t_a),\lambda_a, x(t_b), \lambda_b, t_b\}$ eingeführt. Aufgrund
-der Beschränkung $u(t)\in\Omega$ erfolgt die Herleitung der notwendigen Variantionen für die Extremstellen aus $\left.\frac{\td F}{\td
+definiert. Analog zu \secref{sec:kap_2_pr_herl_not_bed} werden die Variationen $\xi(t)=\xi^{\ast}(t)+\epsilon\tilde{\xi}(t)$ mit
+$\xi\in\{x,u,\psi \}$ und $\zeta=\zeta^{\ast}+\epsilon\tilde{\zeta}$ mit $\zeta\in\{x(t_a),\lambda_a, x(t_b), \lambda_b, t_b\}$ eingeführt. Aufgrund
+der Beschränkung $u(t)\in\Omega$ erfolgt die Herleitung der notwendigen Bedingungen für die Minimumstelle aus $\left.\frac{\td F}{\td
 \epsilon}\right|_{\epsilon=0}\geq 0$, anstelle von $\left.\frac{\td F}{\td \epsilon}\right|_{\epsilon=0} = 0$. Aus 
 \begin{align*}
 	\left.\frac{\td F}{\td \epsilon}\right|_{\epsilon=0} & = \left[\lambda_0\frac{\d h}{\d t}+\Ham \right]_{t_b}\tilde{t}_b +
@@ -614,14 +637,21 @@ der Beschränkung $u(t)\in\Omega$ erfolgt die Herleitung der notwendigen Variant
 	& \quad + \ldots \geq 0
 \end{align*}
 erhält man speziell für $\tilde{u}\neq 0$, $\tilde{x}=0$, $\tilde{\psi}=0$, $\ldots$ die notwendige Bedingung $\int\limits_{t_a}^{t_b}\frac{\d\Ham}{\d
-u}\tilde{u}\geq 0$ für alle zulässigen Variationen und hieraus kann man folgern
+u}\tilde{u}dt\geq 0$ für alle zulässigen Variationen und hieraus kann man folgern
 \begin{align*}
 0 & \leq \frac{\d \Ham}{\d u}\left(x^{\ast}(t), u^{\ast}(t), \psi^{\ast}(t),\lambda_0^{\ast},t \right)\tilde{u}(t)
 \end{align*}
-mit $\forall \tilde{u}(t)\in dZ(\Omega,u^{\ast}(t))$ und $\forall t\in[t_a,t_b]$. Dies ist eine notwendige Bedingung für ein (lokales) Minimum von
+mit $\forall \tilde{u}(t)\in clZ(G,u^{\ast}(t))$ und $\forall t\in[t_a,t_b]$. Dies ist eine notwendige Bedingung für ein (lokales) Minimum von
 \begin{align*}
-	u(t)\in\Omega & \mapsto \Ham\left(x^{\ast}(t), u(t), \psi^{\ast}(t),\lambda_0^{\ast},t \right) .
+	u(t)\in\Omega & \mapsto \Ham\left(x^{\ast}(t), u(t), \psi^{\ast}(t),\lambda_0^{\ast},t \right) 
 \end{align*}
+an der Stelle $u^{\ast}(t)$. Diese Bedingung kann zu
+\begin{align*}
+\Ham(x^{\ast}(t), u^{\ast}(t), \psi^{\ast}(t), \lambda_0^{\ast},t) \le \Ham(x^{\ast}(t), u, \psi^{\ast}(t), \lambda_0^{\ast},t) \\
+\forall u \in \Omega \forall t \in [t_a,t_b],
+\end{align*}
+d.h. zu einem globalen Minimum auf $\Omega$ verschärft werden.
+
 Die übrigen Variationen sind unbeschränkte Variationen und führen auf die gleichen notwendigen Bedingungen wie in \secref{sec:kap_2_pr_herl_not_bed}.
 \begin{satz}[Pontryaginschs Minimumprinzip]
 Falls $u^{\ast}:[t_a,t_b]\rightarrow\Omega$ optimal ist, so gibt es einen Vektor $\begin{bmatrix}
@@ -646,7 +676,7 @@ Falls $u^{\ast}:[t_a,t_b]\rightarrow\Omega$ optimal ist, so gibt es einen Vektor
   	\Ham\left(x^{\ast}(t),u^{\ast}(t),\psi^{\ast}(t),\lambda_0^{\ast},t \right) & \leq
   	\Ham\left(x^{\ast}(t),u(t),\psi^{\ast}(t),\lambda_0^{\ast},t \right)	\label{eqn:kap_2_Pontryagin_min}
   \end{align}
-  mit $\forall u\in\Omega$ und $\forall t\in[t_a,t_b]$, d.h. die Funkeion
+  mit $\forall u\in\Omega$ und $\forall t\in[t_a,t_b]$, d.h. die Funktion
   $u\in\Omega\mapsto\Ham\left(x^{\ast}(t),u^{\ast}(t),\psi^{\ast}(t),\lambda_0^{\ast},t \right)$ hat an der Stelle $u^{\ast}(t)$ ein globales Minimum.
   \item gilt falls $t_b$ frei ist, so muss zusätzlich gelten
   \begin{align*}
@@ -657,10 +687,10 @@ Falls $u^{\ast}:[t_a,t_b]\rightarrow\Omega$ optimal ist, so gibt es einen Vektor
 \end{satz}
 
 \begin{defi}
-Die Lösung des Steuerungsproblems heisst singulär, falls
+Die Lösung des Steuerungsproblems heißt singulär, falls
 \begin{enumerate}[label=(\Roman*)]
   \item $\lambda_0=0$ oder
-  \item $H\neq H(u)$ für $t\in[t_1,t_2]\subseteq[t_a,t_b]$ mit $t_1<t_2$, d.h. es gibt ein Intervall mit Lösungen größer Null auf dem $H$ keine
+  \item $H\neq H(u)$ für $t\in[t_1,t_2]\subseteq[t_a,t_b]$ mit $t_1<t_2$, d.h. es gibt ein Intervall mit Länge größer Null auf dem $H$ keine
   explizite Funktion der Steuergröße ist.
 \end{enumerate}
 \end{defi}
@@ -750,7 +780,7 @@ $\psi_2^{\ast}=-c_1^{\ast}t+c_2^{\ast}$. Angenommen es ist $\psi_2^{\ast}=0$ fü
 damit $\psi_1^{\ast}(t)=\psi_2^{\ast}(t)=0$ für $t\in[0,t_b]$ und wegen (c) wäre $\lambda_0^{\ast}=0$. Damit wird es zu
 \eqnref{eqn:kap_2_bsp_1_vektor_pont}.
 \end{proof}
-Änderung von Werten der Steuergrößen auf abzählbar viele Punkte beieinflusst die der Prozessgleichung nicht, da können wir 
+Änderung von Werten der Steuergrößen auf abzählbar viele Punkte beeinflusst die der Prozessgleichung nicht, da können wir 
 \begin{align*}
 	u(t) & = -a_{max}\sgn\left(\psi_2^{\ast}(t) \right) = \left\{\begin{array}{cl}
 	a_{max} & \text{für }\psi_2^{\ast}(t) < 0\\
@@ -824,13 +854,13 @@ gebildet. Nach Pontryagin muss ein Vektor
 	\lambda_0^{\ast}\\ \psi_1^{\ast}(t_b)\\ \psi_2^{\ast}(t_b)
 	\end{bmatrix} & \neq 0 \in\mathbb{R}^3
 \end{align*}
-existieren, so dass folgenden Bedingungen erfüllt sind
+existieren, so dass folgende Bedingungen erfüllt sind
 \begin{enumerate}[label=(\alph*)]
   \item $\dot{x}_1^{\ast}(t)=x_2^{\ast}(t)$, $\dot{x}_2^{\ast}(t)=u^{\ast}(t)$, $\dot{\psi}_1^{\ast}(t)=\left.-\frac{\d \Ham}{\d
   x_1}\right|_{\ast}=0$, $\dot{\psi}_2^{\ast}(t)=\left.-\frac{\d \Ham}{\d x_2}\right|_{\ast}=-\psi_1^{\ast}(t)$, $x_1^{\ast}(0)=s_a$,
   $x_2^{\ast}(0)=v_a$, $x_1^{\ast}(t_b)=s_b$, $x_2^{\ast}(t_b)=v_b$,
   \item $\lambda_0^{\ast}\left|u^{\ast}(t) \right|+\psi_2^{\ast}(t)u^{\ast}(t)\leq \lambda_0^{\ast}\left|u
-  \right|+\psi_2^{\ast}(t)u $ mit $\forall u\in\Omega$ und $\forall t\in[0,t_b]$,
+  \right|+\psi_2^{\ast}(t)u $ $\forall u\in\Omega$ und $\forall t\in[0,t_b]$,
   \item entfällt, da $t_b$ fest vorgegeben ist.
 \end{enumerate}
 Wie in \exmpref{exmp:kap_2_zeitopt_dint} ist $\psi_2^{\ast}(t)=-c_1^{\ast}t+c_2^{\ast}$ eine affine Funktion.\\ 
@@ -845,7 +875,7 @@ ausgeschlossen, die optimale Steuerfunktion
 \end{align*}
 $\psi_2$ ist eine affine Funktion mit höchstens einer Nullstelle.
 
-Für $\lambda_0=1$ ist $\min\limits_{u\in[-a_{max},a_{max}]}|u|+\psi_2 u$ zu lösen.
+Für $\lambda_0^{\ast}=1$ ist $\min\limits_{u\in[-a_{max},a_{max}]}|u|+\psi_2 u$ zu lösen.
 \begin{enumerate}
   \item Für $u\in[0,a_{max}]$ erhalten wir die Zielfunktion $(1+\psi_2)u$ und
   \begin{align*}
@@ -887,8 +917,8 @@ $\psi_2(t)$ ist eine affine Funktion. $c_1=0$ ist möglich. Die Ergebnisse könn
   1$ ausschliessen, so würde $v(t_b)=0$ lediglich von den Trajektorien (1) und (2) aus \figref{fig:kap_2_verbrau_opt_trajs} erfüllt. Diese erfüllen
   aber $s(t_b)=s_b$ nicht und sind daher nicht zulässig.\\
   Lässt man $c_1^{\ast}=0$ und damit $\psi_2^{\ast}\equiv 1$ zu, so wird auch Trajektorie (3) aus \figref{fig:kap_2_verbrau_opt_trajs} zugelassen.
-  Diese erfüllt die \ac{RB} und minimiert die Zielfunktion, d.h. es ist eine optimale Lösung. WEiter stellt man fest, dass jede Trajektorie, welche die \ac{RB} erfüllt und für die
-  $u(t)=[-a_{max},0]$ gilt, ist optimal, wie bspw. Trajektorie (4) in \figref{fig:kap_2_verbrau_opt_trajs}.
+  Diese erfüllt die \ac{RB} und minimiert die Zielfunktion, d.h. es ist eine optimale Lösung. Weiter stellt man fest, dass jede Trajektorie, welche die \ac{RB} erfüllt und für die
+  $u(t)=[-a_{max},0]$ gilt, optimal ist, wie bspw. Trajektorie (4) in \figref{fig:kap_2_verbrau_opt_trajs}.
   \begin{figure}[htb]
 	\centering
 	\input{tikz/dummy}
@@ -953,7 +983,7 @@ Mit
 	\end{bmatrix}V^{-1},\\
 	\int\limits_a^b e^{\lambda_k \tau}d\tau & = \frac{1}{\lambda_k}\left(e^{\lambda_k b}-e^{\lambda_k a} \right)
 \end{align*}
-für $k=1,\ldots,n$ lässt sich die Stannfunktion $w(.)$ darstellen.\\
+für $k=1,\ldots,n$ lässt sich die Stammfunktion $w(.)$ darstellen.\\
 Man erhält das nichtlineare Gleichungssystem
 \begin{align*}
 	\frac{1}{\alpha u_{max}}\left(e^{-At_n}x_b-x_a \right) & = -w(0) + 2 w(t_1) - 2 w(t_2) + \ldots +(-1)^{n-1}w(t_n)
