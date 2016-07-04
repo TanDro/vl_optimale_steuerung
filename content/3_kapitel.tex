@@ -1,11 +1,11 @@
 \chapter{Optimale Zustandsrückführung}
-\section{Zeitdiskrete Optimalsteuerung bei endlichen Zeithorizont}
+\section{Zeitdiskrete Optimalsteuerung bei endlichem Zeithorizont}
 Es wird der Prozess
 \begin{align}
 	x[\kappa + 1] & = f\left(x[\kappa], u[\kappa] \right)
 \end{align}
 betrachtet mit $x[\kappa]\in\mathbb{R}^n$, $u[\kappa]\in\mathbb{R}^m$, dem Prozesszustand $x[\kappa]:=x(\kappa T_A)$ mit der Abtastzeit $T_a$ zu
-diskreten Zeitpunkten $\kappa=0,1,\ldots,k$ und gegebenen Anfangszustand $x[0]$.
+diskreten Zeitpunkten $\kappa=0,1,\ldots,k$ und gegebenem Anfangszustand $x[0]$.
 
 Das Kostenfunktional wird mit
 \begin{align}
@@ -15,8 +15,9 @@ Das Kostenfunktional wird mit
 angenommen.\\
 Die Aufgabe besteht in der Minimierung des Kostenfunktionals
 \begin{align}
-	\min\limits_{u[0],\ldots,u[k-1]}K\left(x[0];u[0],\ldots,u[k-1]\right).
+	\min\limits_{u[0],\ldots,u[k-1]}K\left(x[0];u[0],\ldots,u[k-1]\right),
 \end{align}
+mit der optimalen Steuerfolge $u^{\ast} [0], \ldots , u^{\ast} [k-1]$ und der optimalen Zustandstrajektorie $x^{\ast} [0], \ldots , x^{\ast} [k-1]$.
 \begin{figure}[htb]
 	\centering
 	\input{tikz/dummy}
@@ -30,7 +31,7 @@ Es werden die minimalen Restkosten im Schritt $\kappa=0,\ldots,k$ wie folgt defi
 \end{align}
 Man beachte, dass $V\left(x[k],k\right)=K_k(x[k])$ ist und dann die Minimalkosten
 \begin{align*}
-	V\left(x[0],0 \right) & = \min K\left(x[0];u[0],\ldots,u[k-1] \right)
+	V\left(x[0],0 \right) & = \min\limits_{u[0],\ldots,u[k-1]} K\left(x[0];u[0],\ldots,u[k-1] \right)
 \end{align*}
 sind. Es gilt für $\kappa=k-1,\ldots,0$
 \begin{align}
@@ -45,7 +46,7 @@ sind. Es gilt für $\kappa=k-1,\ldots,0$
 \end{align}
 Gleichung \eqnref{eqn:kap_3_dp} entspricht der Gleichung der \ac{DP} und kann in Kurzform wie folgt dargestellt werden
 \begin{align}
-	V(x,x) & = \min\limits_u\left(c(x,u)+V\left(f(x,u),\kappa +1 \right) \right)
+	V(x,\kappa) & = \min\limits_u\left(c(x,u)+V\left(f(x,u),\kappa +1 \right) \right)
 \end{align}
 \begin{remark}\hspace{1mm}
 \begin{itemize}
@@ -83,7 +84,7 @@ Rekursive Rückwärtsrechnungen
 \end{enumerate}
 Rekursive Vorwärtsrechnung
 \begin{enumerate}[label=(S\arabic*),resume] 
-  \item Zu gegebenen $x[0]$ bestimme für $\kappa=0,1,\ldots,k-1$
+  \item Zu gegebenem $x[0]$ bestimme für $\kappa=0,1,\ldots,k-1$
   \begin{align*}
   	u^{\ast}[\kappa] & = \pi_{\kappa}(x[\kappa]).
   \end{align*}
@@ -95,7 +96,7 @@ Rekursive Vorwärtsrechnung
   anwendbar. Die Rückführungen bleiben. Bei Änderung von einem $u[\kappa]$ muss nur neu eingesetzt werden, daher ist dieser Algorithmus sehr effizient.
   \item \ac{NB} der Form $u[\kappa]\in U_{\kappa}\subset\mathbb{R}^m$, $x[\kappa]\in X_{\kappa}\subset\mathbb{R}^n$ sind möglich.\\
   Speziell sind zum Beispiel Endwertbedingungen der Form $x[k]=x_{end}$ mit gegebenen $x_{end}$.
-  \item Zeitvariante Prozesse $x[\kappa+1]=f(x[\kappa],u[\kappa],\kappa)$ und zeitvariante inkrementale Kosten $c(x[\kappa],u[\kappa],\kappa)$ sind möglich.Dann ist Kostenfunktion der
+  \item Zeitvariante Prozesse $x[\kappa+1]=f(x[\kappa],u[\kappa],\kappa)$ und zeitvariante inkrementale Kosten $c(x[\kappa],u[\kappa],\kappa)$ sind möglich. Dann ist Kostenfunktion der
   \ac{DP}
   \begin{align*}
   	V(x,\kappa) & = \min\limits_u\left(c(x,u,\kappa)+V\left(f(x,u,\kappa), \kappa +1 \right) \right).
@@ -217,10 +218,10 @@ Schritt $k-1$ werden die Restkosten mit der \textsc{NumPy}-Funktion \lstinline[c
 	\label{fig:kap_3_dyn_prog_xgitter}
 \end{figure}
 \begin{align*}
-	V\left(x_1, k-1 \right) & = \min\left\{c\left(x_1,u_j \right)\right.\\
+	V\left(x_1, k-1 \right) & = \min\limits_{j=1,\ldots,M} \left\{c\left(x_1,u_j \right)\right.\\
 	& \quad + \left.\text{\lstinline[columns=fixed]{interp}}\left(f(x_1,u_j),\left[x_1,\ldots,x_N\right],\left[K_k[x_1],\ldots,K_k[x_N] \right] \right)
 	\right\}\\
-	& \rightarrow u^{\ast}(x_i,\kappa).
+	& \rightarrow u^{\ast}(x_1,k-1).
 \end{align*}
 Wenn $x_i$ im Schritt $\kappa$ mit $i=1,\ldots,N$ und $\kappa=k-1,\ldots,0$ betrachtet wird, folgt
 \begin{align*}
