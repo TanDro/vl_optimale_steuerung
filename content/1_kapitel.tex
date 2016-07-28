@@ -70,7 +70,7 @@ keine lokale Extremstelle \end{tabular} \right\}
 \end{satz}
 Es ist eine Übung unter \picref{sec:uebung_kapitel_1_def_extrem}{Definitheit und Extremstellen} im Anhang zu finden.
 \begin{defi}
-Sei $D\subset\mathbb{R}^n$ offen, $f:D\rightarrow\mathbb{R},h_1,\ldots,h_m:D\rightarrow\mathbb{R}$. $\overline{x}\in D$ heisst lokale oder globale Extremstelle von $f$ unter den
+Sei $D\subset\mathbb{R}^n$ offen, $f:D\rightarrow\mathbb{R},h_1,\ldots,h_m:D\rightarrow\mathbb{R}$. $\overline{x}\in D$ heißt lokale oder globale Extremstelle von $f$ unter den
 \ac{GNB} $h_1(x)=0,\ldots,h_m(x)=0$, wenn $\overline{x}$ lokale oder globale Extremstelle von $f$ auf
 \begin{align*}
 M &:=\left\{x\in D|\ h_1(x)=\ldots=h_m(x)=0\right\}
@@ -232,7 +232,7 @@ Abbildung \ref{fig:kap_1_beispiel_extremstelle} stellt die Niveaulinien der Ausg
 \end{exmp}
 
 \begin{defi}
-Sei $D\in\mathbb{R}^n$ offen, $f:D\rightarrow\mathbb{R},g_1,\ldots,g_m:D\rightarrow\mathbb{R},\overline{x}\in D$ heisst (lokale bzw. globale) Extremstelle von $f$ unter der \ac{UNB}
+Sei $D\in\mathbb{R}^n$ offen, $f:D\rightarrow\mathbb{R},g_1,\ldots,g_m:D\rightarrow\mathbb{R},\overline{x}\in D$ heißt (lokale bzw. globale) Extremstelle von $f$ unter der \ac{UNB}
 $g_1(x)\le 0,\ldots,g_m(x)\le 0$, wenn $\overline{x}$ (lokale oder globale) Extremstelle von $f$ auf $G:=\left\{x\in D|\ g_1(x)\le 0,\ldots,g_m(x)\le 0\right\}$ ist.
 \end{defi}
 \begin{defi}
@@ -462,7 +462,7 @@ auf $G$ ist
 \textbf{Aufgabe}
 \begin{itemize}
 	\item[] $\min\limits_{x\in\mathbb{R}^n} \frac12 x^TQx+q^Tx$ bei $Ax\le b$, $Q\ge0$
-	\item[] mit $Q\in\mathbb{R}^{n\times n}$, $q\in\mathbb{R}^n$, $A\in\mathbb{R}^{m\times n}$, $b\in\mathbb{R}^m$ (convex) 
+	\item[] mit $Q\in\mathbb{R}^{n\times n}$, $q\in\mathbb{R}^n$, $A\in\mathbb{R}^{m\times n}$, $b\in\mathbb{R}^m$ (konvex) 
 \end{itemize}
 \subsection{Vorbereitungen}
 \begin{enumerate}[label=(\arabic*)]
@@ -470,7 +470,7 @@ auf $G$ ist
   \begin{align}
   	f(x)=\frac12 x^TQx+q^Tx,\; \mathbb{R}^n		\label{eqn:kap_1_quadprog_vor_1}
   \end{align}
-  convex und wegen $H f(x)=Q\ge 0$ ist $f$ convex auf $\mathbb{R}^n$. Damit gilt $x^{\ast}$ ist Lösung
+  konvex und wegen $H f(x)=Q\ge 0$ ist $f$ konvex auf $\mathbb{R}^n$. Damit gilt $x^{\ast}$ ist Lösung
   $\xLeftrightarrow{\text{Satz \ref{satz:5}}} x^{\ast}$ erfüllt \ac{KTB} $\Leftrightarrow\nabla f(x^{\ast})=0$. Somit erhält man die Lösung von \eqnref{eqn:kap_1_quadprog_vor_1} durch
   Lösen des linearen Gleichungssystems
   \begin{align*}
@@ -562,7 +562,7 @@ Sei $\left\{a_i|\ i\in I_a(x) \right\}$ linear unabhängig $\forall x\in G$.\\
   		$k\rightarrow k+1$ zu (S2)
 \end{enumerate}
 \begin{remark}[zu (S3)]
-  Die im Punkt $x^k$ inaktive UNBen sind $a_j^Tx^k\le b_j$, $j\notin I_k$.
+  Die im Punkt $x^k$ inaktiven UNBen sind $a_j^Tx^k\le b_j$, $j\notin I_k$.
   Wir bestimmen das maximale $\beta > 0$ derart, dass $\beta(y^k-x^k)+x^k$ noch zulässig ist, d.h. $a_j^T(\beta(y^k-x^k)+x^k)\le b_j \forall j$.
   Dies ist wegen $a_j^Tx^k\le b_j$ und $\beta a_j^T(y^k-x^k)\le b_j-a_j^Tx^k$ stets für diejenigen $j$ erfüllt, für die $a_j^T(y^k-x^k)\le 0$ gilt. 
   Also ergibt sich das gesuchte \begin{align*}

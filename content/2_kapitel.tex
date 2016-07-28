@@ -58,7 +58,7 @@ beschrieben durch
 \end{align*}
 und zu minimierende Bogenlänge der durch $s:t\in\left[t_0,t_e \right]\mapsto \begin{bmatrix}
 t\\ x(t)
-\end{bmatrix}$ parametrisierte Kurve liefert
+\end{bmatrix}$ parametrisierten Kurve liefert
 \begin{align*}
 	J  & = \int\limits_{P_0}^{P_e}ds=\int\limits_{t_0}^{t_e}\underbrace{\sqrt{1+\dot{x}^2}}_{f(t,x,\dot{x})}dt.
 \end{align*}
@@ -696,8 +696,8 @@ Die Lösung des Steuerungsproblems heißt singulär, falls
 \end{defi}
 
 \begin{remark}[Zum Fall (I)]
-Im Fal $\lambda_0=0$ ist die Zielfunktion für die Lösung nicht relevant, da die optimale Lösung bereits durch die \ac{NB} festgelegt ist. Das heisst,
-der geforderte Endzustand liegt auf dem Rand der Menge aller Zustandsvektoren, die durch die Zeitpunkte $t_b$ erreichtbar sind. 
+Im Fall $\lambda_0=0$ ist die Zielfunktion für die Lösung nicht relevant, da die optimale Lösung bereits durch die \ac{NB} festgelegt ist. Das heißt,
+der geforderte Endzustand liegt auf dem Rand der Menge aller Zustandsvektoren, die durch die Zeitpunkte $t_b$ erreichbar sind. 
 \end{remark}
 
 \begin{exmp}
@@ -774,13 +774,13 @@ u\in[-a_{max},a_{max}] & \text{für }\psi_2^{\ast}(t) = 0\\
 \end{array} \right.
 \end{align*}. In den Zeitpunkten für die $\psi_2^{\ast}(t)=0$ gilt, minimiert jedes $u(t)\in\Omega$ die Hamilton-Funktion. Es ist kein
 singuläres Problem, da $\psi_2^{\ast}$ nur isolierte Nullstellen und genauer in $[0,t_b]$ sogar nur höchstens eine Nullstelle
-existiert.\begin{proof}
+besitzt.\begin{proof}
 Da $\dot{\psi}_1(t)=0$ ist $\psi_1^{\ast}(t)=c_1^{\ast}$ konstant und wegen $\dot{\psi}_2^{\ast}(t)=-\psi_1^{\ast}(t)$ ist
 $\psi_2^{\ast}=-c_1^{\ast}t+c_2^{\ast}$. Angenommen es ist $\psi_2^{\ast}=0$ für $t\in[t_1,t_2]$ mit $t_2>t_1$. Dann ist $c_1^{\ast}=c_2^{\ast}=0$ und
 damit $\psi_1^{\ast}(t)=\psi_2^{\ast}(t)=0$ für $t\in[0,t_b]$ und wegen (c) wäre $\lambda_0^{\ast}=0$. Damit wird es zu
 \eqnref{eqn:kap_2_bsp_1_vektor_pont}.
 \end{proof}
-Änderung von Werten der Steuergrößen auf abzählbar viele Punkte beeinflusst die der Prozessgleichung nicht, da können wir 
+Änderung von Werten der Steuergrößen auf abzählbar viele Punkte beeinflusst die Prozessgleichung nicht, da können wir 
 \begin{align*}
 	u(t) & = -a_{max}\sgn\left(\psi_2^{\ast}(t) \right) = \left\{\begin{array}{cl}
 	a_{max} & \text{für }\psi_2^{\ast}(t) < 0\\
@@ -944,10 +944,10 @@ $\psi_2(t)$ ist eine affine Funktion. $c_1=0$ ist möglich. Die Ergebnisse könn
 \end{figure}
 \end{exmp}
 \begin{remark}
-Weitere Beispiele sind mit Zustandsbeshränkung sind im \cite{geering2007optimal} zu finden.
+Weitere Beispiele mit Zustandsbeschränkung sind im \cite{geering2007optimal} zu finden.
 \end{remark}
 \begin{exmp}[Anwendung des Satz von Feldbaum]
-Sei $\dot{x}=Ax+bu$ steuerbar, stabil mit ausschliesslich reellen Eigenwerte und der Eingang beschränkt mit
+Sei $\dot{x}=Ax+bu$ steuerbar, stabil mit ausschließlich reellen Eigenwerten und der Eingang beschränkt mit
 $u(t)\in\left[\underline{u},\overline{u}\right]\subset\mathbb{R}^1$ und mit $x(t)\in\mathbb{R}^n$. Dann hat eine zeitoptimale Steuerung zur
 Überführung von $x_a$ nach $x_b$, sofern diese existiert, die Form $u^{\ast}(t)\in\{\underline{u},\overline{u}\}$, $t\in[t_a,t_b]$, mit maximal $n-1$
 Umschaltpunkten. \\
